@@ -10,8 +10,7 @@ def load_skab_dataset(raw_path: str, use_groups: list[str]) -> pd.DataFrame:
     - source_group: valve1 or valve2
     - source_file: original CSV filename
 
-    These metadata columns are used for traceability and group-based splitting,
-    not as model input.
+    These metadata columns are used for traceability and group-based splitting, not as model input.
     """
     base_path = Path(raw_path)
 
