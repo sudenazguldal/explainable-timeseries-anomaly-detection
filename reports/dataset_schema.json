@@ -37,24 +37,28 @@
       "valve1": 18160,
       "valve2": 4312
     },
-    "source_file_count": 16,
+    "source_file_count": 20,
     "source_files": [
-      "0.csv",
-      "1.csv",
-      "10.csv",
-      "11.csv",
-      "12.csv",
-      "13.csv",
-      "14.csv",
-      "15.csv",
-      "2.csv",
-      "3.csv",
-      "4.csv",
-      "5.csv",
-      "6.csv",
-      "7.csv",
-      "8.csv",
-      "9.csv"
+      "valve1/0.csv",
+      "valve1/1.csv",
+      "valve1/10.csv",
+      "valve1/11.csv",
+      "valve1/12.csv",
+      "valve1/13.csv",
+      "valve1/14.csv",
+      "valve1/15.csv",
+      "valve1/2.csv",
+      "valve1/3.csv",
+      "valve1/4.csv",
+      "valve1/5.csv",
+      "valve1/6.csv",
+      "valve1/7.csv",
+      "valve1/8.csv",
+      "valve1/9.csv",
+      "valve2/0.csv",
+      "valve2/1.csv",
+      "valve2/2.csv",
+      "valve2/3.csv"
     ]
   },
   "batadal": {
@@ -167,15 +171,16 @@
     },
     "split_target_distribution": {
       "train": {
-        "-999": 2323,
-        "1": 183
+        "-999": 2404,
+        "1": 102
       },
       "validation": {
-        "-999": 835
+        "-999": 798,
+        "1": 37
       },
       "test": {
-        "-999": 800,
-        "1": 36
+        "-999": 756,
+        "1": 80
       }
     }
   }
