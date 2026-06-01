@@ -5,8 +5,7 @@ def paa_transform(series: list[float] | np.ndarray, n_segments: int) -> np.ndarr
     """
     Applies Piecewise Aggregate Approximation (PAA).
 
-    The input time series is divided into equal segments and each segment
-    is represented by its mean value.
+    The input time series is divided into equal segments and each segment is represented by its mean value.
     """
     values = np.asarray(series, dtype=float)
 

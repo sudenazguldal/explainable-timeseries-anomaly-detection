@@ -8,8 +8,7 @@ def get_sax_breakpoints(alphabet_size: int) -> np.ndarray:
     """
     Returns Gaussian breakpoints for SAX discretization.
 
-    Example:
-    alphabet_size = 3 creates 2 breakpoints.
+    Example: alphabet_size = 3 creates 2 breakpoints.
     """
     if alphabet_size < 2:
         raise ValueError("Alphabet size must be at least 2.")

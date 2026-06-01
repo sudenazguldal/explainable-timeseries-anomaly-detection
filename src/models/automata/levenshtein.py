@@ -35,7 +35,7 @@ def levenshtein_distance(left: str, right: str) -> int:
 
 def find_nearest_pattern(pattern: str, known_patterns: set[str]) -> tuple[str, int]:
     """
-    Finds the nearest known pattern using Levenshtein distance.
+    Finds the nearest known pattern 
 
     Returns:
     - nearest pattern
