@@ -101,6 +101,12 @@ class ProbabilisticAutomata:
     transition_counts: dict[str, Counter] = field(default_factory=dict)
     transition_probabilities: dict[str, dict[str, float]] = field(default_factory=dict)
 
+    def __post_init__(self) -> None:
+        self.smoothing = float(self.smoothing)
+
+        if self.smoothing <= 0:
+            raise ValueError("Smoothing value must be positive.")
+
     def fit(self, symbol_sequence: str) -> "ProbabilisticAutomata":
         patterns = extract_sliding_windows(
             symbol_sequence=symbol_sequence,
@@ -143,15 +149,18 @@ class ProbabilisticAutomata:
 
     def transition_probability(self, previous_state: str, next_state: str) -> float:
         """
-        Returns transition probability. If the transition was not observed, returns smoothing probability.
+        Returns transition probability. If the transition was not observed,
+        returns smoothing probability.
         """
-        return self.transition_probabilities.get(
+        probability = self.transition_probabilities.get(
             previous_state,
             {},
         ).get(
             next_state,
             self.smoothing,
         )
+
+        return float(probability)
 
     def evaluate_transition(self, previous_state: str, incoming_pattern: str) -> TransitionResult:
         """

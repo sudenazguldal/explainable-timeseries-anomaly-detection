@@ -13,6 +13,9 @@ def decide_from_probability(
 
     Lower transition/path probability indicates more unexpected behavior.
     """
+    probability = float(probability)
+    anomaly_threshold = float(anomaly_threshold)
+
     if probability < anomaly_threshold:
         return "anomaly"
 
@@ -89,8 +92,7 @@ def explain_pattern_sequence(
     """
     Produces a JSON-compatible explanation for a sequence of patterns.
 
-    Path probability is calculated as the product of consecutive transition
-    probabilities.
+    Path probability is calculated as the product of consecutive transition probabilities.
     """
     if len(patterns) < 2:
         return {

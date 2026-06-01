@@ -103,3 +103,18 @@ def test_path_probability_multiplies_transition_probabilities():
     probability = automata.path_probability(["aaa", "aab", "abb"])
 
     assert probability == 1.0
+
+def test_transition_probability_casts_string_smoothing_to_float():
+    automata = ProbabilisticAutomata(
+        window_size=3,
+        smoothing="1e-6",
+    )
+    automata.fit("aaabbc")
+
+    probability = automata.transition_probability(
+        previous_state="aaa",
+        next_state="ccc",
+    )
+
+    assert probability == 1e-6
+    assert isinstance(probability, float)
