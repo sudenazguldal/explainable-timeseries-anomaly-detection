@@ -4,10 +4,9 @@ import pandas as pd
 
 def load_batadal_dataset(raw_path: str) -> pd.DataFrame:
     """
-    Loads BATADAL Training Dataset 2 CSV file(s).
+    Loads BATADAL Training Dataset 2 CSV file
 
-    The project uses only Training Dataset 2. If multiple CSV files are placed
-    under the directory, they are concatenated in sorted filename order.
+    The project uses only Training Dataset 2. If multiple CSV files are placed under the directory, they are concatenated in sorted filename order.
     """
     base_path = Path(raw_path)
 
@@ -39,7 +38,7 @@ def detect_batadal_target_column(
     """
     Detects the target/label column from candidate names.
 
-    The detected column name must be documented in the final report.
+    
     """
     normalized_columns = {
         column.lower(): column
@@ -68,8 +67,7 @@ def detect_batadal_time_column(
     """
     Detects the time column if it exists.
 
-    Time columns are not used as model input. They are used only for preserving
-    time order and interpreting results.
+    Time columns are not used as model input. They are used only for preserving time order and interpreting results.
     """
     normalized_columns = {
         column.lower(): column
