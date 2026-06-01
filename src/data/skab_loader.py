@@ -33,7 +33,7 @@ def load_skab_dataset(raw_path: str, use_groups: list[str]) -> pd.DataFrame:
         for csv_file in csv_files:
             df = pd.read_csv(csv_file, sep=None, engine="python")
             df["source_group"] = group
-            df["source_file"] = csv_file.name
+            df["source_file"] = f"{group}/{csv_file.name}"
             frames.append(df)
 
     combined = pd.concat(frames, ignore_index=True)
@@ -49,7 +49,7 @@ def get_skab_feature_columns(
     """
     Returns model input columns by excluding target and metadata/time columns.
     """
-    excluded = set(excluded_columns + [target_column])
+    excluded = set(excluded_columns + [target_column, "label"])
 
     feature_columns = [
         column for column in df.columns

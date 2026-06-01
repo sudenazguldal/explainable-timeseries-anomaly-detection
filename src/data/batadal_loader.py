@@ -1,6 +1,6 @@
 from pathlib import Path
 import pandas as pd
-
+from pandas.api.types import is_datetime64_any_dtype
 
 def load_batadal_dataset(raw_path: str) -> pd.DataFrame:
     """
@@ -94,7 +94,7 @@ def get_batadal_feature_columns(
     - time column
     - source_file metadata column
     """
-    excluded = {target_column, "source_file"}
+    excluded = {target_column, "source_file", "label"}
 
     if time_column is not None:
         excluded.add(time_column)
@@ -134,7 +134,35 @@ def split_batadal_time_ordered(
     ordered_df = df.copy()
 
     if time_column is not None:
-        ordered_df = ordered_df.sort_values(by=time_column).reset_index(drop=True)
+        if time_column not in ordered_df.columns:
+            raise ValueError(f"Time column not found: {time_column}")
+
+        if is_datetime64_any_dtype(ordered_df[time_column]):
+            parsed_time = ordered_df[time_column]
+        else:
+            try:
+                parsed_time = pd.to_datetime(
+                    ordered_df[time_column],
+                    format="%d/%m/%y %H",
+                    errors="raise",
+                )
+            except ValueError:
+                parsed_time = pd.to_datetime(
+                    ordered_df[time_column],
+                    dayfirst=True,
+                    errors="raise",
+                )
+
+        ordered_df["_parsed_time"] = parsed_time
+
+        ordered_df = (
+            ordered_df
+            .sort_values(by="_parsed_time")
+            .drop(columns=["_parsed_time"])
+            .reset_index(drop=True)
+        )
+    else:
+        ordered_df = ordered_df.reset_index(drop=True)
 
     n_rows = len(ordered_df)
 

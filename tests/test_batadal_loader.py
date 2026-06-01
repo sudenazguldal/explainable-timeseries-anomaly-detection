@@ -59,12 +59,13 @@ def test_detect_batadal_time_column_from_candidates():
     assert time_column == "DATETIME"
 
 
-def test_get_batadal_feature_columns_excludes_target_time_and_source_file():
+def test_get_batadal_feature_columns_excludes_target_time_source_file_and_label():
     df = pd.DataFrame({
         "DATETIME": ["2024-01-01 00:00:00"],
         "SENSOR_1": [1.0],
         "SENSOR_2": [2.0],
         "ATT_FLAG": [0],
+        "label": [0],
         "source_file": ["training_dataset_2.csv"],
     })
 
@@ -99,3 +100,33 @@ def test_split_batadal_time_ordered_uses_60_20_20_split():
     assert train_df["SENSOR_1"].tolist() == [0, 1, 2, 3, 4, 5]
     assert validation_df["SENSOR_1"].tolist() == [6, 7]
     assert test_df["SENSOR_1"].tolist() == [8, 9]
+
+
+def test_split_batadal_time_ordered_parses_day_month_year_strings():
+    df = pd.DataFrame({
+        "DATETIME": [
+            "25/12/16 00",
+            "04/07/16 00",
+            "31/10/16 23",
+            "01/08/16 00",
+            "18/12/16 09",
+        ],
+        "SENSOR_1": [5, 1, 4, 2, 3],
+        "ATT_FLAG": [-999, -999, 1, -999, 1],
+    })
+
+    train_df, validation_df, test_df = split_batadal_time_ordered(
+        df=df,
+        train_ratio=0.60,
+        validation_ratio=0.20,
+        test_ratio=0.20,
+        time_column="DATETIME",
+    )
+
+    ordered_values = (
+        train_df["SENSOR_1"].tolist()
+        + validation_df["SENSOR_1"].tolist()
+        + test_df["SENSOR_1"].tolist()
+    )
+
+    assert ordered_values == [1, 2, 4, 3, 5]

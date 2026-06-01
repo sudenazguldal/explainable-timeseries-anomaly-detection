@@ -40,6 +40,7 @@ def test_load_skab_dataset_adds_source_metadata(tmp_path):
     assert "source_group" in df.columns
     assert "source_file" in df.columns
     assert set(df["source_group"]) == {"valve1", "valve2"}
+    assert set(df["source_file"]) == {"valve1/1.csv", "valve2/1.csv"}
 
 
 def test_get_skab_feature_columns_excludes_metadata_and_target():
@@ -48,6 +49,7 @@ def test_get_skab_feature_columns_excludes_metadata_and_target():
         "sensor_1": [1.0],
         "sensor_2": [2.0],
         "anomaly": [0],
+        "label": [0],
         "changepoint": [0],
         "source_group": ["valve1"],
         "source_file": ["1.csv"],

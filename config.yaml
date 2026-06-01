@@ -6,7 +6,7 @@ datasets:
     raw_path: "data/raw/skab"
     use_groups: ["valve1", "valve2"]
     target_column: "anomaly"
-    excluded_columns: ["datetime", "changepoint", "source_group", "source_file"]
+    excluded_columns: ["datetime", "changepoint", "source_group", "source_file", "label"]
     group_column: "source_file"
 
   batadal:
