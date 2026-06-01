@@ -1,0 +1,50 @@
+project:
+  random_seeds: [42, 123, 2026, 7, 999]
+
+datasets:
+  skab:
+    raw_path: "data/raw/skab"
+    use_groups: ["valve1", "valve2"]
+    target_column: "anomaly"
+    excluded_columns: ["datetime", "changepoint", "source_group", "source_file"]
+    group_column: "source_file"
+
+  batadal:
+    raw_path: "data/raw/batadal/training_dataset_2"
+    time_column_candidates: ["DATETIME", "datetime", "DateTime"]
+    target_column_candidates: ["ATT_FLAG", "attack", "anomaly", "label"]
+    split:
+      train: 0.60
+      validation: 0.20
+      test: 0.20
+
+preprocessing:
+  normalization: "standard"
+  pca_components: 1
+
+automata:
+  fixed:
+    window_size: 4
+    alphabet_size: 3
+  parameter_grid:
+    window_size: [3, 4, 5, 6]
+    alphabet_size: [3, 4, 5, 6]
+  paa_segments: 8
+  smoothing: 1e-6
+
+deep_learning:
+  sequence_length: 32
+  batch_size: 32
+  max_epochs: 50
+  early_stopping_patience: 5
+  models: ["lstm", "cnn1d"]
+
+experiments:
+  scenarios: ["original", "gaussian_noise", "unseen"]
+  noise:
+    mean: 0.0
+    std: 0.05
+
+logging:
+  results_dir: "reports/results"
+  figures_dir: "reports/figures"
