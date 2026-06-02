@@ -9,21 +9,19 @@ def ensure_output_dir(output_dir: Path) -> None:
 
 
 def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> None:
-    """
-    Creates a grouped bar chart for scenario-based F1-score comparison
-    using automata_summary_results.csv.
-    """
     df = summary_df.copy()
 
-    # Keep a stable order for report readability
     scenario_order = ["original", "gaussian_noise", "unseen"]
     dataset_order = ["BATADAL", "SKAB"]
 
     rows = []
+
     for dataset in dataset_order:
         dataset_df = df[df["dataset"] == dataset].copy()
+
         for scenario in scenario_order:
             row = dataset_df[dataset_df["scenario"] == scenario]
+
             if not row.empty:
                 rows.append({
                     "dataset": dataset,
@@ -33,7 +31,12 @@ def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> N
 
     plot_df = pd.DataFrame(rows)
 
-    pivot_df = plot_df.pivot(index="scenario", columns="dataset", values="f1_score")
+    pivot_df = plot_df.pivot(
+        index="scenario",
+        columns="dataset",
+        values="f1_score",
+    )
+
     pivot_df = pivot_df.reindex(scenario_order)
 
     ax = pivot_df.plot(kind="bar", figsize=(10, 6))
@@ -41,6 +44,7 @@ def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> N
     ax.set_xlabel("Scenario")
     ax.set_ylabel("F1-score")
     ax.legend(title="Dataset")
+
     plt.xticks(rotation=0)
     plt.tight_layout()
 
@@ -50,20 +54,19 @@ def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> N
 
 
 def plot_scenario_unseen_ratio_comparison(summary_df: pd.DataFrame, output_dir: Path) -> None:
-    """
-    Creates a grouped bar chart for unseen ratio comparison
-    using automata_summary_results.csv.
-    """
     df = summary_df.copy()
 
     scenario_order = ["original", "gaussian_noise", "unseen"]
     dataset_order = ["BATADAL", "SKAB"]
 
     rows = []
+
     for dataset in dataset_order:
         dataset_df = df[df["dataset"] == dataset].copy()
+
         for scenario in scenario_order:
             row = dataset_df[dataset_df["scenario"] == scenario]
+
             if not row.empty:
                 rows.append({
                     "dataset": dataset,
@@ -73,14 +76,20 @@ def plot_scenario_unseen_ratio_comparison(summary_df: pd.DataFrame, output_dir: 
 
     plot_df = pd.DataFrame(rows)
 
-    pivot_df = plot_df.pivot(index="scenario", columns="dataset", values="unseen_ratio")
+    pivot_df = plot_df.pivot(
+        index="scenario",
+        columns="dataset",
+        values="unseen_ratio",
+    )
+
     pivot_df = pivot_df.reindex(scenario_order)
 
     ax = pivot_df.plot(kind="bar", figsize=(10, 6))
-    ax.set_title("Automata Unseen Ratio by Scenario")
+    ax.set_title("Observed Unseen Pattern Ratio by Scenario")
     ax.set_xlabel("Scenario")
-    ax.set_ylabel("Unseen ratio")
+    ax.set_ylabel("Observed unseen pattern ratio")
     ax.legend(title="Dataset")
+
     plt.xticks(rotation=0)
     plt.tight_layout()
 
@@ -89,58 +98,67 @@ def plot_scenario_unseen_ratio_comparison(summary_df: pd.DataFrame, output_dir: 
     plt.close()
 
 
-def plot_multiseed_f1_errorbars(multiseed_df: pd.DataFrame, output_dir: Path) -> None:
-    """
-    Creates a mean/std error-bar chart for F1-score
-    using automata_multiseed_summary.csv.
-    """
+def plot_multiseed_metric_errorbars(
+    multiseed_df: pd.DataFrame,
+    output_dir: Path,
+    metric_name: str,
+    ylabel: str,
+    title: str,
+    output_filename: str,
+) -> None:
     df = multiseed_df.copy()
 
-    labels = [
-        f"{row['dataset']} | {row['scenario']}"
-        for _, row in df.iterrows()
-    ]
-    means = df["f1_score_mean"].astype(float).tolist()
-    stds = df["f1_score_std"].astype(float).tolist()
+    scenario_order = ["original", "gaussian_noise", "unseen"]
+    dataset_order = ["BATADAL", "SKAB"]
 
-    positions = list(range(len(labels)))
+    mean_column = f"{metric_name}_mean"
+    std_column = f"{metric_name}_std"
 
-    plt.figure(figsize=(12, 6))
-    plt.bar(positions, means, yerr=stds, capsize=5)
-    plt.xticks(positions, labels, rotation=30, ha="right")
-    plt.ylabel("F1-score")
-    plt.title("Automata Multi-Seed F1-Score Mean ± Std")
+    x_positions = list(range(len(scenario_order)))
+    bar_width = 0.35
+
+    plt.figure(figsize=(10, 6))
+
+    for dataset_index, dataset in enumerate(dataset_order):
+        means = []
+        stds = []
+
+        for scenario in scenario_order:
+            row = df[
+                (df["dataset"] == dataset)
+                & (df["scenario"] == scenario)
+            ]
+
+            if row.empty:
+                means.append(0.0)
+                stds.append(0.0)
+            else:
+                means.append(float(row.iloc[0][mean_column]))
+                stds.append(float(row.iloc[0][std_column]))
+
+        offset = (dataset_index - 0.5) * bar_width
+        positions = [
+            position + offset
+            for position in x_positions
+        ]
+
+        plt.bar(
+            positions,
+            means,
+            width=bar_width,
+            yerr=stds,
+            capsize=5,
+            label=dataset,
+        )
+
+    plt.xticks(x_positions, scenario_order)
+    plt.xlabel("Scenario")
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.legend(title="Dataset")
     plt.tight_layout()
 
-    output_path = output_dir / "automata_multiseed_f1_errorbars.png"
-    plt.savefig(output_path, dpi=300, bbox_inches="tight")
-    plt.close()
-
-
-def plot_multiseed_accuracy_errorbars(multiseed_df: pd.DataFrame, output_dir: Path) -> None:
-    """
-    Creates a mean/std error-bar chart for accuracy
-    using automata_multiseed_summary.csv.
-    """
-    df = multiseed_df.copy()
-
-    labels = [
-        f"{row['dataset']} | {row['scenario']}"
-        for _, row in df.iterrows()
-    ]
-    means = df["accuracy_mean"].astype(float).tolist()
-    stds = df["accuracy_std"].astype(float).tolist()
-
-    positions = list(range(len(labels)))
-
-    plt.figure(figsize=(12, 6))
-    plt.bar(positions, means, yerr=stds, capsize=5)
-    plt.xticks(positions, labels, rotation=30, ha="right")
-    plt.ylabel("Accuracy")
-    plt.title("Automata Multi-Seed Accuracy Mean ± Std")
-    plt.tight_layout()
-
-    output_path = output_dir / "automata_multiseed_accuracy_errorbars.png"
+    output_path = output_dir / output_filename
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close()
 
@@ -157,10 +175,33 @@ def main() -> None:
     summary_df = pd.read_csv(summary_results_path)
     multiseed_df = pd.read_csv(multiseed_summary_path)
 
-    plot_scenario_f1_comparison(summary_df, figures_dir)
-    plot_scenario_unseen_ratio_comparison(summary_df, figures_dir)
-    plot_multiseed_f1_errorbars(multiseed_df, figures_dir)
-    plot_multiseed_accuracy_errorbars(multiseed_df, figures_dir)
+    plot_scenario_f1_comparison(
+        summary_df=summary_df,
+        output_dir=figures_dir,
+    )
+
+    plot_scenario_unseen_ratio_comparison(
+        summary_df=summary_df,
+        output_dir=figures_dir,
+    )
+
+    plot_multiseed_metric_errorbars(
+        multiseed_df=multiseed_df,
+        output_dir=figures_dir,
+        metric_name="f1_score",
+        ylabel="F1-score",
+        title="Automata Multi-Seed F1-Score Mean ± Std",
+        output_filename="automata_multiseed_f1_errorbars.png",
+    )
+
+    plot_multiseed_metric_errorbars(
+        multiseed_df=multiseed_df,
+        output_dir=figures_dir,
+        metric_name="accuracy",
+        ylabel="Accuracy",
+        title="Automata Multi-Seed Accuracy Mean ± Std",
+        output_filename="automata_multiseed_accuracy_errorbars.png",
+    )
 
     print("Automata result plots created.")
     print(f"Output directory: {figures_dir}")

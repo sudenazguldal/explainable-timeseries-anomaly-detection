@@ -5,36 +5,39 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch
 
-from src.visualization.plot_transition_heatmap import build_batadal_automata
 from src.config.load_config import load_config
+from src.visualization.plot_transition_heatmap import (
+    build_batadal_automata,
+    build_skab_automata,
+)
 
 
-def extract_top_transitions(automata, top_n_edges: int = 20) -> list[dict]:
-    """
-    Extracts top transitions by transition count.
-
-    Each edge contains:
-    - current state
-    - next state
-    - transition count
-    - transition probability
-    """
+def extract_top_transitions(
+    automata,
+    top_n_edges: int = 20,
+    min_probability: float = 0.0,
+) -> list[dict]:
     edges = []
 
     for current_state, next_state_counts in automata.transition_counts.items():
         probabilities = automata.transition_probabilities.get(current_state, {})
 
         for next_state, count in next_state_counts.items():
+            probability = float(probabilities.get(next_state, 0.0))
+
+            if probability < min_probability:
+                continue
+
             edges.append({
                 "current_state": current_state,
                 "next_state": next_state,
                 "count": int(count),
-                "probability": float(probabilities.get(next_state, 0.0)),
+                "probability": probability,
             })
 
     edges = sorted(
         edges,
-        key=lambda edge: (edge["count"], edge["probability"]),
+        key=lambda edge: (edge["probability"], edge["count"]),
         reverse=True,
     )
 
@@ -42,9 +45,6 @@ def extract_top_transitions(automata, top_n_edges: int = 20) -> list[dict]:
 
 
 def calculate_circular_positions(states: list[str]) -> dict[str, tuple[float, float]]:
-    """
-    Places states on a circle for a readable directed graph.
-    """
     positions = {}
     n_states = len(states)
 
@@ -69,12 +69,12 @@ def write_top_transitions_csv(edges: list[dict], output_path: Path) -> None:
         writer.writerows(edges)
 
 
-def plot_transition_graph(edges: list[dict], output_path: Path) -> None:
-    """
-    Plots a directed state transition graph.
-
-    To keep the graph readable, only top transitions are drawn.
-    """
+def plot_transition_graph(
+    edges: list[dict],
+    output_path: Path,
+    title: str,
+    label_probability_threshold: float = 0.70,
+) -> None:
     states = sorted(
         set(edge["current_state"] for edge in edges)
         | set(edge["next_state"] for edge in edges)
@@ -85,7 +85,6 @@ def plot_transition_graph(edges: list[dict], output_path: Path) -> None:
     plt.figure(figsize=(12, 10))
     ax = plt.gca()
 
-    # Draw nodes
     for state, (x, y) in positions.items():
         plt.scatter(x, y, s=900)
         plt.text(
@@ -99,7 +98,6 @@ def plot_transition_graph(edges: list[dict], output_path: Path) -> None:
 
     max_count = max(edge["count"] for edge in edges) if edges else 1
 
-    # Draw directed edges
     for edge in edges:
         start = positions[edge["current_state"]]
         end = positions[edge["next_state"]]
@@ -121,19 +119,20 @@ def plot_transition_graph(edges: list[dict], output_path: Path) -> None:
         )
         ax.add_patch(arrow)
 
-        label_x = (start[0] + end[0]) / 2
-        label_y = (start[1] + end[1]) / 2
+        if edge["probability"] >= label_probability_threshold:
+            label_x = (start[0] + end[0]) / 2
+            label_y = (start[1] + end[1]) / 2
 
-        plt.text(
-            label_x,
-            label_y,
-            f"{edge['probability']:.2f}",
-            fontsize=7,
-            ha="center",
-            va="center",
-        )
+            plt.text(
+                label_x,
+                label_y,
+                f"{edge['probability']:.2f}",
+                fontsize=7,
+                ha="center",
+                va="center",
+            )
 
-    plt.title("BATADAL Automata State Transition Graph")
+    plt.title(title)
     plt.axis("off")
     plt.tight_layout()
 
@@ -142,22 +141,34 @@ def plot_transition_graph(edges: list[dict], output_path: Path) -> None:
     plt.close()
 
 
-def main() -> None:
-    config = load_config("config.yaml")
+def create_graph_for_dataset(
+    dataset_name: str,
+    automata,
+    config: dict,
+    figure_path: Path,
+    csv_path: Path,
+) -> None:
+    automata_config = config["automata"]
 
-    automata = build_batadal_automata(config)
+    window_size = automata_config["fixed"]["window_size"]
+    alphabet_size = automata_config["fixed"]["alphabet_size"]
 
     edges = extract_top_transitions(
         automata=automata,
         top_n_edges=20,
+        min_probability=0.0,
     )
 
-    figure_path = Path("reports/figures/automata_transition_graph_batadal.png")
-    csv_path = Path("reports/tables/automata_top_transitions_batadal.csv")
+    title = (
+        f"{dataset_name} Original Automata State Transition Graph\n"
+        f"top-20 transitions, window_size={window_size}, alphabet_size={alphabet_size}"
+    )
 
     plot_transition_graph(
         edges=edges,
         output_path=figure_path,
+        title=title,
+        label_probability_threshold=0.70,
     )
 
     write_top_transitions_csv(
@@ -165,11 +176,39 @@ def main() -> None:
         output_path=csv_path,
     )
 
-    print("Automata transition graph created.")
-    print(f"State count: {automata.state_count()}")
-    print(f"Transition density: {automata.transition_density()}")
-    print(f"Figure path: {figure_path}")
-    print(f"Top transition table path: {csv_path}")
+
+def main() -> None:
+    config = load_config("config.yaml")
+
+    batadal_automata = build_batadal_automata(config)
+    skab_automata = build_skab_automata(config)
+
+    create_graph_for_dataset(
+        dataset_name="BATADAL",
+        automata=batadal_automata,
+        config=config,
+        figure_path=Path("reports/figures/automata_transition_graph_batadal.png"),
+        csv_path=Path("reports/tables/automata_top_transitions_batadal.csv"),
+    )
+
+    create_graph_for_dataset(
+        dataset_name="SKAB",
+        automata=skab_automata,
+        config=config,
+        figure_path=Path("reports/figures/automata_transition_graph_skab.png"),
+        csv_path=Path("reports/tables/automata_top_transitions_skab.csv"),
+    )
+
+    print("Automata transition graphs created.")
+    print(f"BATADAL state count: {batadal_automata.state_count()}")
+    print(f"BATADAL transition density: {batadal_automata.transition_density()}")
+    print(f"SKAB state count: {skab_automata.state_count()}")
+    print(f"SKAB transition density: {skab_automata.transition_density()}")
+    print("Created files:")
+    print("- reports/figures/automata_transition_graph_batadal.png")
+    print("- reports/figures/automata_transition_graph_skab.png")
+    print("- reports/tables/automata_top_transitions_batadal.csv")
+    print("- reports/tables/automata_top_transitions_skab.csv")
 
 
 if __name__ == "__main__":
