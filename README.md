@@ -38,4 +38,21 @@ data/raw/batadal/training_dataset_2/*.csv
 
 The target/label column must be checked from the actual CSV file and documented in the report.
 
+## How to Run Tests
+
+```bash
+python -m pytest
+
+## How to Run Smoke Tests
+
+```bash
+python -m src.experiments.run_skab_automata_smoke
+python -m src.experiments.run_batadal_automata_smoke
+
+## How to Run Automata Metrics
+
+```bash
+python -m src.experiments.run_skab_automata_metrics
+python -m src.experiments.run_batadal_automata_metrics
+
 

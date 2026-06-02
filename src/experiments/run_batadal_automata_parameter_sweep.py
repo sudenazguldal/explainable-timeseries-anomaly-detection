@@ -17,6 +17,7 @@ def flatten_batadal_parameter_result(report: dict) -> dict:
 
     return {
         "dataset": report["dataset"],
+        "scenario": report.get("scenario", "original"),
         "window_size": parameters["window_size"],
         "alphabet_size": parameters["alphabet_size"],
         "smoothing": parameters["smoothing"],
@@ -26,6 +27,7 @@ def flatten_batadal_parameter_result(report: dict) -> dict:
         "train_pattern_count": summary["train_pattern_count"],
         "test_pattern_count": summary["test_pattern_count"],
         "unseen_test_pattern_count": summary["unseen_test_pattern_count"],
+        "unseen_ratio": summary["unseen_ratio"],
         "train_anomaly_pattern_count": summary["train_anomaly_pattern_count"],
         "test_anomaly_pattern_count": summary["test_anomaly_pattern_count"],
         "accuracy": metrics["accuracy"],

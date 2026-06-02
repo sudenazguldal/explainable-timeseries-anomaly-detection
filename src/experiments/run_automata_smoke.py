@@ -44,6 +44,8 @@ def run_batadal_automata_smoke(config: dict) -> dict:
     batadal_config = config["datasets"]["batadal"]
     preprocessing_config = config["preprocessing"]
     automata_config = config["automata"]
+    anomaly_threshold = automata_config["anomaly_threshold"]
+   
 
     df = load_batadal_dataset(
         raw_path=batadal_config["raw_path"],
@@ -171,14 +173,14 @@ def run_batadal_automata_smoke(config: dict) -> dict:
         previous_state=previous_state,
         incoming_pattern=incoming_pattern,
         time_step=1,
-        anomaly_threshold=0.05,
+        anomaly_threshold=anomaly_threshold,
     )
 
     sample_path_explanation = explain_pattern_sequence(
         automata=automata,
         patterns=train_patterns[: min(5, len(train_patterns))],
         start_time_step=1,
-        anomaly_threshold=0.05,
+        anomaly_threshold=anomaly_threshold,
     )
 
     report = {
@@ -198,6 +200,7 @@ def run_batadal_automata_smoke(config: dict) -> dict:
             "window_size": window_size,
             "alphabet_size": alphabet_size,
             "smoothing": automata_config["smoothing"],
+            "anomaly_threshold": anomaly_threshold,
         },
         "automata_summary": {
             "state_count": automata.state_count(),

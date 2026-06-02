@@ -147,6 +147,7 @@ def run_single_skab_fold(
 
     window_size = automata_config["fixed"]["window_size"]
     alphabet_size = automata_config["fixed"]["alphabet_size"]
+    anomaly_threshold = automata_config["anomaly_threshold"]
     configured_paa_segments = automata_config.get("paa_segments", 256)
 
     train_paa_segments = min(configured_paa_segments, len(pca_train_df))
@@ -215,13 +216,22 @@ def run_single_skab_fold(
         automata=automata,
         test_patterns=test_patterns,
         test_pattern_labels=test_pattern_labels,
-        anomaly_threshold=0.05,
+        anomaly_threshold=anomaly_threshold,
     )
 
     unseen_test_patterns = [
         pattern for pattern in test_patterns
         if pattern not in automata.states
     ]
+
+    unseen_test_pattern_count = len(unseen_test_patterns)
+    test_pattern_count = len(test_patterns)
+
+    unseen_ratio = (
+        unseen_test_pattern_count / test_pattern_count
+        if test_pattern_count > 0
+        else 0.0
+)
 
     return {
         "fold_index": fold_index,
@@ -239,8 +249,9 @@ def run_single_skab_fold(
             "state_count": automata.state_count(),
             "transition_density": automata.transition_density(),
             "train_pattern_count": len(train_patterns),
-            "test_pattern_count": len(test_patterns),
-            "unseen_test_pattern_count": len(unseen_test_patterns),
+            "test_pattern_count": test_pattern_count,
+            "unseen_test_pattern_count": unseen_test_pattern_count,
+            "unseen_ratio": unseen_ratio,
             "train_anomaly_pattern_count": int(sum(train_pattern_labels)),
             "test_anomaly_pattern_count": int(sum(test_pattern_labels)),
         },
@@ -286,6 +297,7 @@ def run_skab_automata_metrics(config: dict) -> dict:
     skab_config = config["datasets"]["skab"]
     preprocessing_config = config["preprocessing"]
     automata_config = config["automata"]
+    anomaly_threshold = automata_config["anomaly_threshold"]
 
     df = load_skab_dataset(
         raw_path=skab_config["raw_path"],
@@ -331,6 +343,7 @@ def run_skab_automata_metrics(config: dict) -> dict:
 
     report = {
         "dataset": "SKAB",
+        "scenario": "original",
         "target_column": skab_config["target_column"],
         "normalized_target_column": "label",
         "group_column": skab_config["group_column"],
@@ -340,7 +353,7 @@ def run_skab_automata_metrics(config: dict) -> dict:
             "window_size": automata_config["fixed"]["window_size"],
             "alphabet_size": automata_config["fixed"]["alphabet_size"],
             "smoothing": automata_config["smoothing"],
-            "anomaly_threshold": 0.05,
+            "anomaly_threshold": anomaly_threshold,
         },
         "metric_summary": summarize_fold_metrics(fold_reports),
         "folds": fold_reports,

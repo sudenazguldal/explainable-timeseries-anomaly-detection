@@ -21,3 +21,12 @@ def test_deep_learning_models_are_lstm_and_cnn1d():
 
     assert "lstm" in config["deep_learning"]["models"]
     assert "cnn1d" in config["deep_learning"]["models"]
+    
+
+def test_automata_probability_parameters_are_numeric():
+    config = load_config("config.yaml")
+
+    assert isinstance(config["automata"]["smoothing"], float)
+    assert isinstance(config["automata"]["anomaly_threshold"], float)
+    assert config["automata"]["smoothing"] > 0
+    assert 0 < config["automata"]["anomaly_threshold"] < 1

@@ -31,6 +31,11 @@ def flatten_skab_parameter_result(report: dict) -> dict:
         for fold in report["folds"]
     ]
 
+    unseen_ratios = [
+        fold["automata_summary"]["unseen_ratio"]
+        for fold in report["folds"]
+    ]
+
     train_pattern_counts = [
         fold["automata_summary"]["train_pattern_count"]
         for fold in report["folds"]
@@ -43,6 +48,7 @@ def flatten_skab_parameter_result(report: dict) -> dict:
 
     return {
         "dataset": report["dataset"],
+        "scenario": report.get("scenario", "original"),
         "window_size": parameters["window_size"],
         "alphabet_size": parameters["alphabet_size"],
         "smoothing": parameters["smoothing"],
@@ -60,6 +66,7 @@ def flatten_skab_parameter_result(report: dict) -> dict:
         "state_count_mean": sum(state_counts) / len(state_counts),
         "transition_density_mean": sum(transition_densities) / len(transition_densities),
         "unseen_test_pattern_count_mean": sum(unseen_counts) / len(unseen_counts),
+        "unseen_ratio_mean": sum(unseen_ratios) / len(unseen_ratios),
         "train_pattern_count_mean": sum(train_pattern_counts) / len(train_pattern_counts),
         "test_pattern_count_mean": sum(test_pattern_counts) / len(test_pattern_counts),
     }

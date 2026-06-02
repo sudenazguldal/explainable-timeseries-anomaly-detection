@@ -114,6 +114,7 @@ def run_batadal_automata_metrics(config: dict) -> dict:
     batadal_config = config["datasets"]["batadal"]
     preprocessing_config = config["preprocessing"]
     automata_config = config["automata"]
+    anomaly_threshold = automata_config["anomaly_threshold"]
 
     df = load_batadal_dataset(
         raw_path=batadal_config["raw_path"],
@@ -247,7 +248,7 @@ def run_batadal_automata_metrics(config: dict) -> dict:
         automata=automata,
         test_patterns=test_patterns,
         test_pattern_labels=test_pattern_labels,
-        anomaly_threshold=0.05,
+        anomaly_threshold=anomaly_threshold,
     )
 
     unseen_test_patterns = [
@@ -255,8 +256,19 @@ def run_batadal_automata_metrics(config: dict) -> dict:
         if pattern not in automata.states
     ]
 
+
+    unseen_test_pattern_count = len(unseen_test_patterns)
+    test_pattern_count = len(test_patterns)
+
+    unseen_ratio = (
+        unseen_test_pattern_count / test_pattern_count
+        if test_pattern_count > 0
+        else 0.0
+)
+
     report = {
         "dataset": "BATADAL",
+        "scenario": "original",
         "target_column": target_column,
         "time_column": time_column,
         "feature_column_count": len(feature_columns),
@@ -272,14 +284,15 @@ def run_batadal_automata_metrics(config: dict) -> dict:
             "window_size": window_size,
             "alphabet_size": alphabet_size,
             "smoothing": automata_config["smoothing"],
-            "anomaly_threshold": 0.05,
+            "anomaly_threshold": anomaly_threshold,
         },
         "automata_summary": {
             "state_count": automata.state_count(),
             "transition_density": automata.transition_density(),
             "train_pattern_count": len(train_patterns),
-            "test_pattern_count": len(test_patterns),
-            "unseen_test_pattern_count": len(unseen_test_patterns),
+            "test_pattern_count": test_pattern_count,
+            "unseen_test_pattern_count": unseen_test_pattern_count,
+            "unseen_ratio": unseen_ratio,
             "train_anomaly_pattern_count": int(sum(train_pattern_labels)),
             "test_anomaly_pattern_count": int(sum(test_pattern_labels)),
         },

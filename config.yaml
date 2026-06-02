@@ -30,7 +30,8 @@ automata:
     window_size: [3, 4, 5, 6]
     alphabet_size: [3, 4, 5, 6]
   paa_segments: 256
-  smoothing: 1e-6
+  smoothing: 0.000001
+  anomaly_threshold: 0.05
 
 deep_learning:
   sequence_length: 32
