@@ -27,8 +27,7 @@ def series_to_symbol_sequence(
     """
     Converts a one-dimensional numeric series into a symbolic SAX sequence.
 
-    Pipeline:
-    numeric series -> PAA -> SAX
+    Pipeline: numeric series -> PAA -> SAX
     """
     paa_values = paa_transform(values, n_segments=n_segments)
     symbol_sequence = sax_transform(paa_values, alphabet_size=alphabet_size)
