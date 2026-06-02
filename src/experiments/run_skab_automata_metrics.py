@@ -221,7 +221,7 @@ def run_single_skab_fold(
 
     automata = ProbabilisticAutomata(
         window_size=window_size,
-        smoothing=automata_config["smoothing"],
+        fallback_probability=automata_config["fallback_probability"],
     )
 
     automata.fit(train_symbol_sequence)
@@ -366,7 +366,7 @@ def run_skab_automata_metrics(config: dict) -> dict:
         "automata_parameters": {
             "window_size": automata_config["fixed"]["window_size"],
             "alphabet_size": automata_config["fixed"]["alphabet_size"],
-            "smoothing": automata_config["smoothing"],
+            "fallback_probability": automata_config["fallback_probability"],
             "anomaly_threshold": anomaly_threshold,
         },
         "metric_summary": summarize_fold_metrics(fold_reports),

@@ -51,7 +51,7 @@ def flatten_skab_parameter_result(report: dict) -> dict:
         "scenario": report.get("scenario", "original"),
         "window_size": parameters["window_size"],
         "alphabet_size": parameters["alphabet_size"],
-        "smoothing": parameters["smoothing"],
+        "fallback_probability": parameters["fallback_probability"],
         "anomaly_threshold": parameters["anomaly_threshold"],
 
         "accuracy_mean": metric_summary["accuracy"]["mean"],

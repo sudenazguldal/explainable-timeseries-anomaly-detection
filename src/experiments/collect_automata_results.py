@@ -62,7 +62,10 @@ def flatten_single_dataset_report(report: dict) -> dict:
         "window_size": params["window_size"],
         "alphabet_size": params["alphabet_size"],
         "paa_segments": params.get("paa_segments"),
-        "smoothing": params["smoothing"],
+        "fallback_probability": params.get(
+        "fallback_probability",
+        params.get("smoothing"),
+    ),
         "anomaly_threshold": params["anomaly_threshold"],
 
         "accuracy": metrics["accuracy"],
@@ -145,7 +148,10 @@ def flatten_folded_dataset_report(report: dict) -> dict:
         "window_size": params["window_size"],
         "alphabet_size": params["alphabet_size"],
         "paa_segments": params.get("paa_segments"),
-        "smoothing": params["smoothing"],
+        "fallback_probability": params.get(
+            "fallback_probability",
+            params.get("smoothing"),
+        ),
         "anomaly_threshold": params["anomaly_threshold"],
 
         "accuracy": metric_summary["accuracy"]["mean"],

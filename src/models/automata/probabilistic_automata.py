@@ -90,22 +90,27 @@ class TransitionResult:
     edit_distance: int | None = None
 
 
+
 @dataclass
 class ProbabilisticAutomata:
     """
     Frequency-based probabilistic automata for symbolic time-series patterns.
+
+    fallback_probability is used only for unobserved transitions.
+    It is not Laplace smoothing and does not alter observed transition
+    probability normalization.
     """
     window_size: int
-    smoothing: float = 1e-6
+    fallback_probability: float = 0.000001
     states: set[str] = field(default_factory=set)
     transition_counts: dict[str, Counter] = field(default_factory=dict)
     transition_probabilities: dict[str, dict[str, float]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        self.smoothing = float(self.smoothing)
+        self.fallback_probability = float(self.fallback_probability)
 
-        if self.smoothing <= 0:
-            raise ValueError("Smoothing value must be positive.")
+        if self.fallback_probability <= 0:
+            raise ValueError("Fallback probability must be positive.")
 
     def fit(self, symbol_sequence: str) -> "ProbabilisticAutomata":
         patterns = extract_sliding_windows(
@@ -149,15 +154,17 @@ class ProbabilisticAutomata:
 
     def transition_probability(self, previous_state: str, next_state: str) -> float:
         """
-        Returns transition probability. If the transition was not observed,
-        returns smoothing probability.
+        Returns transition probability.
+
+        If the transition was not observed during training, returns a small
+        fallback probability for unobserved transitions.
         """
         probability = self.transition_probabilities.get(
             previous_state,
             {},
         ).get(
             next_state,
-            self.smoothing,
+            self.fallback_probability,
         )
 
         return float(probability)

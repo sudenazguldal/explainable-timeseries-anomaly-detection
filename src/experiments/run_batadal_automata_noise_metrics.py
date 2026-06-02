@@ -244,8 +244,7 @@ def run_batadal_automata_noise_metrics(config: dict) -> dict:
 
     automata = ProbabilisticAutomata(
         window_size=window_size,
-        smoothing=automata_config["smoothing"],
-    )
+        fallback_probability=automata_config["fallback_probability"],    )
 
     automata.fit(train_symbol_sequence)
 
@@ -288,7 +287,7 @@ def run_batadal_automata_noise_metrics(config: dict) -> dict:
             "window_size": window_size,
             "alphabet_size": alphabet_size,
             "paa_segments": configured_paa_segments,
-            "smoothing": automata_config["smoothing"],
+            "fallback_probability": automata_config["fallback_probability"],
             "anomaly_threshold": anomaly_threshold,
         },
         "automata_summary": {

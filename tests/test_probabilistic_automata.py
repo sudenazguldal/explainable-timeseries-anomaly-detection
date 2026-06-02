@@ -104,10 +104,10 @@ def test_path_probability_multiplies_transition_probabilities():
 
     assert probability == 1.0
 
-def test_transition_probability_casts_string_smoothing_to_float():
+def test_transition_probability_casts_string_fallback_probability_to_float():
     automata = ProbabilisticAutomata(
         window_size=3,
-        smoothing="1e-6",
+        fallback_probability="1e-6",
     )
     automata.fit("aaabbc")
 
