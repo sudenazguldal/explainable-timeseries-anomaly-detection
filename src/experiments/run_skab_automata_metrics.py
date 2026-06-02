@@ -47,6 +47,8 @@ def evaluate_automata_on_patterns(
     y_pred = []
     probabilities = []
     explanations = []
+    path_probability_so_far = 1.0
+
 
     for index, incoming_pattern in enumerate(test_patterns[1:], start=1):
         transition_result = automata.evaluate_transition(
@@ -59,6 +61,14 @@ def evaluate_automata_on_patterns(
             anomaly_threshold=anomaly_threshold,
         )
 
+        path_probability_so_far *= float(transition_result.probability)
+
+        decision = "anomaly" if prediction == 1 else "normal"
+        decision_reason = (
+            "low_probability_path"
+            if prediction == 1
+            else "high_probability_path"
+        )
         y_true.append(int(test_pattern_labels[index]))
         y_pred.append(prediction)
         probabilities.append(float(transition_result.probability))
@@ -70,7 +80,11 @@ def evaluate_automata_on_patterns(
             "status": transition_result.status,
             "mapped_to": transition_result.resolved_state,
             "probability": float(transition_result.probability),
+            "path_probability_so_far": path_probability_so_far,
             "prediction": prediction,
+            "decision": decision,
+            "confidence": path_probability_so_far,
+            "decision_reason": decision_reason,
             "true_label": int(test_pattern_labels[index]),
             "edit_distance": transition_result.edit_distance,
         })

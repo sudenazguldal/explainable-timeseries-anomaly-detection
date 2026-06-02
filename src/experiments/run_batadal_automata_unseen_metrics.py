@@ -59,6 +59,7 @@ def evaluate_unseen_patterns_only(
     probabilities = []
     edit_distances = []
     explanations = []
+    path_probability_so_far = 1.0
 
     total_transition_count = 0
     unseen_transition_count = 0
@@ -72,6 +73,7 @@ def evaluate_unseen_patterns_only(
             previous_state=current_state,
             incoming_pattern=incoming_pattern,
         )
+        path_probability_so_far *= float(transition_result.probability)
 
         if is_unseen:
             unseen_transition_count += 1
@@ -88,6 +90,13 @@ def evaluate_unseen_patterns_only(
             if transition_result.edit_distance is not None:
                 edit_distances.append(int(transition_result.edit_distance))
 
+            decision = "anomaly" if prediction == 1 else "normal"
+            decision_reason = (
+                "low_probability_path"
+                if prediction == 1
+                else "high_probability_path"
+            )
+
             explanations.append({
                 "time_step": index,
                 "previous_state": transition_result.previous_state,
@@ -98,6 +107,11 @@ def evaluate_unseen_patterns_only(
                 "prediction": prediction,
                 "true_label": int(test_pattern_labels[index]),
                 "edit_distance": transition_result.edit_distance,
+                "path_probability_so_far": path_probability_so_far,
+                "decision": decision,
+                "confidence": path_probability_so_far,
+                "decision_reason": decision_reason,
+
             })
 
         current_state = transition_result.resolved_state
