@@ -29,7 +29,7 @@ automata:
   parameter_grid:
     window_size: [3, 4, 5, 6]
     alphabet_size: [3, 4, 5, 6]
-  paa_segments: 8
+  paa_segments: 256
   smoothing: 1e-6
 
 deep_learning:
