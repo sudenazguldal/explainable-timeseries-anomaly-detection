@@ -85,9 +85,139 @@ def parse_experiment_config(config_path: str | Path = "config.yaml") -> Experime
     )
 
 
+def load_experiment_datasets(
+    run_config: ExperimentRunConfig,
+) -> dict[str, tuple[DatasetRunConfig, list[tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]]]:
+    """
+    Loads configured datasets and creates train, validation, and test splits.
+    """
+    project_config = run_config.project_config
+
+    return {
+        "skab": _load_skab_splits(project_config),
+        "batadal": _load_batadal_splits(project_config),
+    }
+
+
+def _load_skab_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunConfig, list[tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]]:
+    datasets_section = _get_config_section(project_config, "datasets")
+    skab_section = _get_nested_config_section(datasets_section, "skab")
+    random_seeds = _get_random_seeds(project_config)
+    target_column = str(skab_section["target_column"])
+    group_column = str(skab_section["group_column"])
+    dataframe = load_skab_dataset(
+        raw_path=str(skab_section["raw_path"]),
+        use_groups=[str(group) for group in skab_section["use_groups"]],
+    )
+    feature_columns = get_skab_feature_columns(
+        df=dataframe,
+        target_column=target_column,
+        excluded_columns=[str(column) for column in skab_section["excluded_columns"]],
+    )
+    folds = create_skab_group_folds(
+        df=dataframe,
+        target_column=target_column,
+        group_column=group_column,
+        n_splits=len(random_seeds),
+        stratified=True,
+        random_seed=random_seeds[0],
+    )
+    validation_ratio = _get_default_validation_ratio(project_config)
+    split_frames = [
+        _split_skab_fold(dataframe, train_indices, test_indices, validation_ratio=validation_ratio)
+        for train_indices, test_indices in folds
+    ]
+
+    return (
+        DatasetRunConfig(
+            name="skab",
+            target_column=target_column,
+            feature_columns=feature_columns,
+            group_column=group_column,
+        ),
+        split_frames,
+    )
+
+
+def _load_batadal_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunConfig, list[tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]]:
+    datasets_section = _get_config_section(project_config, "datasets")
+    batadal_section = _get_nested_config_section(datasets_section, "batadal")
+    dataframe = load_batadal_dataset(raw_path=str(batadal_section["raw_path"]))
+    target_column = detect_batadal_target_column(
+        df=dataframe,
+        target_column_candidates=[str(column) for column in batadal_section["target_column_candidates"]],
+    )
+    time_column = detect_batadal_time_column(
+        df=dataframe,
+        time_column_candidates=[str(column) for column in batadal_section["time_column_candidates"]],
+    )
+    feature_columns = get_batadal_feature_columns(
+        df=dataframe,
+        target_column=target_column,
+        time_column=time_column,
+    )
+    split_section = _get_nested_config_section(batadal_section, "split")
+    split_frames = [
+        split_batadal_time_ordered(
+            df=dataframe,
+            train_ratio=float(split_section["train"]),
+            validation_ratio=float(split_section["validation"]),
+            test_ratio=float(split_section["test"]),
+            time_column=time_column,
+        )
+    ]
+
+    return (
+        DatasetRunConfig(
+            name="batadal",
+            target_column=target_column,
+            feature_columns=feature_columns,
+            time_column=time_column,
+        ),
+        split_frames,
+    )
+
+
+def _split_skab_fold(
+    dataframe: pd.DataFrame,
+    train_indices: list[int],
+    test_indices: list[int],
+    validation_ratio: float = 0.2,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    train_validation_df = dataframe.iloc[train_indices].copy().reset_index(drop=True)
+    test_df = dataframe.iloc[test_indices].copy().reset_index(drop=True)
+    validation_start = int(len(train_validation_df) * (1.0 - validation_ratio))
+    train_df = train_validation_df.iloc[:validation_start].copy().reset_index(drop=True)
+    validation_df = train_validation_df.iloc[validation_start:].copy().reset_index(drop=True)
+
+    return train_df, validation_df, test_df
+
+
 def _get_config_section(config: Mapping[str, object], section_name: str) -> Mapping[str, object]:
     section = config.get(section_name)
     if not isinstance(section, Mapping):
         raise ValueError(f"Missing or invalid configuration section: {section_name}")
 
     return section
+
+
+def _get_nested_config_section(config: Mapping[str, object], section_name: str) -> Mapping[str, object]:
+    section = config.get(section_name)
+    if not isinstance(section, Mapping):
+        raise ValueError(f"Missing or invalid nested configuration section: {section_name}")
+
+    return section
+
+
+def _get_random_seeds(project_config: Mapping[str, object]) -> list[int]:
+    project_section = _get_config_section(project_config, "project")
+
+    return [int(seed) for seed in project_section["random_seeds"]]
+
+
+def _get_default_validation_ratio(project_config: Mapping[str, object]) -> float:
+    datasets_section = _get_config_section(project_config, "datasets")
+    batadal_section = _get_nested_config_section(datasets_section, "batadal")
+    split_section = _get_nested_config_section(batadal_section, "split")
+
+    return float(split_section["validation"])
