@@ -8,3 +8,5 @@ pyyaml
 pytest
 tensorflow
 networkx
+torch
+statsmodels
