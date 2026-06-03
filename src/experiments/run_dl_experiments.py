@@ -64,6 +64,31 @@ class ExperimentRunConfig:
     figures_dir: Path
 
 
+@dataclass(frozen=True)
+class PreparedDatasetSplit:
+    """
+    Windowed train, validation, and test datasets for one split.
+    """
+
+    split_name: str
+    lstm_train_dataset: TimeSeriesWindowDataset
+    lstm_validation_dataset: TimeSeriesWindowDataset
+    lstm_test_dataset: TimeSeriesWindowDataset
+    cnn_train_dataset: TimeSeriesWindowDataset
+    cnn_validation_dataset: TimeSeriesWindowDataset
+    cnn_test_dataset: TimeSeriesWindowDataset
+
+
+@dataclass(frozen=True)
+class PreparedExperimentDataset:
+    """
+    Windowed datasets and metadata for one source dataset.
+    """
+
+    dataset_config: DatasetRunConfig
+    splits: list[PreparedDatasetSplit]
+
+
 def parse_experiment_config(config_path: str | Path = "config.yaml") -> ExperimentRunConfig:
     """
     Loads and validates configuration values needed by the deep learning runner.
@@ -97,6 +122,89 @@ def load_experiment_datasets(
         "skab": _load_skab_splits(project_config),
         "batadal": _load_batadal_splits(project_config),
     }
+
+
+def prepare_sequence_datasets(
+    run_config: ExperimentRunConfig,
+    loaded_datasets: dict[str, tuple[DatasetRunConfig, list[tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]]],
+) -> dict[str, PreparedExperimentDataset]:
+    """
+    Applies train-only normalization and converts split dataframes into sequence datasets.
+    """
+    prepared_datasets: dict[str, PreparedExperimentDataset] = {}
+
+    for dataset_name, (dataset_config, split_frames) in loaded_datasets.items():
+        prepared_splits = [
+            _prepare_sequence_split(
+                run_config=run_config,
+                dataset_config=dataset_config,
+                split_name=f"split_{split_index}",
+                train_df=train_df,
+                validation_df=validation_df,
+                test_df=test_df,
+            )
+            for split_index, (train_df, validation_df, test_df) in enumerate(split_frames, start=1)
+        ]
+        prepared_datasets[dataset_name] = PreparedExperimentDataset(
+            dataset_config=dataset_config,
+            splits=prepared_splits,
+        )
+
+    return prepared_datasets
+
+
+def _prepare_sequence_split(
+    run_config: ExperimentRunConfig,
+    dataset_config: DatasetRunConfig,
+    split_name: str,
+    train_df: pd.DataFrame,
+    validation_df: pd.DataFrame,
+    test_df: pd.DataFrame,
+) -> PreparedDatasetSplit:
+    scaled_train_df, scaler = fit_transform_train(
+        train_df=train_df,
+        feature_columns=dataset_config.feature_columns,
+        method=run_config.normalization_method,
+    )
+    scaled_validation_df = transform_with_fitted_scaler(
+        df=validation_df,
+        feature_columns=dataset_config.feature_columns,
+        scaler=scaler,
+    )
+    scaled_test_df = transform_with_fitted_scaler(
+        df=test_df,
+        feature_columns=dataset_config.feature_columns,
+        scaler=scaler,
+    )
+
+    return PreparedDatasetSplit(
+        split_name=split_name,
+        lstm_train_dataset=_build_window_dataset_for_model(run_config, dataset_config, scaled_train_df, channels_first=False),
+        lstm_validation_dataset=_build_window_dataset_for_model(run_config, dataset_config, scaled_validation_df, channels_first=False),
+        lstm_test_dataset=_build_window_dataset_for_model(run_config, dataset_config, scaled_test_df, channels_first=False),
+        cnn_train_dataset=_build_window_dataset_for_model(run_config, dataset_config, scaled_train_df, channels_first=True),
+        cnn_validation_dataset=_build_window_dataset_for_model(run_config, dataset_config, scaled_validation_df, channels_first=True),
+        cnn_test_dataset=_build_window_dataset_for_model(run_config, dataset_config, scaled_test_df, channels_first=True),
+    )
+
+
+def _build_window_dataset_for_model(
+    run_config: ExperimentRunConfig,
+    dataset_config: DatasetRunConfig,
+    dataframe: pd.DataFrame,
+    channels_first: bool,
+) -> TimeSeriesWindowDataset:
+    windows, targets = build_sequence_windows(
+        data=dataframe,
+        sequence_length=run_config.sequence_length,
+        feature_columns=dataset_config.feature_columns,
+        target_column=dataset_config.target_column,
+        channels_first=channels_first,
+    )
+    if targets is None:
+        raise ValueError("Deep learning experiments require target labels.")
+
+    return TimeSeriesWindowDataset(windows, targets)
 
 
 def _load_skab_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunConfig, list[tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]]:
