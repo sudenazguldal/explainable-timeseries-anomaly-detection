@@ -4,6 +4,14 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
+CHERRY_RED = "#73070E"
+DILL_GREEN = "#4E6813"
+
+DATASET_COLORS = {
+    "BATADAL": CHERRY_RED,
+    "SKAB": DILL_GREEN,
+}
+
 def ensure_output_dir(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -44,7 +52,11 @@ def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> N
 
     pivot_df = pivot_df.reindex(scenario_order)
 
-    ax = pivot_df.plot(kind="bar", figsize=(10, 6))
+    ax = pivot_df.plot(
+        kind="bar",
+        figsize=(10, 6),
+        color=[DATASET_COLORS["BATADAL"], DATASET_COLORS["SKAB"]],
+    )
     ax.set_title("Automata F1-Score by Evaluation Scope")
     ax.set_xlabel("Scenario")
     ax.set_ylabel("F1-score")
@@ -97,7 +109,11 @@ def plot_scenario_unseen_ratio_comparison(summary_df: pd.DataFrame, output_dir: 
 
     pivot_df = pivot_df.reindex(scenario_order)
 
-    ax = pivot_df.plot(kind="bar", figsize=(10, 6))
+    ax = pivot_df.plot(
+        kind="bar",
+        figsize=(10, 6),
+        color=[DATASET_COLORS["BATADAL"], DATASET_COLORS["SKAB"]],
+    )
     ax.set_title("Observed Unseen Pattern Ratio by Evaluation Scope")
     ax.set_xlabel("Scenario")
     ax.set_ylabel("Observed unseen pattern ratio")
@@ -171,6 +187,7 @@ def plot_multiseed_metric_errorbars(
             yerr=stds,
             capsize=5,
             label=dataset,
+            color=DATASET_COLORS[dataset],
         )
 
     plt.xticks(

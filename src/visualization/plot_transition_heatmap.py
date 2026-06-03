@@ -2,6 +2,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.colors import LinearSegmentedColormap
+
 
 from src.config.load_config import load_config
 from src.data.batadal_loader import (
@@ -19,6 +21,21 @@ from src.preprocessing.pca import fit_transform_train_pca
 from src.models.automata.paa import paa_transform
 from src.models.automata.sax import sax_transform
 from src.models.automata.probabilistic_automata import ProbabilisticAutomata
+
+CHERRY_RED = "#73070E"
+DILL_GREEN = "#4E6813"
+
+
+def get_dataset_cmap(dataset_name: str):
+    if dataset_name == "BATADAL":
+        return LinearSegmentedColormap.from_list(
+            "batadal_transition_cmap",
+            ["#f8eeee", CHERRY_RED],
+        )
+    return LinearSegmentedColormap.from_list(
+        "skab_transition_cmap",
+        ["#eef4e6", DILL_GREEN],
+    )
 
 
 def series_to_symbol_sequence(values, n_segments: int, alphabet_size: int) -> str:
@@ -218,7 +235,10 @@ def plot_heatmap(
     matrix: pd.DataFrame,
     output_path: Path,
     title: str,
+    cmap,
 ) -> None:
+    
+    image = plt.imshow(matrix.values, aspect="auto", cmap=cmap)
     plt.figure(figsize=(12, 10))
 
     image = plt.imshow(matrix.values, aspect="auto")
@@ -252,6 +272,8 @@ def create_heatmap_for_dataset(
     config: dict,
     output_path: Path,
 ) -> None:
+    
+    
     automata_config = config["automata"]
 
     window_size = automata_config["fixed"]["window_size"]
@@ -271,6 +293,7 @@ def create_heatmap_for_dataset(
         matrix=matrix,
         output_path=output_path,
         title=title,
+        cmap=get_dataset_cmap(dataset_name),
     )
 
 

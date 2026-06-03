@@ -12,9 +12,20 @@ from src.visualization.plot_transition_heatmap import (
 )
 
 
+CHERRY_RED = "#73070E"
+DILL_GREEN = "#4E6813"
+
+# Transition graph için biraz daha açık tonlar.
+# Bar chart ve heatmap renklerini bozmadan sadece graph okunabilirliğini artırır.
+GRAPH_COLORS = {
+    "BATADAL": "#8E1B23",
+    "SKAB": "#6B8428",
+}
+
+
 def extract_top_transitions(
     automata,
-    top_n_edges: int = 20,
+    top_n_edges: int = 15,
     min_probability: float = 0.0,
 ) -> list[dict]:
     edges = []
@@ -73,6 +84,7 @@ def plot_transition_graph(
     edges: list[dict],
     output_path: Path,
     title: str,
+    graph_color: str,
     label_probability_threshold: float = 0.70,
 ) -> None:
     states = sorted(
@@ -85,8 +97,18 @@ def plot_transition_graph(
     plt.figure(figsize=(12, 10))
     ax = plt.gca()
 
+    # Nodes
     for state, (x, y) in positions.items():
-        plt.scatter(x, y, s=900)
+        plt.scatter(
+            x,
+            y,
+            s=900,
+            color=graph_color,
+            edgecolors="black",
+            linewidths=1.2,
+            zorder=3,
+        )
+
         plt.text(
             x,
             y,
@@ -94,10 +116,14 @@ def plot_transition_graph(
             ha="center",
             va="center",
             fontsize=8,
+            color="white",
+            fontweight="bold",
+            zorder=4,
         )
 
     max_count = max(edge["count"] for edge in edges) if edges else 1
 
+    # Edges
     for edge in edges:
         start = positions[edge["current_state"]]
         end = positions[edge["next_state"]]
@@ -116,7 +142,11 @@ def plot_transition_graph(
             shrinkA=25,
             shrinkB=25,
             connectionstyle="arc3,rad=0.12",
+            color=graph_color,
+            alpha=0.85,
+            zorder=2,
         )
+
         ax.add_patch(arrow)
 
         if edge["probability"] >= label_probability_threshold:
@@ -130,6 +160,14 @@ def plot_transition_graph(
                 fontsize=7,
                 ha="center",
                 va="center",
+                color="black",
+                bbox=dict(
+                    facecolor="white",
+                    alpha=0.70,
+                    edgecolor="none",
+                    pad=1,
+                ),
+                zorder=5,
             )
 
     plt.title(title)
@@ -155,19 +193,20 @@ def create_graph_for_dataset(
 
     edges = extract_top_transitions(
         automata=automata,
-        top_n_edges=20,
+        top_n_edges=15,
         min_probability=0.0,
     )
 
     title = (
         f"{dataset_name} Original Automata State Transition Graph\n"
-        f"top-20 transitions, window_size={window_size}, alphabet_size={alphabet_size}"
+        f"top-15 transitions, window_size={window_size}, alphabet_size={alphabet_size}"
     )
 
     plot_transition_graph(
         edges=edges,
         output_path=figure_path,
         title=title,
+        graph_color=GRAPH_COLORS[dataset_name],
         label_probability_threshold=0.70,
     )
 

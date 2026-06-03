@@ -2,7 +2,23 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib.colors import LinearSegmentedColormap
 
+CHERRY_RED = "#73070E"
+DILL_GREEN = "#4E6813"
+
+
+
+def get_dataset_cmap(dataset_name: str):
+    if dataset_name == "BATADAL":
+        return LinearSegmentedColormap.from_list(
+            "batadal_cmap",
+            ["#f8eeee", CHERRY_RED],
+        )
+    return LinearSegmentedColormap.from_list(
+        "skab_cmap",
+        ["#eef4e6", DILL_GREEN],
+    )
 
 def ensure_output_dir(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -80,6 +96,7 @@ def plot_heatmap(
     colorbar_label: str,
     output_path: Path,
     value_format: str,
+    cmap,
 ) -> None:
     """
     Plots a parameter sweep heatmap.
@@ -90,7 +107,7 @@ def plot_heatmap(
     """
     plt.figure(figsize=(8, 6))
 
-    image = plt.imshow(matrix.values, aspect="auto")
+    image = plt.imshow(matrix.values, aspect="auto", cmap=cmap)
     plt.colorbar(image, label=colorbar_label)
 
     plt.xticks(
@@ -134,6 +151,8 @@ def plot_dataset_parameter_heatmaps(
     """
     normalized_df = normalize_parameter_sweep_columns(df)
 
+    cmap = get_dataset_cmap(dataset_name)
+
     dataset_slug = dataset_name.lower()
 
     f1_matrix = create_heatmap_matrix(
@@ -157,6 +176,7 @@ def plot_dataset_parameter_heatmaps(
         colorbar_label="F1-score",
         output_path=output_dir / f"automata_parameter_f1_heatmap_{dataset_slug}.png",
         value_format=".3f",
+        cmap=cmap,
     )
 
     plot_heatmap(
@@ -165,6 +185,7 @@ def plot_dataset_parameter_heatmaps(
         colorbar_label="State count",
         output_path=output_dir / f"automata_parameter_state_count_heatmap_{dataset_slug}.png",
         value_format=".0f",
+        cmap=cmap,
     )
 
     plot_heatmap(
@@ -173,6 +194,7 @@ def plot_dataset_parameter_heatmaps(
         colorbar_label="Transition density",
         output_path=output_dir / f"automata_parameter_transition_density_heatmap_{dataset_slug}.png",
         value_format=".4f",
+        cmap=cmap,
     )
 
 

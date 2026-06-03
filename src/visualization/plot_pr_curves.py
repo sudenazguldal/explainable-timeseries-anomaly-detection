@@ -13,6 +13,15 @@ from src.experiments.run_batadal_automata_metrics import run_batadal_automata_me
 from src.experiments.run_skab_automata_metrics import run_skab_automata_metrics
 
 
+
+CHERRY_RED = "#73070E"
+DILL_GREEN = "#4E6813"
+
+DATASET_COLORS = {
+    "BATADAL": CHERRY_RED,
+    "SKAB": DILL_GREEN,
+}
+
 def ensure_output_dir(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -91,6 +100,7 @@ def plot_precision_recall_curve(
     anomaly_threshold: float,
     title: str,
     output_path: Path,
+    curve_color: str,
 ) -> None:
     precision, recall, _ = precision_recall_curve(
         y_true,
@@ -116,6 +126,7 @@ def plot_precision_recall_curve(
         recall,
         precision,
         where="post",
+        color=curve_color,
         label=f"PR curve, AP={average_precision:.3f}",
     )
 
@@ -123,6 +134,7 @@ def plot_precision_recall_curve(
         y=positive_rate,
         linestyle="--",
         linewidth=1,
+        color="gray",
         label=f"No-skill baseline={positive_rate:.3f}",
     )
 
@@ -130,6 +142,8 @@ def plot_precision_recall_curve(
         threshold_recall,
         threshold_precision,
         s=70,
+        color=curve_color,
+        edgecolors="black",
         label=f"Selected threshold={anomaly_threshold:.6f}",
         zorder=3,
     )
@@ -172,6 +186,7 @@ def main() -> None:
         anomaly_threshold=batadal_threshold,
         title="BATADAL Original Automata Precision-Recall Curve",
         output_path=output_dir / "pr_curve_batadal_original.png",
+        curve_color=DATASET_COLORS["BATADAL"],
     )
 
     plot_precision_recall_curve(
@@ -181,6 +196,7 @@ def main() -> None:
         anomaly_threshold=skab_threshold,
         title="SKAB Original Automata Precision-Recall Curve",
         output_path=output_dir / "pr_curve_skab_original.png",
+        curve_color=DATASET_COLORS["SKAB"],
     )
 
     print("Precision-Recall curves created.")

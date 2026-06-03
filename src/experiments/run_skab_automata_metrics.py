@@ -376,8 +376,9 @@ def run_skab_automata_metrics(config: dict) -> dict:
         "automata_parameters": {
             "window_size": automata_config["fixed"]["window_size"],
             "alphabet_size": automata_config["fixed"]["alphabet_size"],
+            "paa_segments": automata_config.get("paa_segments", 256),
             "fallback_probability": automata_config["fallback_probability"],
-            "anomaly_threshold": anomaly_threshold,
+            "anomaly_threshold": automata_config["anomaly_threshold"],
         },
         "metric_summary": summarize_fold_metrics(fold_reports),
         "folds": fold_reports,
