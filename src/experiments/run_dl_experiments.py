@@ -740,3 +740,33 @@ def _get_default_validation_ratio(project_config: Mapping[str, object]) -> float
     split_section = _get_nested_config_section(batadal_section, "split")
 
     return float(split_section["validation"])
+
+
+def run_dl_experiments(config_path: str | Path = "config.yaml") -> dict[str, Path]:
+    """
+    Runs the complete deep learning baseline experiment pipeline.
+    """
+    run_config = parse_experiment_config(config_path)
+    loaded_datasets = load_experiment_datasets(run_config)
+    prepared_datasets = prepare_sequence_datasets(run_config, loaded_datasets)
+    model_runs = build_model_run_contexts(run_config, prepared_datasets)
+    training_results = run_cross_seed_training(run_config, model_runs)
+    evaluation_records = evaluate_trained_models(run_config, training_results)
+    plot_records = generate_evaluation_plots(run_config, evaluation_records)
+    artifact_paths = export_result_artifacts(
+        run_config=run_config,
+        training_results=training_results,
+        evaluation_records=evaluation_records,
+        plot_records=plot_records,
+    )
+    LOGGER.info("Deep learning experiments completed | artifacts=%s", artifact_paths)
+
+    return artifact_paths
+
+
+if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    )
+    run_dl_experiments()
