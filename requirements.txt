@@ -9,3 +9,4 @@ pytest
 tensorflow
 networkx
 torch
+statsmodels
