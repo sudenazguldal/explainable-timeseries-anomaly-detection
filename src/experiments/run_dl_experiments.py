@@ -36,6 +36,10 @@ from src.preprocessing.sequence_builder import TimeSeriesWindowDataset, build_se
 
 LOGGER = logging.getLogger(__name__)
 
+BATADAL_NORMAL_LABEL = -999
+NORMAL_LABEL = 0
+ANOMALY_LABEL = 1
+
 
 @dataclass(frozen=True)
 class DatasetRunConfig:
@@ -628,6 +632,7 @@ def _load_skab_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunC
         raw_path=str(skab_section["raw_path"]),
         use_groups=[str(group) for group in skab_section["use_groups"]],
     )
+    dataframe = normalize_deep_learning_labels(dataframe, target_column)
     feature_columns = get_skab_feature_columns(
         df=dataframe,
         target_column=target_column,
@@ -666,6 +671,7 @@ def _load_batadal_splits(project_config: Mapping[str, object]) -> tuple[DatasetR
         df=dataframe,
         target_column_candidates=[str(column) for column in batadal_section["target_column_candidates"]],
     )
+    dataframe = normalize_deep_learning_labels(dataframe, target_column)
     time_column = detect_batadal_time_column(
         df=dataframe,
         time_column_candidates=[str(column) for column in batadal_section["time_column_candidates"]],
@@ -710,6 +716,30 @@ def _split_skab_fold(
     validation_df = train_validation_df.iloc[validation_start:].copy().reset_index(drop=True)
 
     return train_df, validation_df, test_df
+
+
+def normalize_deep_learning_labels(dataframe: pd.DataFrame, target_column: str) -> pd.DataFrame:
+    """
+    Converts dataset-specific target labels to binary labels for deep learning.
+    """
+    if target_column not in dataframe.columns:
+        raise ValueError(f"Target column not found: {target_column}")
+
+    normalized_dataframe = dataframe.copy()
+    normalized_dataframe[target_column] = normalized_dataframe[target_column].map(_normalize_label_value)
+
+    return normalized_dataframe
+
+
+def _normalize_label_value(value: object) -> int:
+    label_value = int(value)
+
+    if label_value in {NORMAL_LABEL, BATADAL_NORMAL_LABEL}:
+        return NORMAL_LABEL
+    if label_value == ANOMALY_LABEL:
+        return ANOMALY_LABEL
+
+    raise ValueError(f"Unsupported deep learning label value: {value}")
 
 
 def _get_config_section(config: Mapping[str, object], section_name: str) -> Mapping[str, object]:
