@@ -39,6 +39,7 @@ LOGGER = logging.getLogger(__name__)
 BATADAL_NORMAL_LABEL = -999
 NORMAL_LABEL = 0
 ANOMALY_LABEL = 1
+DL_BINARY_TARGET_COLUMN = "dl_binary_target"
 
 
 @dataclass(frozen=True)
@@ -49,6 +50,7 @@ class DatasetRunConfig:
 
     name: str
     target_column: str
+    binary_target_column: str
     feature_columns: list[str]
     group_column: str | None = None
     time_column: str | None = None
@@ -613,7 +615,7 @@ def _build_window_dataset_for_model(
         data=dataframe,
         sequence_length=run_config.sequence_length,
         feature_columns=dataset_config.feature_columns,
-        target_column=dataset_config.target_column,
+        target_column=dataset_config.binary_target_column,
         channels_first=channels_first,
     )
     if targets is None:
@@ -632,12 +634,12 @@ def _load_skab_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunC
         raw_path=str(skab_section["raw_path"]),
         use_groups=[str(group) for group in skab_section["use_groups"]],
     )
-    dataframe = normalize_deep_learning_labels(dataframe, target_column)
     feature_columns = get_skab_feature_columns(
         df=dataframe,
         target_column=target_column,
         excluded_columns=[str(column) for column in skab_section["excluded_columns"]],
     )
+    dataframe = normalize_deep_learning_labels(dataframe, target_column)
     folds = create_skab_group_folds(
         df=dataframe,
         target_column=target_column,
@@ -656,6 +658,7 @@ def _load_skab_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunC
         DatasetRunConfig(
             name="skab",
             target_column=target_column,
+            binary_target_column=DL_BINARY_TARGET_COLUMN,
             feature_columns=feature_columns,
             group_column=group_column,
         ),
@@ -671,7 +674,6 @@ def _load_batadal_splits(project_config: Mapping[str, object]) -> tuple[DatasetR
         df=dataframe,
         target_column_candidates=[str(column) for column in batadal_section["target_column_candidates"]],
     )
-    dataframe = normalize_deep_learning_labels(dataframe, target_column)
     time_column = detect_batadal_time_column(
         df=dataframe,
         time_column_candidates=[str(column) for column in batadal_section["time_column_candidates"]],
@@ -681,6 +683,7 @@ def _load_batadal_splits(project_config: Mapping[str, object]) -> tuple[DatasetR
         target_column=target_column,
         time_column=time_column,
     )
+    dataframe = normalize_deep_learning_labels(dataframe, target_column)
     split_section = _get_nested_config_section(batadal_section, "split")
     split_frames = [
         split_batadal_time_ordered(
@@ -696,6 +699,7 @@ def _load_batadal_splits(project_config: Mapping[str, object]) -> tuple[DatasetR
         DatasetRunConfig(
             name="batadal",
             target_column=target_column,
+            binary_target_column=DL_BINARY_TARGET_COLUMN,
             feature_columns=feature_columns,
             time_column=time_column,
         ),
@@ -720,13 +724,13 @@ def _split_skab_fold(
 
 def normalize_deep_learning_labels(dataframe: pd.DataFrame, target_column: str) -> pd.DataFrame:
     """
-    Converts dataset-specific target labels to binary labels for deep learning.
+    Adds an explicit binary target column for deep learning.
     """
     if target_column not in dataframe.columns:
         raise ValueError(f"Target column not found: {target_column}")
 
     normalized_dataframe = dataframe.copy()
-    normalized_dataframe[target_column] = normalized_dataframe[target_column].map(_normalize_label_value)
+    normalized_dataframe[DL_BINARY_TARGET_COLUMN] = normalized_dataframe[target_column].map(_normalize_label_value)
 
     return normalized_dataframe
 
