@@ -352,6 +352,56 @@ def generate_evaluation_plots(
     return plot_records
 
 
+def export_result_artifacts(
+    run_config: ExperimentRunConfig,
+    training_results: list[TrainingRunResult],
+    evaluation_records: list[EvaluationRecord],
+    plot_records: list[PlotArtifactRecord],
+) -> dict[str, Path]:
+    """
+    Saves structured JSON reports for training, evaluation, and plot artifacts.
+    """
+    run_config.results_dir.mkdir(parents=True, exist_ok=True)
+    artifact_paths = {
+        "training_summary": run_config.results_dir / "dl_training_summary.json",
+        "evaluation_metrics": run_config.results_dir / "dl_evaluation_metrics.json",
+        "plot_artifacts": run_config.results_dir / "dl_plot_artifacts.json",
+    }
+    _write_json(artifact_paths["training_summary"], _serialize_training_results(training_results))
+    _write_json(artifact_paths["evaluation_metrics"], [asdict(record) for record in evaluation_records])
+    _write_json(artifact_paths["plot_artifacts"], [asdict(record) for record in plot_records])
+
+    return artifact_paths
+
+
+def _serialize_training_results(training_results: list[TrainingRunResult]) -> list[dict[str, object]]:
+    serialized_results: list[dict[str, object]] = []
+
+    for training_result in training_results:
+        model_run = training_result.context
+        for seed_result in training_result.seed_results:
+            serialized_results.append(
+                {
+                    "dataset_name": model_run.dataset_name,
+                    "split_name": model_run.split_name,
+                    "model_name": model_run.model_name,
+                    "seed": seed_result.seed,
+                    "best_epoch": seed_result.best_epoch,
+                    "best_validation_loss": seed_result.best_validation_loss,
+                    "checkpoint_path": str(seed_result.checkpoint_path) if seed_result.checkpoint_path else None,
+                    "history": [asdict(epoch_metrics) for epoch_metrics in seed_result.history],
+                }
+            )
+
+    return serialized_results
+
+
+def _write_json(path: Path, payload: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as output_file:
+        json.dump(payload, output_file, indent=2)
+
+
 def _try_save_precision_recall_curve(
     record: EvaluationRecord,
     figure_dir: Path,
