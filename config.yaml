@@ -32,6 +32,7 @@ automata:
   paa_segments: 256
   fallback_probability: 0.000001
   anomaly_threshold: 0.05
+  threshold_candidates: [0.000001, 0.00001, 0.0001, 0.001, 0.005, 0.01, 0.03, 0.05, 0.1]
 
 deep_learning:
   sequence_length: 32
