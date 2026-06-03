@@ -57,15 +57,13 @@ def flatten_single_dataset_report(report: dict) -> dict:
     return {
         "dataset": report["dataset"],
         "scenario": report.get("scenario", "original"),
+        "evaluation_scope": report.get("evaluation_scope", "not_specified"),
         "fold_count": 1,
 
         "window_size": params["window_size"],
         "alphabet_size": params["alphabet_size"],
         "paa_segments": params.get("paa_segments"),
-        "fallback_probability": params.get(
-        "fallback_probability",
-        params.get("smoothing"),
-    ),
+        "fallback_probability": params.get("fallback_probability", 0.000001),
         "anomaly_threshold": params["anomaly_threshold"],
 
         "accuracy": metrics["accuracy"],
@@ -143,15 +141,13 @@ def flatten_folded_dataset_report(report: dict) -> dict:
     return {
         "dataset": report["dataset"],
         "scenario": report.get("scenario", "original"),
+        "evaluation_scope": report.get("evaluation_scope", "not_specified"),
         "fold_count": report.get("fold_count", len(folds)),
 
         "window_size": params["window_size"],
         "alphabet_size": params["alphabet_size"],
         "paa_segments": params.get("paa_segments"),
-        "fallback_probability": params.get(
-            "fallback_probability",
-            params.get("smoothing"),
-        ),
+        "fallback_probability": params.get("fallback_probability", 0.000001),
         "anomaly_threshold": params["anomaly_threshold"],
 
         "accuracy": metric_summary["accuracy"]["mean"],

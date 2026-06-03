@@ -272,6 +272,7 @@ def run_batadal_automata_noise_metrics(config: dict) -> dict:
     report = {
         "dataset": "BATADAL",
         "scenario": "gaussian_noise",
+        "evaluation_scope": "full_noisy_test_transitions_with_unseen_handling",
         "noise": {
             "mean": noise_config["mean"],
             "std": noise_config["std"],

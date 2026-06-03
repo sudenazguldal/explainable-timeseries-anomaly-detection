@@ -339,6 +339,7 @@ def run_batadal_automata_metrics(config: dict) -> dict:
     report = {
         "dataset": "BATADAL",
         "scenario": "original",
+        "evaluation_scope": "full_test_transitions_with_unseen_handling",
         "target_column": target_column,
         "time_column": time_column,
         "feature_column_count": len(feature_columns),
@@ -374,6 +375,15 @@ def run_batadal_automata_metrics(config: dict) -> dict:
         },
         "metrics": evaluation["metrics"],
         "confusion_matrix": evaluation["confusion_matrix"],
+        "prediction_outputs": {
+            "y_true": evaluation["y_true"],
+            "y_pred": evaluation["y_pred"],
+            "probabilities": evaluation["probabilities"],
+            "anomaly_scores": [
+                1.0 - probability
+                for probability in evaluation["probabilities"]
+            ],
+        },
         "sample_explanations": evaluation["sample_explanations"],
     }
 

@@ -27,10 +27,7 @@ def series_to_symbol_sequence(values, n_segments: int, alphabet_size: int) -> st
 
 
 def get_fallback_probability(automata_config: dict) -> float:
-    return automata_config.get(
-        "fallback_probability",
-        automata_config.get("smoothing", 0.000001),
-    )
+    return float(automata_config.get("fallback_probability", 0.000001))
 
 
 def build_batadal_automata(config: dict) -> ProbabilisticAutomata:

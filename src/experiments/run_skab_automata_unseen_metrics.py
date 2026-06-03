@@ -266,7 +266,8 @@ def run_skab_automata_unseen_metrics(config: dict) -> dict:
 
     report = {
         "dataset": "SKAB",
-        "scenario": "unseen",
+        "scenario": "unseen_only",
+        "evaluation_scope": "unseen_test_transitions_only",
         "target_column": skab_config["target_column"],
         "normalized_target_column": "label",
         "group_column": skab_config["group_column"],

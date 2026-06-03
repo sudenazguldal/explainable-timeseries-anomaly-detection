@@ -293,7 +293,8 @@ def run_batadal_automata_unseen_metrics(config: dict) -> dict:
 
     return {
         "dataset": "BATADAL",
-        "scenario": "unseen",
+        "scenario": "unseen_only",
+        "evaluation_scope": "unseen_test_transitions_only",
         "target_column": target_column,
         "time_column": time_column,
         "feature_column_count": len(feature_columns),

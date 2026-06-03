@@ -11,7 +11,12 @@ def ensure_output_dir(output_dir: Path) -> None:
 def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> None:
     df = summary_df.copy()
 
-    scenario_order = ["original", "gaussian_noise", "unseen"]
+    scenario_order = ["original", "gaussian_noise", "unseen_only"]
+    scenario_labels = {
+        "original": "Original\nfull test",
+        "gaussian_noise": "Gaussian noise\nfull test",
+        "unseen_only": "Unseen-only\nsubset",
+    }
     dataset_order = ["BATADAL", "SKAB"]
 
     rows = []
@@ -40,12 +45,15 @@ def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> N
     pivot_df = pivot_df.reindex(scenario_order)
 
     ax = pivot_df.plot(kind="bar", figsize=(10, 6))
-    ax.set_title("Automata F1-Score by Scenario")
+    ax.set_title("Automata F1-Score by Evaluation Scope")
     ax.set_xlabel("Scenario")
     ax.set_ylabel("F1-score")
     ax.legend(title="Dataset")
 
-    plt.xticks(rotation=0)
+    ax.set_xticklabels(
+        [scenario_labels[scenario] for scenario in scenario_order],
+        rotation=0,
+    )
     plt.tight_layout()
 
     output_path = output_dir / "automata_scenario_f1_comparison.png"
@@ -56,7 +64,12 @@ def plot_scenario_f1_comparison(summary_df: pd.DataFrame, output_dir: Path) -> N
 def plot_scenario_unseen_ratio_comparison(summary_df: pd.DataFrame, output_dir: Path) -> None:
     df = summary_df.copy()
 
-    scenario_order = ["original", "gaussian_noise", "unseen"]
+    scenario_order = ["original", "gaussian_noise", "unseen_only"]
+    scenario_labels = {
+        "original": "Original\nfull test",
+        "gaussian_noise": "Gaussian noise\nfull test",
+        "unseen_only": "Unseen-only\nsubset",
+    }
     dataset_order = ["BATADAL", "SKAB"]
 
     rows = []
@@ -85,12 +98,15 @@ def plot_scenario_unseen_ratio_comparison(summary_df: pd.DataFrame, output_dir: 
     pivot_df = pivot_df.reindex(scenario_order)
 
     ax = pivot_df.plot(kind="bar", figsize=(10, 6))
-    ax.set_title("Observed Unseen Pattern Ratio by Scenario")
+    ax.set_title("Observed Unseen Pattern Ratio by Evaluation Scope")
     ax.set_xlabel("Scenario")
     ax.set_ylabel("Observed unseen pattern ratio")
     ax.legend(title="Dataset")
 
-    plt.xticks(rotation=0)
+    ax.set_xticklabels(
+        [scenario_labels[scenario] for scenario in scenario_order],
+        rotation=0,
+    )
     plt.tight_layout()
 
     output_path = output_dir / "automata_scenario_unseen_ratio_comparison.png"
@@ -108,7 +124,12 @@ def plot_multiseed_metric_errorbars(
 ) -> None:
     df = multiseed_df.copy()
 
-    scenario_order = ["original", "gaussian_noise", "unseen"]
+    scenario_order = ["original", "gaussian_noise", "unseen_only"]
+    scenario_labels = {
+        "original": "Original\nfull test",
+        "gaussian_noise": "Gaussian noise\nfull test",
+        "unseen_only": "Unseen-only\nsubset",
+    }
     dataset_order = ["BATADAL", "SKAB"]
 
     mean_column = f"{metric_name}_mean"
@@ -130,8 +151,9 @@ def plot_multiseed_metric_errorbars(
             ]
 
             if row.empty:
-                means.append(0.0)
-                stds.append(0.0)
+                raise ValueError(
+                    f"Missing multi-seed result for dataset={dataset}, scenario={scenario}"
+                )
             else:
                 means.append(float(row.iloc[0][mean_column]))
                 stds.append(float(row.iloc[0][std_column]))
@@ -151,7 +173,10 @@ def plot_multiseed_metric_errorbars(
             label=dataset,
         )
 
-    plt.xticks(x_positions, scenario_order)
+    plt.xticks(
+        x_positions,
+        [scenario_labels[scenario] for scenario in scenario_order],
+    )
     plt.xlabel("Scenario")
     plt.ylabel(ylabel)
     plt.title(title)

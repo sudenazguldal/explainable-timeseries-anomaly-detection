@@ -110,10 +110,7 @@ def flatten_report_for_raw_row(
         "window_size": parameters["window_size"],
         "alphabet_size": parameters["alphabet_size"],
         "paa_segments": parameters.get("paa_segments"),
-        "fallback_probability": parameters.get(
-            "fallback_probability",
-            parameters.get("smoothing"),
-        ),
+        "fallback_probability": parameters.get("fallback_probability", 0.000001),
         "anomaly_threshold": parameters["anomaly_threshold"],
 
         "accuracy": metrics["accuracy"],
@@ -193,7 +190,7 @@ def run_multiseed_summary(config: dict) -> tuple[list[dict], list[dict]]:
     skab_seeded_experiments = [
         ("original", run_skab_automata_metrics),
         ("gaussian_noise", run_skab_automata_noise_metrics),
-        ("unseen", run_skab_automata_unseen_metrics),
+        ("unseen_only", run_skab_automata_unseen_metrics),
     ]
 
     for scenario_name, runner in skab_seeded_experiments:
@@ -235,7 +232,7 @@ def run_multiseed_summary(config: dict) -> tuple[list[dict], list[dict]]:
     # BATADAL original and unseen are deterministic because the split is time-ordered.
     deterministic_batadal_experiments = [
         ("original", run_batadal_automata_metrics),
-        ("unseen", run_batadal_automata_unseen_metrics),
+        ("unseen_only", run_batadal_automata_unseen_metrics),
     ]
 
     for scenario_name, runner in deterministic_batadal_experiments:
