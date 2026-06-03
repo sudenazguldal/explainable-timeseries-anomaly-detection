@@ -135,6 +135,21 @@ class EvaluationRecord:
     y_scores: list[float]
 
 
+@dataclass(frozen=True)
+class PlotArtifactRecord:
+    """
+    Saved plot paths for one evaluation record.
+    """
+
+    dataset_name: str
+    split_name: str
+    model_name: str
+    seed: int
+    confusion_matrix_path: str
+    precision_recall_curve_path: str | None
+    roc_curve_path: str | None
+
+
 def parse_experiment_config(config_path: str | Path = "config.yaml") -> ExperimentRunConfig:
     """
     Loads and validates configuration values needed by the deep learning runner.
@@ -303,6 +318,88 @@ def evaluate_trained_models(
     return evaluation_records
 
 
+def generate_evaluation_plots(
+    run_config: ExperimentRunConfig,
+    evaluation_records: list[EvaluationRecord],
+) -> list[PlotArtifactRecord]:
+    """
+    Generates confusion matrix, Precision-Recall, and ROC plots for evaluation records.
+    """
+    plot_records: list[PlotArtifactRecord] = []
+
+    for record in evaluation_records:
+        artifact_stem = _build_artifact_stem(record)
+        figure_dir = run_config.figures_dir / record.dataset_name / record.split_name / record.model_name
+        confusion_matrix_path = save_confusion_matrix_heatmap(
+            y_true=record.y_true,
+            y_pred=record.y_pred,
+            save_path=figure_dir / f"{artifact_stem}_confusion_matrix.png",
+        )
+        precision_recall_curve_path = _try_save_precision_recall_curve(record, figure_dir, artifact_stem)
+        roc_curve_path = _try_save_roc_curve(record, figure_dir, artifact_stem)
+        plot_records.append(
+            PlotArtifactRecord(
+                dataset_name=record.dataset_name,
+                split_name=record.split_name,
+                model_name=record.model_name,
+                seed=record.seed,
+                confusion_matrix_path=str(confusion_matrix_path),
+                precision_recall_curve_path=precision_recall_curve_path,
+                roc_curve_path=roc_curve_path,
+            )
+        )
+
+    return plot_records
+
+
+def _try_save_precision_recall_curve(
+    record: EvaluationRecord,
+    figure_dir: Path,
+    artifact_stem: str,
+) -> str | None:
+    try:
+        output_path = save_precision_recall_curve(
+            y_true=record.y_true,
+            y_scores=record.y_scores,
+            save_path=figure_dir / f"{artifact_stem}_precision_recall_curve.png",
+        )
+        return str(output_path)
+    except ValueError as error:
+        LOGGER.warning(
+            "Skipping Precision-Recall curve | dataset=%s | split=%s | model=%s | seed=%s | reason=%s",
+            record.dataset_name,
+            record.split_name,
+            record.model_name,
+            record.seed,
+            error,
+        )
+        return None
+
+
+def _try_save_roc_curve(
+    record: EvaluationRecord,
+    figure_dir: Path,
+    artifact_stem: str,
+) -> str | None:
+    try:
+        output_path = save_roc_curve(
+            y_true=record.y_true,
+            y_scores=record.y_scores,
+            save_path=figure_dir / f"{artifact_stem}_roc_curve.png",
+        )
+        return str(output_path)
+    except ValueError as error:
+        LOGGER.warning(
+            "Skipping ROC curve | dataset=%s | split=%s | model=%s | seed=%s | reason=%s",
+            record.dataset_name,
+            record.split_name,
+            record.model_name,
+            record.seed,
+            error,
+        )
+        return None
+
+
 def _predict_anomaly_scores(
     model: nn.Module,
     test_dataset: TimeSeriesWindowDataset,
@@ -323,6 +420,10 @@ def _predict_anomaly_scores(
             labels.extend(targets.detach().cpu().reshape(-1).numpy().astype(int).tolist())
 
     return labels, scores
+
+
+def _build_artifact_stem(record: EvaluationRecord) -> str:
+    return f"{record.dataset_name}_{record.split_name}_{record.model_name}_seed_{record.seed}"
 
 
 def _with_checkpoint_output_dir(
