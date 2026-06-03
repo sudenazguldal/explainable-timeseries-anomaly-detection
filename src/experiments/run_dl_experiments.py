@@ -89,6 +89,21 @@ class PreparedExperimentDataset:
     splits: list[PreparedDatasetSplit]
 
 
+@dataclass(frozen=True)
+class ModelRunContext:
+    """
+    Model-specific datasets and factory for one dataset split.
+    """
+
+    dataset_name: str
+    split_name: str
+    model_name: str
+    train_dataset: TimeSeriesWindowDataset
+    validation_dataset: TimeSeriesWindowDataset
+    test_dataset: TimeSeriesWindowDataset
+    model_factory: Callable[[int], nn.Module]
+
+
 def parse_experiment_config(config_path: str | Path = "config.yaml") -> ExperimentRunConfig:
     """
     Loads and validates configuration values needed by the deep learning runner.
@@ -151,6 +166,111 @@ def prepare_sequence_datasets(
         )
 
     return prepared_datasets
+
+
+def build_model_run_contexts(
+    run_config: ExperimentRunConfig,
+    prepared_datasets: dict[str, PreparedExperimentDataset],
+) -> list[ModelRunContext]:
+    """
+    Creates model factories and selects model-compatible datasets for every split.
+    """
+    model_runs: list[ModelRunContext] = []
+
+    for dataset_name, prepared_dataset in prepared_datasets.items():
+        for prepared_split in prepared_dataset.splits:
+            for model_name in run_config.model_names:
+                train_dataset, validation_dataset, test_dataset = _select_model_datasets(model_name, prepared_split)
+                model_factory = _build_model_factory(
+                    run_config=run_config,
+                    model_name=model_name,
+                    train_dataset=train_dataset,
+                )
+                model_runs.append(
+                    ModelRunContext(
+                        dataset_name=dataset_name,
+                        split_name=prepared_split.split_name,
+                        model_name=model_name,
+                        train_dataset=train_dataset,
+                        validation_dataset=validation_dataset,
+                        test_dataset=test_dataset,
+                        model_factory=model_factory,
+                    )
+                )
+
+    return model_runs
+
+
+def _select_model_datasets(
+    model_name: str,
+    prepared_split: PreparedDatasetSplit,
+) -> tuple[TimeSeriesWindowDataset, TimeSeriesWindowDataset, TimeSeriesWindowDataset]:
+    normalized_name = model_name.strip().lower()
+
+    if normalized_name == "lstm":
+        return (
+            prepared_split.lstm_train_dataset,
+            prepared_split.lstm_validation_dataset,
+            prepared_split.lstm_test_dataset,
+        )
+
+    if normalized_name == "cnn1d":
+        return (
+            prepared_split.cnn_train_dataset,
+            prepared_split.cnn_validation_dataset,
+            prepared_split.cnn_test_dataset,
+        )
+
+    raise ValueError(f"Unsupported deep learning model: {model_name}")
+
+
+def _build_model_factory(
+    run_config: ExperimentRunConfig,
+    model_name: str,
+    train_dataset: TimeSeriesWindowDataset,
+) -> Callable[[int], nn.Module]:
+    input_shape = _infer_input_shape(model_name, train_dataset)
+    model_config = _get_model_config(run_config.project_config, model_name)
+
+    def factory(seed: int) -> nn.Module:
+        LOGGER.info("Creating model | model=%s | seed=%s", model_name, seed)
+        return create_deep_learning_model(
+            model_name=model_name,
+            input_shape=input_shape,
+            model_config=model_config,
+            output_size=1,
+        )
+
+    return factory
+
+
+def _infer_input_shape(model_name: str, train_dataset: TimeSeriesWindowDataset) -> tuple[int, int]:
+    if len(train_dataset.windows) == 0:
+        raise ValueError(f"Training dataset for {model_name} cannot be empty.")
+
+    window_shape = train_dataset.windows.shape
+    normalized_name = model_name.strip().lower()
+
+    if normalized_name == "lstm":
+        return int(window_shape[1]), int(window_shape[2])
+
+    if normalized_name == "cnn1d":
+        return int(window_shape[2]), int(window_shape[1])
+
+    raise ValueError(f"Unsupported deep learning model: {model_name}")
+
+
+def _get_model_config(project_config: Mapping[str, object], model_name: str) -> Mapping[str, object]:
+    deep_learning_section = _get_config_section(project_config, "deep_learning")
+    model_configs = deep_learning_section.get("model_configs", {})
+    if not isinstance(model_configs, Mapping):
+        raise ValueError("deep_learning.model_configs must be a mapping when provided.")
+
+    model_config = model_configs.get(model_name, {})
+    if not isinstance(model_config, Mapping):
+        raise ValueError(f"Model configuration must be a mapping: {model_name}")
+
+    return model_config
 
 
 def _prepare_sequence_split(
