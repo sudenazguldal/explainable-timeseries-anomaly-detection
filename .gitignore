@@ -4,6 +4,10 @@ __pycache__/
 venv/
 .env
 
+AI_AGENT_RULES.md
+PROJECT_SPEC.md
+
+data/raw/
 data/raw/*
 data/interim/*
 data/processed/*
