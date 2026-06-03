@@ -51,6 +51,10 @@ PIPELINE_STEPS = [
         module="src.experiments.run_skab_automata_parameter_sweep",
     ),
     PipelineStep(
+    name="Collect best automata parameter results",
+    module="src.experiments.collect_best_parameter_results",
+    ),
+    PipelineStep(
         name="Plot automata result charts",
         module="src.visualization.plot_automata_results",
     ),
@@ -65,6 +69,10 @@ PIPELINE_STEPS = [
     PipelineStep(
         name="Plot parameter sweep heatmaps",
         module="src.visualization.plot_parameter_sweep",
+    ),
+    PipelineStep(
+    name="Plot fixed vs best automata parameter F1",
+    module="src.visualization.plot_best_parameter_results",
     ),
     PipelineStep(
         name="Plot precision-recall curves",
