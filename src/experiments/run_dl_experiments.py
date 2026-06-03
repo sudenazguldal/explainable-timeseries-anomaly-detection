@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Callable, Mapping
 
@@ -104,6 +104,16 @@ class ModelRunContext:
     model_factory: Callable[[int], nn.Module]
 
 
+@dataclass(frozen=True)
+class TrainingRunResult:
+    """
+    Cross-seed training outputs for one model run context.
+    """
+
+    context: ModelRunContext
+    seed_results: list
+
+
 def parse_experiment_config(config_path: str | Path = "config.yaml") -> ExperimentRunConfig:
     """
     Loads and validates configuration values needed by the deep learning runner.
@@ -199,6 +209,51 @@ def build_model_run_contexts(
                 )
 
     return model_runs
+
+
+def run_cross_seed_training(
+    run_config: ExperimentRunConfig,
+    model_runs: list[ModelRunContext],
+) -> list[TrainingRunResult]:
+    """
+    Executes the mandatory cross-seed training loop for all model contexts.
+    """
+    training_results: list[TrainingRunResult] = []
+
+    for model_run in model_runs:
+        LOGGER.info(
+            "Running cross-seed training | dataset=%s | split=%s | model=%s",
+            model_run.dataset_name,
+            model_run.split_name,
+            model_run.model_name,
+        )
+        training_config = _with_checkpoint_output_dir(run_config.training_config, run_config.results_dir, model_run)
+        seed_results = train_model_across_seeds(
+            model_factory=model_run.model_factory,
+            train_dataset=model_run.train_dataset,
+            validation_dataset=model_run.validation_dataset,
+            config=training_config,
+            model_name=model_run.model_name,
+        )
+        training_results.append(TrainingRunResult(context=model_run, seed_results=seed_results))
+
+    return training_results
+
+
+def _with_checkpoint_output_dir(
+    training_config: DeepLearningTrainingConfig,
+    results_dir: Path,
+    model_run: ModelRunContext,
+) -> DeepLearningTrainingConfig:
+    checkpoint_dir = (
+        results_dir
+        / "checkpoints"
+        / model_run.dataset_name
+        / model_run.split_name
+        / model_run.model_name
+    )
+
+    return replace(training_config, output_dir=checkpoint_dir)
 
 
 def _select_model_datasets(
