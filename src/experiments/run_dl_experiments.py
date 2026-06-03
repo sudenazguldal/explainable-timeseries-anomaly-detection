@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import torch
 from torch import nn
+from torch.utils.data import DataLoader
 
 from src.config.load_config import load_config
 from src.data.batadal_loader import (
@@ -60,6 +61,7 @@ class ExperimentRunConfig:
     sequence_length: int
     normalization_method: str
     model_names: list[str]
+    classification_threshold: float
     results_dir: Path
     figures_dir: Path
 
@@ -114,6 +116,25 @@ class TrainingRunResult:
     seed_results: list
 
 
+@dataclass(frozen=True)
+class EvaluationRecord:
+    """
+    Test-set predictions and metrics for one trained seed.
+    """
+
+    dataset_name: str
+    split_name: str
+    model_name: str
+    seed: int
+    best_epoch: int
+    best_validation_loss: float
+    metrics: dict[str, float]
+    confusion_matrix: list[list[int]]
+    y_true: list[int]
+    y_pred: list[int]
+    y_scores: list[float]
+
+
 def parse_experiment_config(config_path: str | Path = "config.yaml") -> ExperimentRunConfig:
     """
     Loads and validates configuration values needed by the deep learning runner.
@@ -130,6 +151,7 @@ def parse_experiment_config(config_path: str | Path = "config.yaml") -> Experime
         sequence_length=int(deep_learning_section["sequence_length"]),
         normalization_method=str(preprocessing_section["normalization"]),
         model_names=[str(model_name) for model_name in deep_learning_section["models"]],
+        classification_threshold=float(deep_learning_section.get("classification_threshold", 0.5)),
         results_dir=Path(str(logging_section["results_dir"])) / "deep_learning",
         figures_dir=Path(str(logging_section["figures_dir"])) / "deep_learning",
     )
@@ -238,6 +260,69 @@ def run_cross_seed_training(
         training_results.append(TrainingRunResult(context=model_run, seed_results=seed_results))
 
     return training_results
+
+
+def evaluate_trained_models(
+    run_config: ExperimentRunConfig,
+    training_results: list[TrainingRunResult],
+) -> list[EvaluationRecord]:
+    """
+    Evaluates every best seed checkpoint on the held-out test sequence windows.
+    """
+    evaluation_records: list[EvaluationRecord] = []
+
+    for training_result in training_results:
+        model_run = training_result.context
+        for seed_result in training_result.seed_results:
+            model = model_run.model_factory(seed_result.seed)
+            model.load_state_dict(seed_result.best_model_state)
+            y_true, y_scores = _predict_anomaly_scores(
+                model=model,
+                test_dataset=model_run.test_dataset,
+                batch_size=run_config.training_config.batch_size,
+            )
+            y_pred = (np.asarray(y_scores) >= run_config.classification_threshold).astype(int).tolist()
+            metrics = calculate_classification_metrics(y_true, y_pred)
+            confusion_matrix_values = calculate_confusion_matrix(y_true, y_pred)
+            evaluation_records.append(
+                EvaluationRecord(
+                    dataset_name=model_run.dataset_name,
+                    split_name=model_run.split_name,
+                    model_name=model_run.model_name,
+                    seed=seed_result.seed,
+                    best_epoch=seed_result.best_epoch,
+                    best_validation_loss=seed_result.best_validation_loss,
+                    metrics=metrics,
+                    confusion_matrix=confusion_matrix_values,
+                    y_true=y_true,
+                    y_pred=y_pred,
+                    y_scores=y_scores,
+                )
+            )
+
+    return evaluation_records
+
+
+def _predict_anomaly_scores(
+    model: nn.Module,
+    test_dataset: TimeSeriesWindowDataset,
+    batch_size: int,
+) -> tuple[list[int], list[float]]:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    data_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    model = model.to(device)
+    model.eval()
+    labels: list[int] = []
+    scores: list[float] = []
+
+    with torch.no_grad():
+        for inputs, targets in data_loader:
+            outputs = model(inputs.to(device))
+            probabilities = torch.sigmoid(outputs).detach().cpu().reshape(-1).numpy()
+            scores.extend(probabilities.astype(float).tolist())
+            labels.extend(targets.detach().cpu().reshape(-1).numpy().astype(int).tolist())
+
+    return labels, scores
 
 
 def _with_checkpoint_output_dir(
