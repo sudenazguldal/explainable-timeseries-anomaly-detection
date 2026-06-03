@@ -59,6 +59,48 @@ python -m src.experiments.run_skab_automata_metrics
 python -m src.experiments.run_batadal_automata_metrics
 ```
 
+## How to Run Deep Learning Experiments
+
+Run the deep learning baseline pipeline from the repository root:
+
+```bash
+python -m src.experiments.run_dl_experiments
+```
+
+The runner trains both configured baselines (`lstm` and `cnn1d`) across the required seeds:
+
+```txt
+42, 123, 2026, 7, 999
+```
+
+Training uses the fixed project constraints from `config.yaml`:
+
+```txt
+batch_size: 32
+max_epochs: 50
+early_stopping_patience: 5
+```
+
+Label mapping for deep learning:
+
+```txt
+SKAB anomaly: 0 -> normal, 1 -> anomaly
+BATADAL ATT_FLAG: -999 -> normal, 1 -> anomaly
+Runner target column: dl_binary_target
+```
+
+Expected result artifacts:
+
+```txt
+reports/results/deep_learning/dl_training_summary.json
+reports/results/deep_learning/dl_evaluation_metrics.json
+reports/results/deep_learning/dl_plot_artifacts.json
+reports/results/deep_learning/checkpoints/<dataset>/<split>/<model>/*_best.pt
+reports/figures/deep_learning/<dataset>/<split>/<model>/*_confusion_matrix.png
+reports/figures/deep_learning/<dataset>/<split>/<model>/*_precision_recall_curve.png
+reports/figures/deep_learning/<dataset>/<split>/<model>/*_roc_curve.png
+```
+
 
 # From Black-Box to Explainability: Probabilistic Automata for Time Series Analysis
 
