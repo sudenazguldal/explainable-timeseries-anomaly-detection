@@ -650,7 +650,13 @@ def _load_skab_splits(project_config: Mapping[str, object]) -> tuple[DatasetRunC
     )
     validation_ratio = _get_default_validation_ratio(project_config)
     split_frames = [
-        _split_skab_fold(dataframe, train_indices, test_indices, validation_ratio=validation_ratio)
+        _split_skab_fold(
+            dataframe=dataframe,
+            train_indices=train_indices,
+            test_indices=test_indices,
+            group_column=group_column,
+            validation_ratio=validation_ratio,
+        )
         for train_indices, test_indices in folds
     ]
 
@@ -711,15 +717,64 @@ def _split_skab_fold(
     dataframe: pd.DataFrame,
     train_indices: list[int],
     test_indices: list[int],
+    group_column: str,
     validation_ratio: float = 0.2,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     train_validation_df = dataframe.iloc[train_indices].copy().reset_index(drop=True)
     test_df = dataframe.iloc[test_indices].copy().reset_index(drop=True)
-    validation_start = int(len(train_validation_df) * (1.0 - validation_ratio))
-    train_df = train_validation_df.iloc[:validation_start].copy().reset_index(drop=True)
-    validation_df = train_validation_df.iloc[validation_start:].copy().reset_index(drop=True)
+    train_df, validation_df = _split_group_safe_validation(
+        dataframe=train_validation_df,
+        group_column=group_column,
+        validation_ratio=validation_ratio,
+    )
 
     return train_df, validation_df, test_df
+
+
+def _split_group_safe_validation(
+    dataframe: pd.DataFrame,
+    group_column: str,
+    validation_ratio: float,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if group_column not in dataframe.columns:
+        raise ValueError(f"Group column not found: {group_column}")
+    if not 0.0 < validation_ratio < 1.0:
+        raise ValueError("validation_ratio must be between 0 and 1.")
+
+    ordered_groups = list(dict.fromkeys(dataframe[group_column].tolist()))
+    if len(ordered_groups) < 2:
+        raise ValueError("At least two groups are required for group-safe validation split.")
+
+    validation_groups = _select_validation_groups(dataframe, group_column, ordered_groups, validation_ratio)
+    validation_mask = dataframe[group_column].isin(validation_groups)
+    train_df = dataframe.loc[~validation_mask].copy().reset_index(drop=True)
+    validation_df = dataframe.loc[validation_mask].copy().reset_index(drop=True)
+
+    return train_df, validation_df
+
+
+def _select_validation_groups(
+    dataframe: pd.DataFrame,
+    group_column: str,
+    ordered_groups: list[str],
+    validation_ratio: float,
+) -> set[str]:
+    target_validation_rows = max(1, int(round(len(dataframe) * validation_ratio)))
+    validation_groups: set[str] = set()
+    validation_rows = 0
+
+    for group_name in reversed(ordered_groups):
+        if len(validation_groups) >= len(ordered_groups) - 1:
+            break
+
+        group_rows = int((dataframe[group_column] == group_name).sum())
+        validation_groups.add(group_name)
+        validation_rows += group_rows
+
+        if validation_rows >= target_validation_rows:
+            break
+
+    return validation_groups
 
 
 def normalize_deep_learning_labels(dataframe: pd.DataFrame, target_column: str) -> pd.DataFrame:
