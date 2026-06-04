@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 EVALUATION_METRICS_PATH = Path("reports/results/deep_learning/dl_evaluation_metrics.json")
+METRIC_NAMES = ("accuracy", "precision", "recall", "f1_score")
 
 
 def load_evaluation_records(input_path: Path = EVALUATION_METRICS_PATH) -> list[dict[str, object]]:
@@ -42,12 +43,47 @@ def summarize_evaluation_records(records: list[dict[str, object]]) -> list[dict[
     """
     summary_rows = []
     for (dataset_name, model_name), group_records in sorted(group_records_by_dataset_and_model(records).items()):
-        summary_rows.append(
-            {
-                "dataset_name": dataset_name,
-                "model_name": model_name,
-                "run_count": len(group_records),
-            }
-        )
+        metric_summary = aggregate_group_metrics(group_records)
+        row: dict[str, object] = {
+            "dataset_name": dataset_name,
+            "model_name": model_name,
+            "run_count": len(group_records),
+        }
+        for metric_name, summary in metric_summary.items():
+            row[f"{metric_name}_mean"] = summary["mean"]
+            row[f"{metric_name}_std"] = summary["std"]
+
+        summary_rows.append(row)
 
     return summary_rows
+
+
+def aggregate_group_metrics(records: list[dict[str, object]]) -> dict[str, dict[str, float]]:
+    """
+    Aggregates configured classification metrics for one dataset/model group.
+    """
+    return {
+        metric_name: aggregate_metric_values(
+            [
+                float(record["metrics"][metric_name])
+                for record in records
+                if isinstance(record.get("metrics"), dict) and metric_name in record["metrics"]
+            ]
+        )
+        for metric_name in METRIC_NAMES
+    }
+
+
+def aggregate_metric_values(values: list[float]) -> dict[str, float]:
+    """
+    Calculates mean and sample standard deviation for metric values.
+    """
+    if not values:
+        return {"mean": 0.0, "std": 0.0}
+
+    mean_value = sum(values) / len(values)
+    if len(values) < 2:
+        return {"mean": mean_value, "std": 0.0}
+
+    variance = sum((value - mean_value) ** 2 for value in values) / (len(values) - 1)
+    return {"mean": mean_value, "std": variance**0.5}
