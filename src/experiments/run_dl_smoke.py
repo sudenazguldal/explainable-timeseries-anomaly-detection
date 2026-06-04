@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from src.models.lstm_model import LSTMModel
 from src.preprocessing.sequence_builder import build_sequence_windows
 
 
@@ -48,12 +49,34 @@ def build_sequence_window_smoke_summary(dataframe: pd.DataFrame) -> dict[str, ob
     }
 
 
+def build_lstm_forward_smoke_summary(dataframe: pd.DataFrame) -> dict[str, object]:
+    """
+    Validates that the LSTM baseline can score a small sequence batch.
+    """
+    windows, _ = _build_smoke_windows(dataframe, channels_first=False)
+    model = LSTMModel(input_size=len(SMOKE_FEATURE_COLUMNS), hidden_size=4, output_size=1)
+    model.eval()
+
+    with torch.no_grad():
+        outputs = model(windows[:2])
+
+    return {
+        "model_name": "lstm",
+        "window_count": int(windows.shape[0]),
+        "feature_count": int(windows.shape[2]),
+        "output_shape": list(outputs.shape),
+    }
+
+
 def generate_smoke_summary() -> list[dict[str, object]]:
     """
     Builds a lightweight deep learning pipeline smoke summary.
     """
     dataframe = build_synthetic_time_series_fixture()
-    return [build_sequence_window_smoke_summary(dataframe)]
+    return [
+        build_sequence_window_smoke_summary(dataframe),
+        build_lstm_forward_smoke_summary(dataframe),
+    ]
 
 
 def _build_smoke_windows(dataframe: pd.DataFrame, channels_first: bool) -> tuple[torch.Tensor, torch.Tensor | None]:
