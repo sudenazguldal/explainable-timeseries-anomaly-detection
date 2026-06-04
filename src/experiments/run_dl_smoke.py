@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from src.models.cnn1d_model import CNN1DModel
 from src.models.lstm_model import LSTMModel
 from src.preprocessing.sequence_builder import build_sequence_windows
 
@@ -68,6 +69,30 @@ def build_lstm_forward_smoke_summary(dataframe: pd.DataFrame) -> dict[str, objec
     }
 
 
+def build_cnn1d_forward_smoke_summary(dataframe: pd.DataFrame) -> dict[str, object]:
+    """
+    Validates that the CNN1D baseline can score channels-first sequence windows.
+    """
+    windows, _ = _build_smoke_windows(dataframe, channels_first=True)
+    model = CNN1DModel(
+        input_channels=len(SMOKE_FEATURE_COLUMNS),
+        hidden_channels=(4,),
+        kernel_sizes=3,
+        output_size=1,
+    )
+    model.eval()
+
+    with torch.no_grad():
+        outputs = model(windows[:2])
+
+    return {
+        "model_name": "cnn1d",
+        "window_count": int(windows.shape[0]),
+        "feature_count": int(windows.shape[1]),
+        "output_shape": list(outputs.shape),
+    }
+
+
 def generate_smoke_summary() -> list[dict[str, object]]:
     """
     Builds a lightweight deep learning pipeline smoke summary.
@@ -76,6 +101,7 @@ def generate_smoke_summary() -> list[dict[str, object]]:
     return [
         build_sequence_window_smoke_summary(dataframe),
         build_lstm_forward_smoke_summary(dataframe),
+        build_cnn1d_forward_smoke_summary(dataframe),
     ]
 
 
