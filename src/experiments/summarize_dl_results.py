@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -7,7 +8,21 @@ from pathlib import Path
 
 EVALUATION_METRICS_PATH = Path("reports/results/deep_learning/dl_evaluation_metrics.json")
 SUMMARY_JSON_PATH = Path("reports/tables/deep_learning/dl_summary.json")
+SUMMARY_CSV_PATH = Path("reports/tables/deep_learning/dl_summary.csv")
 METRIC_NAMES = ("accuracy", "precision", "recall", "f1_score")
+SUMMARY_FIELDNAMES = [
+    "dataset_name",
+    "model_name",
+    "run_count",
+    "accuracy_mean",
+    "accuracy_std",
+    "precision_mean",
+    "precision_std",
+    "recall_mean",
+    "recall_std",
+    "f1_score_mean",
+    "f1_score_std",
+]
 
 
 def load_evaluation_records(input_path: Path = EVALUATION_METRICS_PATH) -> list[dict[str, object]]:
@@ -73,16 +88,34 @@ def export_summary_json(
     return output_path
 
 
-def main() -> Path:
+def export_summary_csv(
+    summary_rows: list[dict[str, object]],
+    output_path: Path = SUMMARY_CSV_PATH,
+) -> Path:
     """
-    Loads evaluation metrics and exports the aggregated JSON summary.
+    Writes aggregated deep learning summary rows as CSV.
+    """
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=SUMMARY_FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(summary_rows)
+
+    return output_path
+
+
+def main() -> dict[str, Path]:
+    """
+    Loads evaluation metrics and exports aggregated JSON and CSV summaries.
     """
     records = load_evaluation_records()
     summary_rows = summarize_evaluation_records(records)
-    output_path = export_summary_json(summary_rows)
-    print(f"Wrote DL summary JSON: {output_path}")
+    json_path = export_summary_json(summary_rows)
+    csv_path = export_summary_csv(summary_rows)
+    print(f"Wrote DL summary JSON: {json_path}")
+    print(f"Wrote DL summary CSV: {csv_path}")
 
-    return output_path
+    return {"json": json_path, "csv": csv_path}
 
 
 def aggregate_group_metrics(records: list[dict[str, object]]) -> dict[str, dict[str, float]]:
