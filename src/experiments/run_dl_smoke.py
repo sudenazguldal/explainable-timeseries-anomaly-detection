@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from src.evaluation.metrics import calculate_classification_metrics
 from src.models.cnn1d_model import CNN1DModel
 from src.models.lstm_model import LSTMModel
 from src.preprocessing.sequence_builder import build_sequence_windows
@@ -15,6 +16,7 @@ SMOKE_SUMMARY_PATH = Path("reports/results/deep_learning/dl_smoke_summary.json")
 SMOKE_FEATURE_COLUMNS = ["sensor_a", "sensor_b"]
 SMOKE_TARGET_COLUMN = "label"
 SMOKE_SEQUENCE_LENGTH = 4
+SMOKE_CLASSIFICATION_THRESHOLD = 0.5
 
 
 def build_synthetic_time_series_fixture(row_count: int = 12) -> pd.DataFrame:
@@ -93,6 +95,20 @@ def build_cnn1d_forward_smoke_summary(dataframe: pd.DataFrame) -> dict[str, obje
     }
 
 
+def build_metric_smoke_summary() -> dict[str, object]:
+    """
+    Validates binary metric calculation on deterministic fake prediction scores.
+    """
+    y_true = [0, 0, 1, 1]
+    y_scores = [0.1, 0.7, 0.8, 0.3]
+    y_pred = [int(score >= SMOKE_CLASSIFICATION_THRESHOLD) for score in y_scores]
+
+    return {
+        "model_name": "metric_calculation",
+        "metrics": calculate_classification_metrics(y_true, y_pred),
+    }
+
+
 def generate_smoke_summary() -> list[dict[str, object]]:
     """
     Builds a lightweight deep learning pipeline smoke summary.
@@ -102,6 +118,7 @@ def generate_smoke_summary() -> list[dict[str, object]]:
         build_sequence_window_smoke_summary(dataframe),
         build_lstm_forward_smoke_summary(dataframe),
         build_cnn1d_forward_smoke_summary(dataframe),
+        build_metric_smoke_summary(),
     ]
 
 
