@@ -144,6 +144,17 @@ def export_smoke_summary(
     return output_path
 
 
+def main() -> Path:
+    """
+    Runs the deep learning smoke checks and writes the JSON summary artifact.
+    """
+    summary = generate_smoke_summary()
+    output_path = export_smoke_summary(summary)
+    print(f"Wrote DL smoke summary: {output_path}")
+
+    return output_path
+
+
 def _build_smoke_windows(dataframe: pd.DataFrame, channels_first: bool) -> tuple[torch.Tensor, torch.Tensor | None]:
     return build_sequence_windows(
         data=dataframe,
@@ -152,3 +163,7 @@ def _build_smoke_windows(dataframe: pd.DataFrame, channels_first: bool) -> tuple
         target_column=SMOKE_TARGET_COLUMN,
         channels_first=channels_first,
     )
+
+
+if __name__ == "__main__":
+    main()
