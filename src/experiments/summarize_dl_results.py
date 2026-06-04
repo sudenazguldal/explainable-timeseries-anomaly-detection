@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 EVALUATION_METRICS_PATH = Path("reports/results/deep_learning/dl_evaluation_metrics.json")
+SUMMARY_JSON_PATH = Path("reports/tables/deep_learning/dl_summary.json")
 METRIC_NAMES = ("accuracy", "precision", "recall", "f1_score")
 
 
@@ -58,6 +59,32 @@ def summarize_evaluation_records(records: list[dict[str, object]]) -> list[dict[
     return summary_rows
 
 
+def export_summary_json(
+    summary_rows: list[dict[str, object]],
+    output_path: Path = SUMMARY_JSON_PATH,
+) -> Path:
+    """
+    Writes aggregated deep learning summary rows as JSON.
+    """
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as output_file:
+        json.dump(summary_rows, output_file, indent=2)
+
+    return output_path
+
+
+def main() -> Path:
+    """
+    Loads evaluation metrics and exports the aggregated JSON summary.
+    """
+    records = load_evaluation_records()
+    summary_rows = summarize_evaluation_records(records)
+    output_path = export_summary_json(summary_rows)
+    print(f"Wrote DL summary JSON: {output_path}")
+
+    return output_path
+
+
 def aggregate_group_metrics(records: list[dict[str, object]]) -> dict[str, dict[str, float]]:
     """
     Aggregates configured classification metrics for one dataset/model group.
@@ -87,3 +114,7 @@ def aggregate_metric_values(values: list[float]) -> dict[str, float]:
 
     variance = sum((value - mean_value) ** 2 for value in values) / (len(values) - 1)
     return {"mean": mean_value, "std": variance**0.5}
+
+
+if __name__ == "__main__":
+    main()
