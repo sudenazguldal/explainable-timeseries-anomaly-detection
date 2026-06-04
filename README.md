@@ -61,10 +61,22 @@ python -m src.experiments.run_batadal_automata_metrics
 
 ## How to Run Deep Learning Experiments
 
+For a quick deep learning smoke check that does not run full model training:
+
+```bash
+.\.venv\Scripts\python.exe -m src.experiments.run_dl_smoke
+```
+
+To summarize exported deep learning evaluation metrics into JSON and CSV tables:
+
+```bash
+.\.venv\Scripts\python.exe -m src.experiments.summarize_dl_results
+```
+
 Run the deep learning baseline pipeline from the repository root:
 
 ```bash
-python -m src.experiments.run_dl_experiments
+.\.venv\Scripts\python.exe -m src.experiments.run_dl_experiments
 ```
 
 The runner trains both configured baselines (`lstm` and `cnn1d`) across the required seeds:
@@ -81,6 +93,10 @@ max_epochs: 50
 early_stopping_patience: 5
 ```
 
+Full training can take a long time. Use the smoke runner first when checking the
+DL pipeline structure, model forward passes, metric calculation, and report
+artifact paths.
+
 Label mapping for deep learning:
 
 ```txt
@@ -95,6 +111,9 @@ Expected result artifacts:
 reports/results/deep_learning/dl_training_summary.json
 reports/results/deep_learning/dl_evaluation_metrics.json
 reports/results/deep_learning/dl_plot_artifacts.json
+reports/results/deep_learning/dl_smoke_summary.json
+reports/tables/deep_learning/dl_summary.json
+reports/tables/deep_learning/dl_summary.csv
 reports/results/deep_learning/checkpoints/<dataset>/<split>/<model>/*_best.pt
 reports/figures/deep_learning/<dataset>/<split>/<model>/*_confusion_matrix.png
 reports/figures/deep_learning/<dataset>/<split>/<model>/*_precision_recall_curve.png
