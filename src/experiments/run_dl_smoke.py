@@ -13,7 +13,7 @@ from src.models.lstm_model import LSTMModel
 from src.preprocessing.sequence_builder import build_sequence_windows
 
 
-SMOKE_SUMMARY_PATH = Path("reports/results/deep_learning/dl_smoke_summary.json")
+SMOKE_SUMMARY_PATH = Path("reports/results/smoke/deep_learning/dl_smoke_summary.json")
 SMOKE_FEATURE_COLUMNS = ["sensor_a", "sensor_b"]
 SMOKE_TARGET_COLUMN = "label"
 SMOKE_SEQUENCE_LENGTH = 4

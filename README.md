@@ -111,7 +111,7 @@ Expected result artifacts:
 reports/results/deep_learning/dl_training_summary.json
 reports/results/deep_learning/dl_evaluation_metrics.json
 reports/results/deep_learning/dl_plot_artifacts.json
-reports/results/deep_learning/dl_smoke_summary.json
+reports/results/smoke/deep_learning/dl_smoke_summary.json
 reports/tables/deep_learning/dl_summary.json
 reports/tables/deep_learning/dl_summary.csv
 reports/results/deep_learning/checkpoints/<dataset>/<split>/<model>/*_best.pt
