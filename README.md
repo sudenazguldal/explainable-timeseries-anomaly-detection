@@ -629,7 +629,7 @@ python -m pip install torch torchvision torchaudio --index-url https://download.
 
 ### 9.2 Veri setlerini yerleştirme
 
-Ham veri setleri GitHub'a eklenmez. Beklenen yapı:
+Beklenen yapı:
 
 ```txt
 data/
