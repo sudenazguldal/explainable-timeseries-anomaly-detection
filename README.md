@@ -373,6 +373,8 @@ Aşağıdaki tablo, derin öğrenme modelleri ve otomata modelinin temel F1-scor
 | Automata (sabit w=4, a=3)   | 0.077 ± 0.030 |         0.182 | Sabit otomata parametreleriyle original/full-test sonucu |
 | Automata (en iyi parametre) |         0.438 |         0.257 | Parameter sweep sonucunda en yüksek F1 veren kombinasyon |
 
+Not: `Automata (sabit w=4, a=3)` sonucu, proje isterinde karşılaştırma için verilen sabit otomata parametreleri (`window_size=4`, `alphabet_size=3`) ile elde edilmiştir. `Automata (en iyi parametre)` sonucu ise parameter sweep kapsamında farklı `window_size` ve `alphabet_size` kombinasyonları denenerek bulunan en yüksek F1-score değerini göstermektedir. Bu nedenle sabit parametre sonucu standart karşılaştırma ayarını, en iyi parametre sonucu ise otomata modelinin parametre optimizasyonu sonrası ulaşabildiği performansı temsil eder.
+
 Derin öğrenme sonuçlarında SKAB tarafında LSTM en yüksek F1-score değerine ulaşmıştır. BATADAL tarafında LSTM, 1D-CNN modeline göre daha iyi sonuç vermiştir; ancak standart sapmasının yüksek olması BATADAL’da seed duyarlılığının ve sınıf dengesizliği etkisinin güçlü olduğunu göstermektedir.
 
 Otomata modeli sabit parametrelerle özellikle SKAB tarafında sınırlı F1-score üretmiştir. Ancak parameter sweep sonucunda SKAB F1-score değeri `0.438`, BATADAL F1-score değeri ise `0.257` seviyesine yükselmiştir. Bu durum otomata modelinde window size ve alphabet size seçiminin performans üzerinde belirgin etkisi olduğunu göstermektedir.
@@ -435,6 +437,8 @@ Parameter sweep sonuçları, otomata modelinin window size ve alphabet size seç
 | --------- | ------------: | --------------: | ----: | --------: | -----: | ----------: | -----------------: |
 | BATADAL   |             6 |               5 | 0.257 |     0.154 |  0.763 |       229.0 |             0.0045 |
 | SKAB      |             6 |               6 | 0.438 |     0.525 |  0.382 |       125.6 |             0.0095 |
+
+
 
 Sabit parametreli modelde performans sınırlı kalsa da, en iyi parametre kombinasyonları ile F1-score değerleri belirgin şekilde artmıştır. Bu durum, otomata modelinin başarısının sembolik temsil kapasitesine ve transition matrix yoğunluğuna bağlı olduğunu göstermektedir.
 
@@ -505,6 +509,8 @@ SKAB tarafında da Precision-Recall performansı sınırlıdır. Bu sonuç, otom
 
 SKAB tarafında LSTM ve 1D-CNN arasındaki fark istatistiksel olarak anlamlı bulunmuştur (`p < 0.05`). Automata ile DL modelleri arasındaki karşılaştırmalarda p-değeri `0.0625` seviyesinde kalmıştır. Bu değer 0.05 eşiğini geçmediği için istatistiksel anlamlılık olarak raporlanmamıştır. Ancak `n=5` gibi küçük eşleşme sayısı, Wilcoxon testinin gücünü sınırlamaktadır.
 
+McNemar testi aynı test örnekleri üzerindeki iki model tahminini karşılaştırmak için uygundur. Bu projede otomata modeli PAA/SAX sonrası pattern-transition düzeyinde, deep learning modelleri ise sequence-window düzeyinde tahmin ürettiği için Automata vs DL karşılaştırmasında McNemar testi uygulanmamıştır. Bu nedenle paired F1-score değerleri üzerinden Wilcoxon signed-rank testi tercih edilmiştir.
+
 ## 7. Açıklanabilirlik Modülü
 
 Otomata modelinin temel avantajı, her kararın izlenebilir olmasıdır. Model yalnızca `normal` veya `anomaly` kararı üretmez; aynı zamanda karara neden olan state, pattern, transition probability ve confidence bilgilerini verir.
@@ -561,21 +567,6 @@ State transition graph ise en güçlü geçişlerin görsel olarak incelenmesini
 
 ![SKAB Automata Transition Graph](reports/figures/automata_transition_graph_skab.png)
 
-### Precision-Recall analizi
-
-Otomata modeli düşük transition probability değerlerini anomaly sinyali olarak kullandığı için anomaly score şu şekilde hesaplanmıştır:
-
-```txt
-anomaly_score = 1 - transition_probability
-```
-
-PR curve grafiklerinde no-skill baseline ve seçilen threshold noktası gösterilmiştir.
-
-![BATADAL PR Curve](reports/figures/pr_curve_batadal_original.png)
-
-![SKAB PR Curve](reports/figures/pr_curve_skab_original.png)
-
-BATADAL'da Average Precision değerinin no-skill baseline seviyesine yakın veya altında kalması, transition-probability tabanlı anomaly score'un bu veri setinde güçlü bir sıralama skoru üretmediğini göstermektedir. SKAB tarafında da original fixed ayarda recall düşük kalmıştır. Bu nedenle otomata modelinin predictive performance açısından sınırlı; açıklanabilirlik açısından güçlü olduğu sonucuna varılmıştır.
 
 ---
 
@@ -616,7 +607,7 @@ Python 3.11 önerilir.
 
 ```powershell
 py -3.11 -m venv .venv
-.\.venv\Scriptsctivate
+.\.venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
@@ -783,7 +774,7 @@ reports/figures/deep_learning/.../roc_curve.png
 2. PAA ve SAX dönüşümleri yorumlanabilir sembolik yapı sağlasa da ince sensör değişimlerini kaybettirebilir.
 3. BATADAL üzerinde hem otomata hem DL modelleri sınıf dengesizliği ve veri karakteristiği nedeniyle zorlanmıştır.
 4. Unseen-only sonuçları full-test sonuçlarıyla doğrudan karşılaştırılmamalıdır.
-5. Bu zip içinde runtime için sayısal süre ölçümü bulunmadığından runtime analizi nitel olarak verilmiştir.
+5. Bu sürümde runtime için sayısal süre ölçümü yapılmadığından runtime analizi nitel olarak verilmiştir.
 6. DL tarafında bu sürümde LSTM ve 1D-CNN modelleri bulunmaktadır; GRU çıktısı mevcut değildir.
 
 ---
