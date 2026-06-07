@@ -17,3 +17,27 @@ SKAB üzerinde deep learning modelleri güçlü çalıştı; BATADAL üzerinde i
 ```
 
 Deep learning modelleri performans açısından özellikle SKAB'de başarılıdır; ancak kararlarını automata modeli gibi state transition ve probability üzerinden açıklayamaz. Bu nedenle proje sonucunda deep learning tarafı "yüksek tahmin performansı", automata tarafı ise "açıklanabilir karar süreci" temsil etmektedir.
+
+## Deep Learning Training Environment and Artifact Index
+
+Deep learning full training deneyleri Huawei MateBook 14 laptop üzerinde, Intel Core Ultra 5 125H işlemci ve Python 3.13.3 sanal ortamı ile çalıştırılmıştır. Eğitim yaklaşık 7 dakika sürmüştür. Bu süre LSTM ve 1D-CNN modellerinin SKAB ve BATADAL üzerinde 5 seed protokolüyle çalıştırılmasını kapsamaktadır.
+
+Deep learning deneyleri için ana komutlar şunlardır:
+
+```powershell
+python -m src.experiments.run_dl_experiments
+python -m src.experiments.summarize_dl_results
+```
+
+Full training çıktıları `reports/results/deep_learning/`, `reports/tables/deep_learning/` ve `reports/figures/deep_learning/` klasörlerinde tutulur. Smoke çıktıları final deneylerle karışmaması için `reports/results/smoke/` altında ayrı tutulmuştur. Smoke testlerin amacı model kalitesini ölçmek değil, kodun hızlı biçimde çalışabildiğini doğrulamaktır.
+
+Rapor için seçilen deep learning görselleri `reports/figures/readme/` klasörüne kopyalanmıştır. Bu klasördeki dosyalar, ham deney çıktılarının düzenlenmiş ve README içinde kullanılan kopyalarıdır:
+
+| Dosya | Ne gösteriyor? |
+|---|---|
+| `skab_lstm_confusion_matrix_seed42.png` | SKAB üzerinde LSTM modelinin doğru/yanlış sınıflandırma dağılımı. |
+| `skab_lstm_precision_recall_seed42.png` | SKAB üzerinde LSTM modelinin precision-recall davranışı. |
+| `batadal_lstm_confusion_matrix_seed42.png` | BATADAL üzerinde LSTM modelinin anomaly yakalama davranışı. |
+| `batadal_cnn1d_confusion_matrix_seed42.png` | BATADAL üzerinde CNN1D modelinin anomaly sınıfını yakalayamadığını gösteren confusion matrix. |
+
+Bu artefact seçimi özellikle BATADAL'daki accuracy/F1 çelişkisini ve SKAB'deki LSTM başarısını sunumda hızlı anlatmak için yapılmıştır.
