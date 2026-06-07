@@ -1,0 +1,38 @@
+[
+  {
+    "dataset": "skab",
+    "comparison": "automata_vs_lstm_f1",
+    "test": "wilcoxon_signed_rank",
+    "statistic": 0.0,
+    "p_value": 0.0625,
+    "n_pairs": 5,
+    "significant_at_0_05": false
+  },
+  {
+    "dataset": "skab",
+    "comparison": "automata_vs_cnn1d_f1",
+    "test": "wilcoxon_signed_rank",
+    "statistic": 0.0,
+    "p_value": 0.0625,
+    "n_pairs": 5,
+    "significant_at_0_05": false
+  },
+  {
+    "dataset": "skab",
+    "comparison": "lstm_vs_cnn1d_f1",
+    "test": "wilcoxon_signed_rank",
+    "statistic": 5.0,
+    "p_value": 5.960464477539062e-07,
+    "n_pairs": 25,
+    "significant_at_0_05": true
+  },
+  {
+    "dataset": "batadal",
+    "comparison": "lstm_vs_cnn1d_f1",
+    "test": "wilcoxon_signed_rank",
+    "statistic": 0.0,
+    "p_value": 0.125,
+    "n_pairs": 5,
+    "significant_at_0_05": false
+  }
+]
