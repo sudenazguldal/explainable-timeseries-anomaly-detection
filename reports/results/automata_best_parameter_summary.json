@@ -1,0 +1,30 @@
+[
+  {
+    "dataset": "BATADAL",
+    "best_window_size": 6,
+    "best_alphabet_size": 5,
+    "best_f1_score": 0.2566371681415929,
+    "state_count": 229.0,
+    "transition_density": 0.0045384336683129,
+    "source_file": "reports\\results\\automata_parameter_sweep_batadal.csv",
+    "accuracy": 0.328,
+    "precision": 0.1542553191489361,
+    "recall": 0.7631578947368421
+  },
+  {
+    "dataset": "SKAB",
+    "best_window_size": 6,
+    "best_alphabet_size": 6,
+    "best_f1_score": 0.437855065828019,
+    "state_count": 125.6,
+    "transition_density": 0.0095199809723306,
+    "source_file": "reports\\results\\automata_parameter_sweep_skab.csv",
+    "accuracy": 0.5584,
+    "precision": 0.5252013088632808,
+    "recall": 0.3815635659555386,
+    "f1_score_std": 0.0296080691661385,
+    "accuracy_std": 0.0252348964729399,
+    "precision_std": 0.0360635195776283,
+    "recall_std": 0.0610457606749696
+  }
+]

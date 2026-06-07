@@ -1,0 +1,46 @@
+[
+  {
+    "model_name": "sequence_windows",
+    "window_count": 9,
+    "feature_count": 2,
+    "target_count": 9,
+    "output_shape": [
+      9,
+      4,
+      2
+    ],
+    "metrics": {}
+  },
+  {
+    "model_name": "lstm",
+    "window_count": 9,
+    "feature_count": 2,
+    "output_shape": [
+      2,
+      1
+    ],
+    "metrics": {}
+  },
+  {
+    "model_name": "cnn1d",
+    "window_count": 9,
+    "feature_count": 2,
+    "output_shape": [
+      2,
+      1
+    ],
+    "metrics": {}
+  },
+  {
+    "model_name": "metric_calculation",
+    "window_count": 0,
+    "feature_count": 0,
+    "output_shape": [],
+    "metrics": {
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1_score": 0.5
+    }
+  }
+]

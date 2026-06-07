@@ -1,0 +1,542 @@
+[
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\lstm\\skab_split_1_lstm_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_1\\cnn1d\\skab_split_1_cnn1d_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\lstm\\skab_split_2_lstm_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_2\\cnn1d\\skab_split_2_cnn1d_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\lstm\\skab_split_3_lstm_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_3\\cnn1d\\skab_split_3_cnn1d_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\lstm\\skab_split_4_lstm_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_4\\cnn1d\\skab_split_4_cnn1d_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\lstm\\skab_split_5_lstm_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\skab\\split_5\\cnn1d\\skab_split_5_cnn1d_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\lstm\\batadal_split_1_lstm_seed_999_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_42_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_42_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_42_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_123_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_123_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_123_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_2026_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_2026_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_2026_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_7_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_7_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_7_roc_curve.png"
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_999_confusion_matrix.png",
+    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_999_precision_recall_curve.png",
+    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_999_roc_curve.png"
+  }
+]

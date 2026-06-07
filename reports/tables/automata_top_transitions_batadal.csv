@@ -1,0 +1,16 @@
+current_state,next_state,count,probability
+aaca,acac,5,1.0
+abba,bbac,4,1.0
+cacc,acca,3,1.0
+abcc,bcca,3,1.0
+ccac,caca,2,1.0
+aacc,accb,2,1.0
+ccbb,cbbb,2,1.0
+acba,cbab,2,1.0
+ccbc,cbca,2,1.0
+babb,abbc,2,1.0
+acbb,cbbc,2,1.0
+cbbc,bbca,2,1.0
+bbbb,bbbc,1,1.0
+bbba,bbac,1,1.0
+bacb,acba,1,1.0

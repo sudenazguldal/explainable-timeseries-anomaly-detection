@@ -1,0 +1,16 @@
+current_state,next_state,count,probability
+baaa,aaaa,11,1.0
+bbaa,baaa,4,1.0
+abbb,bbbb,3,1.0
+abab,baba,3,1.0
+ccba,cbaa,1,1.0
+cbaa,baaa,1,1.0
+baab,aabb,1,1.0
+aaac,aacc,1,1.0
+aacc,accc,1,1.0
+accc,cccc,1,1.0
+ccbc,cbcc,1,1.0
+cbcc,bccc,1,1.0
+bccc,cccc,1,1.0
+cbbc,bbcc,1,1.0
+bbcc,bccb,1,1.0

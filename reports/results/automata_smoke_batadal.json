@@ -1,0 +1,86 @@
+{
+  "dataset": "BATADAL",
+  "target_column": "ATT_FLAG",
+  "time_column": "DATETIME",
+  "feature_column_count": 43,
+  "train_rows": 2506,
+  "validation_rows": 835,
+  "test_rows": 836,
+  "paa_segments": {
+    "configured": 8,
+    "train_used": 8,
+    "test_used": 8
+  },
+  "automata_parameters": {
+    "window_size": 4,
+    "alphabet_size": 3,
+    "smoothing": "1e-6"
+  },
+  "automata_summary": {
+    "state_count": 5,
+    "transition_density": 0.16,
+    "train_pattern_count": 5,
+    "test_pattern_count": 5,
+    "unseen_test_pattern_count": 5
+  },
+  "sample_transition_explanation": {
+    "time_step": 1,
+    "state": "aacc",
+    "pattern": "cacb",
+    "status": "unseen",
+    "mapped_to": "aacc",
+    "probability": 1e-06,
+    "decision": "anomaly",
+    "confidence": 1e-06,
+    "edit_distance": 2
+  },
+  "sample_path_explanation": {
+    "start_time_step": 1,
+    "end_time_step": 5,
+    "transitions": [
+      {
+        "time_step": 2,
+        "state": "abbb",
+        "pattern": "bbba",
+        "status": "seen",
+        "mapped_to": "bbba",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      },
+      {
+        "time_step": 3,
+        "state": "bbba",
+        "pattern": "bbaa",
+        "status": "seen",
+        "mapped_to": "bbaa",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      },
+      {
+        "time_step": 4,
+        "state": "bbaa",
+        "pattern": "baac",
+        "status": "seen",
+        "mapped_to": "baac",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      },
+      {
+        "time_step": 5,
+        "state": "baac",
+        "pattern": "aacc",
+        "status": "seen",
+        "mapped_to": "aacc",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      }
+    ],
+    "path_probability": 1.0,
+    "decision": "normal",
+    "confidence": 1.0
+  }
+}

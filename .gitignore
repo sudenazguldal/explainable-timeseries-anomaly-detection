@@ -7,22 +7,20 @@ venv/
 AI_AGENT_RULES.md
 PROJECT_SPEC.md
 
-data/raw/
-data/raw/*
+
 data/interim/*
 data/processed/*
 
-!data/raw/.gitkeep
+
 !data/interim/.gitkeep
 !data/processed/.gitkeep
 
-reports/results/*
-reports/figures/*
-reports/tables/*
 
-!reports/results/.gitkeep
-!reports/figures/.gitkeep
-!reports/tables/.gitkeep
+
+reports/results/deep_learning/checkpoints/
+*.pt
+*.pth
+*.ckpt
 
 .ipynb_checkpoints/
 .DS_Store

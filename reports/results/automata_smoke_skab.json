@@ -1,0 +1,89 @@
+{
+  "dataset": "SKAB",
+  "target_column": "anomaly",
+  "normalized_target_column": "label",
+  "group_column": "source_file",
+  "feature_column_count": 8,
+  "train_rows": 17982,
+  "test_rows": 4490,
+  "train_group_count": 16,
+  "test_group_count": 4,
+  "no_group_leakage": true,
+  "paa_segments": {
+    "configured": 8,
+    "train_used": 8,
+    "test_used": 8
+  },
+  "automata_parameters": {
+    "window_size": 4,
+    "alphabet_size": 3,
+    "smoothing": "1e-6"
+  },
+  "automata_summary": {
+    "state_count": 5,
+    "transition_density": 0.16,
+    "train_pattern_count": 5,
+    "test_pattern_count": 5,
+    "unseen_test_pattern_count": 5
+  },
+  "sample_transition_explanation": {
+    "time_step": 1,
+    "state": "aacb",
+    "pattern": "baba",
+    "status": "unseen",
+    "mapped_to": "bbaa",
+    "probability": 1e-06,
+    "decision": "anomaly",
+    "confidence": 1e-06,
+    "edit_distance": 2
+  },
+  "sample_path_explanation": {
+    "start_time_step": 1,
+    "end_time_step": 5,
+    "transitions": [
+      {
+        "time_step": 2,
+        "state": "caac",
+        "pattern": "aacb",
+        "status": "seen",
+        "mapped_to": "aacb",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      },
+      {
+        "time_step": 3,
+        "state": "aacb",
+        "pattern": "acbb",
+        "status": "seen",
+        "mapped_to": "acbb",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      },
+      {
+        "time_step": 4,
+        "state": "acbb",
+        "pattern": "cbba",
+        "status": "seen",
+        "mapped_to": "cbba",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      },
+      {
+        "time_step": 5,
+        "state": "cbba",
+        "pattern": "bbaa",
+        "status": "seen",
+        "mapped_to": "bbaa",
+        "probability": 1.0,
+        "decision": "normal",
+        "confidence": 1.0
+      }
+    ],
+    "path_probability": 1.0,
+    "decision": "normal",
+    "confidence": 1.0
+  }
+}

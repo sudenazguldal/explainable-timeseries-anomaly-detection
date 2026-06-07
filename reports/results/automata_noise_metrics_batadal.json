@@ -1,0 +1,199 @@
+{
+  "dataset": "BATADAL",
+  "scenario": "gaussian_noise",
+  "evaluation_scope": "full_noisy_test_transitions_with_unseen_handling",
+  "noise": {
+    "mean": 0.0,
+    "std": 0.05,
+    "applied_to": "scaled_test_features"
+  },
+  "target_column": "ATT_FLAG",
+  "time_column": "DATETIME",
+  "feature_column_count": 43,
+  "train_rows": 2506,
+  "validation_rows": 835,
+  "test_rows": 836,
+  "automata_parameters": {
+    "window_size": 4,
+    "alphabet_size": 3,
+    "paa_segments": 256,
+    "fallback_probability": 1e-06,
+    "anomaly_threshold": 0.05
+  },
+  "automata_summary": {
+    "state_count": 64,
+    "transition_density": 0.02685546875,
+    "train_pattern_count": 253,
+    "test_pattern_count": 253,
+    "unseen_test_pattern_count": 69,
+    "unseen_ratio": 0.2727272727272727
+  },
+  "metrics": {
+    "accuracy": 0.47619047619047616,
+    "precision": 0.1171875,
+    "recall": 0.4411764705882353,
+    "f1_score": 0.18518518518518517
+  },
+  "confusion_matrix": [
+    [
+      105,
+      113
+    ],
+    [
+      19,
+      15
+    ]
+  ],
+  "sample_explanations": [
+    {
+      "time_step": 1,
+      "previous_state": "abac",
+      "pattern": "bacb",
+      "status": "seen",
+      "mapped_to": "bacb",
+      "probability": 1e-06,
+      "path_probability_so_far": 1e-06,
+      "prediction": 1,
+      "decision": "anomaly",
+      "confidence": 1e-06,
+      "decision_reason": "low_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 2,
+      "previous_state": "bacb",
+      "pattern": "acbc",
+      "status": "seen",
+      "mapped_to": "acbc",
+      "probability": 1e-06,
+      "path_probability_so_far": 1e-12,
+      "prediction": 1,
+      "decision": "anomaly",
+      "confidence": 1e-12,
+      "decision_reason": "low_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 3,
+      "previous_state": "acbc",
+      "pattern": "cbcc",
+      "status": "seen",
+      "mapped_to": "cbcc",
+      "probability": 0.16666666666666666,
+      "path_probability_so_far": 1.6666666666666665e-13,
+      "prediction": 0,
+      "decision": "normal",
+      "confidence": 1.6666666666666665e-13,
+      "decision_reason": "high_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 4,
+      "previous_state": "cbcc",
+      "pattern": "bcca",
+      "status": "seen",
+      "mapped_to": "bcca",
+      "probability": 0.6666666666666666,
+      "path_probability_so_far": 1.111111111111111e-13,
+      "prediction": 0,
+      "decision": "normal",
+      "confidence": 1.111111111111111e-13,
+      "decision_reason": "high_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 5,
+      "previous_state": "bcca",
+      "pattern": "ccab",
+      "status": "seen",
+      "mapped_to": "ccab",
+      "probability": 0.42857142857142855,
+      "path_probability_so_far": 4.761904761904761e-14,
+      "prediction": 0,
+      "decision": "normal",
+      "confidence": 4.761904761904761e-14,
+      "decision_reason": "high_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 6,
+      "previous_state": "ccab",
+      "pattern": "cabb",
+      "status": "seen",
+      "mapped_to": "cabb",
+      "probability": 0.4,
+      "path_probability_so_far": 1.9047619047619047e-14,
+      "prediction": 0,
+      "decision": "normal",
+      "confidence": 1.9047619047619047e-14,
+      "decision_reason": "high_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 7,
+      "previous_state": "cabb",
+      "pattern": "abbc",
+      "status": "seen",
+      "mapped_to": "abbc",
+      "probability": 0.3333333333333333,
+      "path_probability_so_far": 6.349206349206349e-15,
+      "prediction": 0,
+      "decision": "normal",
+      "confidence": 6.349206349206349e-15,
+      "decision_reason": "high_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 8,
+      "previous_state": "abbc",
+      "pattern": "bbcc",
+      "status": "seen",
+      "mapped_to": "bbcc",
+      "probability": 0.3333333333333333,
+      "path_probability_so_far": 2.116402116402116e-15,
+      "prediction": 0,
+      "decision": "normal",
+      "confidence": 2.116402116402116e-15,
+      "decision_reason": "high_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 9,
+      "previous_state": "bbcc",
+      "pattern": "bccc",
+      "status": "seen",
+      "mapped_to": "bccc",
+      "probability": 1e-06,
+      "path_probability_so_far": 2.116402116402116e-21,
+      "prediction": 1,
+      "decision": "anomaly",
+      "confidence": 2.116402116402116e-21,
+      "decision_reason": "low_probability_path",
+      "true_label": 0,
+      "edit_distance": null
+    },
+    {
+      "time_step": 10,
+      "previous_state": "bccc",
+      "pattern": "ccca",
+      "status": "unseen",
+      "mapped_to": "acca",
+      "probability": 1e-06,
+      "path_probability_so_far": 2.116402116402116e-27,
+      "prediction": 1,
+      "decision": "anomaly",
+      "confidence": 2.116402116402116e-27,
+      "decision_reason": "low_probability_path",
+      "true_label": 0,
+      "edit_distance": 1
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "dataset_name": "batadal",
+    "model_name": "cnn1d",
+    "run_count": 5,
+    "accuracy_mean": 0.9006211180124224,
+    "accuracy_std": 0.0,
+    "precision_mean": 0.0,
+    "precision_std": 0.0,
+    "recall_mean": 0.0,
+    "recall_std": 0.0,
+    "f1_score_mean": 0.0,
+    "f1_score_std": 0.0
+  },
+  {
+    "dataset_name": "batadal",
+    "model_name": "lstm",
+    "run_count": 5,
+    "accuracy_mean": 0.9140372670807453,
+    "accuracy_std": 0.021719600810620573,
+    "precision_mean": 0.6109030100334447,
+    "precision_std": 0.3857309399984105,
+    "recall_mean": 0.1825,
+    "recall_std": 0.2820959499886519,
+    "f1_score_mean": 0.22686046036891572,
+    "f1_score_std": 0.3118579723496525
+  },
+  {
+    "dataset_name": "skab",
+    "model_name": "cnn1d",
+    "run_count": 25,
+    "accuracy_mean": 0.8811050072059311,
+    "accuracy_std": 0.0600016652036129,
+    "precision_mean": 0.9407228773266901,
+    "precision_std": 0.07106536805962348,
+    "recall_mean": 0.7113612049813084,
+    "recall_std": 0.1659195390935781,
+    "f1_score_mean": 0.7980495948949757,
+    "f1_score_std": 0.12028674584640944
+  },
+  {
+    "dataset_name": "skab",
+    "model_name": "lstm",
+    "run_count": 25,
+    "accuracy_mean": 0.9081501811322222,
+    "accuracy_std": 0.043070482700923854,
+    "precision_mean": 0.9641105175627308,
+    "precision_std": 0.050995278718206666,
+    "recall_mean": 0.7730048450465941,
+    "recall_std": 0.12963935367185547,
+    "f1_score_mean": 0.8500157022556593,
+    "f1_score_std": 0.08223237432874671
+  }
+]

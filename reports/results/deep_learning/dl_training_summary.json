@@ -1,0 +1,2722 @@
+[
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 42,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2234724480572135,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\lstm\\lstm_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.22943465666798943,
+        "validation_loss": 0.2234724480572135
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17850892398993262,
+        "validation_loss": 0.24925794379828975
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1461010881545085,
+        "validation_loss": 0.5521336109511727
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1559387251931665,
+        "validation_loss": 0.3298220680489443
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13744342201847512,
+        "validation_loss": 0.3849986618187625
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12037964428989723,
+        "validation_loss": 0.4608399386963872
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 123,
+    "best_epoch": 3,
+    "best_validation_loss": 0.17556224182594654,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\lstm\\lstm_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2360885225203594,
+        "validation_loss": 0.23533954185455344
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.16874639535440397,
+        "validation_loss": 0.2196877085434836
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15913224977149837,
+        "validation_loss": 0.17556224182594654
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14284500103121112,
+        "validation_loss": 0.21290772100087516
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1390958728747396,
+        "validation_loss": 0.29665098913057253
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12568740981922275,
+        "validation_loss": 0.42313941287374945
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.10936942840550265,
+        "validation_loss": 0.3934511123316059
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.11348211796032524,
+        "validation_loss": 0.25589499565057977
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 2026,
+    "best_epoch": 2,
+    "best_validation_loss": 0.19590439067763646,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\lstm\\lstm_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2409551184126634,
+        "validation_loss": 0.20973010410403095
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.15949210796762317,
+        "validation_loss": 0.19590439067763646
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15038799445928455,
+        "validation_loss": 0.31233914864184553
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14087856324627537,
+        "validation_loss": 0.20326542291530342
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12901549887584957,
+        "validation_loss": 0.31929500476825373
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.10733018341951521,
+        "validation_loss": 0.3724441695624833
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.11565806292347533,
+        "validation_loss": 0.3828965445408641
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2389713947319014,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\lstm\\lstm_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.216187858345225,
+        "validation_loss": 0.2389713947319014
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1583207282660291,
+        "validation_loss": 0.3386242140067178
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15448195806837117,
+        "validation_loss": 0.2813081001906201
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.13655408892818835,
+        "validation_loss": 0.4061319482079599
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12043061535832815,
+        "validation_loss": 0.38515077246093127
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11495108391088536,
+        "validation_loss": 0.4305488228771922
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 999,
+    "best_epoch": 2,
+    "best_validation_loss": 0.20924250860200372,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\lstm\\lstm_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2254401253577371,
+        "validation_loss": 0.22098671409279802
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17143217586035595,
+        "validation_loss": 0.20924250860200372
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15274954576171093,
+        "validation_loss": 0.23022504599201818
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.13121845773783636,
+        "validation_loss": 0.277429797538058
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.11517414186319416,
+        "validation_loss": 0.24279891982631283
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.1269773432916569,
+        "validation_loss": 0.27083678474086664
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.124207918799418,
+        "validation_loss": 0.294471958410428
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "best_epoch": 1,
+    "best_validation_loss": 0.3055577099834417,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\cnn1d\\cnn1d_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26820743180669177,
+        "validation_loss": 0.3055577099834417
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20747221245727174,
+        "validation_loss": 0.3098727541685451
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17191046904362245,
+        "validation_loss": 0.3918324077718209
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15543237942956092,
+        "validation_loss": 0.36798216020905
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1345663305191479,
+        "validation_loss": 0.39938699898347907
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12470875876721832,
+        "validation_loss": 0.5152686550832081
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.29333949088530487,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\cnn1d\\cnn1d_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2678199421991861,
+        "validation_loss": 0.29333949088530487
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.204178062470824,
+        "validation_loss": 0.32020858354065135
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17960960674215867,
+        "validation_loss": 0.44531616902523025
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1564080697247723,
+        "validation_loss": 0.5133006944170019
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1421219680977988,
+        "validation_loss": 0.5688249795017818
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12610423157262382,
+        "validation_loss": 0.6165011807194595
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2760016033529889,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\cnn1d\\cnn1d_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2678783668032827,
+        "validation_loss": 0.2760016033529889
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1996971060044615,
+        "validation_loss": 0.3440889916990797
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1776872756941553,
+        "validation_loss": 0.49373017342187203
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15743919820162344,
+        "validation_loss": 0.402080221982486
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13840547770743153,
+        "validation_loss": 0.4359601139760479
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12789586146803855,
+        "validation_loss": 0.49389896644471665
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "best_epoch": 2,
+    "best_validation_loss": 0.29989786452115624,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\cnn1d\\cnn1d_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2628007830939804,
+        "validation_loss": 0.31487203140938
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.19224885888452398,
+        "validation_loss": 0.29989786452115624
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17661076990802732,
+        "validation_loss": 0.3706454794016277
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1500975404235585,
+        "validation_loss": 0.4070159913872864
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13682936184031672,
+        "validation_loss": 0.5603926401079069
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12188449751438023,
+        "validation_loss": 0.42578378550304224
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.1154334596272082,
+        "validation_loss": 0.45341721215304986
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.33633917691575926,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_1\\cnn1d\\cnn1d_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26656055854805766,
+        "validation_loss": 0.33633917691575926
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20214178062833177,
+        "validation_loss": 0.3964421891025809
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.170843651658813,
+        "validation_loss": 0.4495195207723178
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15473870132200518,
+        "validation_loss": 0.43056032675429423
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13416545051922707,
+        "validation_loss": 0.4146303704300852
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12660111291293005,
+        "validation_loss": 0.44992915625692426
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 42,
+    "best_epoch": 2,
+    "best_validation_loss": 0.17738813353494895,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\lstm\\lstm_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2540216966677138,
+        "validation_loss": 0.2867677990400097
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20289107058239877,
+        "validation_loss": 0.17738813353494895
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1669715652021656,
+        "validation_loss": 0.18162195090031963
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14946586854744331,
+        "validation_loss": 0.5024304535826656
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1274371632643655,
+        "validation_loss": 0.3411362650460473
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.110009529681406,
+        "validation_loss": 0.3768162358623102
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.09913649077169309,
+        "validation_loss": 0.47650501114845356
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.193471786941426,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\lstm\\lstm_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2561668954177601,
+        "validation_loss": 0.193471786941426
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17771148372762396,
+        "validation_loss": 0.21014528714397093
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17458682392072708,
+        "validation_loss": 0.34688230698730954
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1620376713071325,
+        "validation_loss": 0.39105488267350996
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1482168598402575,
+        "validation_loss": 0.38663242215265897
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12459660546877646,
+        "validation_loss": 0.49020408374927377
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.18033886407593805,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\lstm\\lstm_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26690536024773004,
+        "validation_loss": 0.18033886407593805
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.18434769631144798,
+        "validation_loss": 0.20765175145838524
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17712831768072596,
+        "validation_loss": 0.23986944276625988
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14839269727835824,
+        "validation_loss": 0.38348786739896384
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1277986578393118,
+        "validation_loss": 0.2753567439243488
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12127771908419406,
+        "validation_loss": 0.4953906994354849
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 7,
+    "best_epoch": 3,
+    "best_validation_loss": 0.20097522841102894,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\lstm\\lstm_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.24306642535172915,
+        "validation_loss": 0.20216882223727123
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17923073889285543,
+        "validation_loss": 0.25204626103484784
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15970471694089977,
+        "validation_loss": 0.20097522841102894
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15388616822845286,
+        "validation_loss": 0.23305614703752917
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1344330504605916,
+        "validation_loss": 0.3301195837980062
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12743601705806112,
+        "validation_loss": 0.29915147549175974
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.09994894583667677,
+        "validation_loss": 0.38829244864320556
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.08303313125830857,
+        "validation_loss": 0.41377067060223904
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "lstm",
+    "seed": 999,
+    "best_epoch": 2,
+    "best_validation_loss": 0.18127391135669366,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\lstm\\lstm_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.24949500454673998,
+        "validation_loss": 0.3433949643526532
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.18512115465788215,
+        "validation_loss": 0.18127391135669366
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17108220828486612,
+        "validation_loss": 0.3004566022800858
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14675617396693488,
+        "validation_loss": 0.3491427962151977
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13393805474779757,
+        "validation_loss": 0.43864584803847695
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11280036652160312,
+        "validation_loss": 0.41850535005351536
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.09466843587246775,
+        "validation_loss": 0.5106242728523794
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "best_epoch": 1,
+    "best_validation_loss": 0.29631243237234045,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\cnn1d\\cnn1d_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2743406723355779,
+        "validation_loss": 0.29631243237234045
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20599336426049916,
+        "validation_loss": 0.46740279865961654
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17476978902227633,
+        "validation_loss": 0.5611856400706752
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15120545041078096,
+        "validation_loss": 0.5890070488672159
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.14076480693294163,
+        "validation_loss": 0.6719300561562688
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11883431433953873,
+        "validation_loss": 0.7484417457198799
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.4098181431442209,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\cnn1d\\cnn1d_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2786625765466947,
+        "validation_loss": 0.4098181431442209
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20498261733368425,
+        "validation_loss": 0.5897578742766618
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1796716752401119,
+        "validation_loss": 0.5932241296536308
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15878796699256226,
+        "validation_loss": 0.9480834773569609
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1322850819031808,
+        "validation_loss": 0.7636171694860368
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12114863313777974,
+        "validation_loss": 0.5126779422857385
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.3272042577620382,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\cnn1d\\cnn1d_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2780236402920088,
+        "validation_loss": 0.3272042577620382
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.2062639675287138,
+        "validation_loss": 0.5948843252608115
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.18344819867326745,
+        "validation_loss": 0.6986010749574549
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1615156244286682,
+        "validation_loss": 0.8237502344451411
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13125153978673001,
+        "validation_loss": 0.8802483633166143
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11630091812557572,
+        "validation_loss": 0.6787598825076164
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.32851340279071933,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\cnn1d\\cnn1d_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2700282987791442,
+        "validation_loss": 0.32851340279071933
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20395118523166667,
+        "validation_loss": 0.6206244539780281
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17151154197312007,
+        "validation_loss": 0.5008079151134871
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15477667795889438,
+        "validation_loss": 0.783099680696176
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13197204883278618,
+        "validation_loss": 0.8423918528353787
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12026426270884583,
+        "validation_loss": 0.8022058449838445
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_2",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.32914318861004266,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_2\\cnn1d\\cnn1d_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.27317223070631064,
+        "validation_loss": 0.32914318861004266
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.2065814298865135,
+        "validation_loss": 0.4854917773692796
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17948232120768648,
+        "validation_loss": 0.4838236203363111
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1508498040765262,
+        "validation_loss": 0.8460094169907858
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.14298624160791448,
+        "validation_loss": 0.5065696886484415
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12232728442922977,
+        "validation_loss": 0.54797476799479
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 42,
+    "best_epoch": 5,
+    "best_validation_loss": 0.1923617173858735,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\lstm\\lstm_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2354842280757004,
+        "validation_loss": 1.127150586311148
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.16987077359172104,
+        "validation_loss": 0.29696732280311977
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.2044881863639959,
+        "validation_loss": 0.20747044727684008
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.17697017667852116,
+        "validation_loss": 0.43527000735351146
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.17471063839873163,
+        "validation_loss": 0.1923617173858735
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.14905399894318513,
+        "validation_loss": 0.23076936452074814
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.13515141022001725,
+        "validation_loss": 0.24485234460675723
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.127233197818221,
+        "validation_loss": 0.27391664458821324
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.1220044875162293,
+        "validation_loss": 0.3460954514143428
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.10702707811911935,
+        "validation_loss": 0.3884952084054663
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.18528935789618795,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\lstm\\lstm_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.23243924199617624,
+        "validation_loss": 0.18528935789618795
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1680721668064366,
+        "validation_loss": 0.45223839035894736
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1577237667829926,
+        "validation_loss": 0.2813760927890438
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15286691058353039,
+        "validation_loss": 0.21453367005583576
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13467359621620303,
+        "validation_loss": 0.24801590209342123
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11854720786197417,
+        "validation_loss": 0.26479618367587554
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 2026,
+    "best_epoch": 4,
+    "best_validation_loss": 0.18142381942567856,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\lstm\\lstm_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.24308314387585203,
+        "validation_loss": 0.6073676429439655
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17281774241554598,
+        "validation_loss": 0.19503256769289978
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16534605693714446,
+        "validation_loss": 0.20039105040391691
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.16394867193918747,
+        "validation_loss": 0.18142381942567856
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.14528141511617082,
+        "validation_loss": 0.2095644760272746
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.13324837710534485,
+        "validation_loss": 0.2246322413351643
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.11717048767932717,
+        "validation_loss": 0.2572621294852523
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.10758468639442925,
+        "validation_loss": 0.2922727859089563
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.0862625218881781,
+        "validation_loss": 0.39555228227019384
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 7,
+    "best_epoch": 5,
+    "best_validation_loss": 0.20651524547369784,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\lstm\\lstm_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.22876339754606184,
+        "validation_loss": 0.3290345830545106
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17673196139681097,
+        "validation_loss": 0.5780233257003544
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16889185545588345,
+        "validation_loss": 0.23849516233245818
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.17893173989386327,
+        "validation_loss": 0.2140823595682817
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.18686355219912834,
+        "validation_loss": 0.20651524547369784
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.15094129296417108,
+        "validation_loss": 0.2256165398622354
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.13812968297309525,
+        "validation_loss": 0.22224507905667487
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.1212278664915187,
+        "validation_loss": 0.23538100879966561
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.14508030119805568,
+        "validation_loss": 0.30962125846222877
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.13710698965613796,
+        "validation_loss": 0.26248812245301983
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "lstm",
+    "seed": 999,
+    "best_epoch": 4,
+    "best_validation_loss": 0.21261230236409254,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\lstm\\lstm_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.23675142097606555,
+        "validation_loss": 0.2173271834171727
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1779193773135014,
+        "validation_loss": 0.5360047919900749
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16600319555767365,
+        "validation_loss": 0.2244197836112868
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14962676735360358,
+        "validation_loss": 0.21261230236409254
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12292333784690224,
+        "validation_loss": 0.2367368373525637
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11764241755145838,
+        "validation_loss": 0.2361958988307764
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.12396533672779167,
+        "validation_loss": 1.152210134197525
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.11222831411401016,
+        "validation_loss": 0.2900209910392962
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.08368430649739639,
+        "validation_loss": 0.3595974679701342
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "best_epoch": 2,
+    "best_validation_loss": 0.23447036061182333,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\cnn1d\\cnn1d_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2586329087555768,
+        "validation_loss": 0.25453307720381146
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20546937901968282,
+        "validation_loss": 0.23447036061182333
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16879968955386565,
+        "validation_loss": 0.29403180968788667
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15366898798315887,
+        "validation_loss": 0.27034579701928857
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1341850325331353,
+        "validation_loss": 0.27786013413005123
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.1174357581146949,
+        "validation_loss": 0.29557422732243654
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.10005127746206445,
+        "validation_loss": 0.3758873060850517
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2576812031484325,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\cnn1d\\cnn1d_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.25880222515142853,
+        "validation_loss": 0.2576812031484325
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20220997404927551,
+        "validation_loss": 0.27564257290257577
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17231182939234582,
+        "validation_loss": 0.2990299290390473
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15112433117856738,
+        "validation_loss": 0.3403692603873809
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13772079898443546,
+        "validation_loss": 0.35537650823030215
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11917769666961385,
+        "validation_loss": 0.39938837699170704
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.22262251979392714,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\cnn1d\\cnn1d_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.25801319836968967,
+        "validation_loss": 0.22262251979392714
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20408425368659364,
+        "validation_loss": 0.2543174211084812
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17427237548220406,
+        "validation_loss": 0.2963227187528123
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15824474297938948,
+        "validation_loss": 0.33390731866756546
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1337661647033909,
+        "validation_loss": 0.3325492148368739
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12860054245289673,
+        "validation_loss": 0.3373098272637557
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2552313822766049,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\cnn1d\\cnn1d_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2640879676568808,
+        "validation_loss": 0.2552313822766049
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20058395399241222,
+        "validation_loss": 0.2721775348631918
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17833643948170805,
+        "validation_loss": 0.29685532131563824
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1557305379550037,
+        "validation_loss": 0.33269151826733184
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13131291492226513,
+        "validation_loss": 0.29557810585624944
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12119404443662694,
+        "validation_loss": 0.3571969155207991
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_3",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.23442724118741456,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_3\\cnn1d\\cnn1d_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26059371551591753,
+        "validation_loss": 0.23442724118741456
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1991362061157895,
+        "validation_loss": 0.246091113733924
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1754728836280189,
+        "validation_loss": 0.3964224868135087
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1568411833316882,
+        "validation_loss": 0.3064442585255097
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13446840745257166,
+        "validation_loss": 0.2504385743827038
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11842938714105695,
+        "validation_loss": 0.26570562069266634
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 42,
+    "best_epoch": 1,
+    "best_validation_loss": 0.16897588049267614,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\lstm\\lstm_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.23132454773124794,
+        "validation_loss": 0.16897588049267614
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.16806966894217978,
+        "validation_loss": 0.19358428875869804
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.14639601221190474,
+        "validation_loss": 0.41654529033350146
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.11895007759488231,
+        "validation_loss": 0.5423353046003256
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.10173956340669262,
+        "validation_loss": 0.662803777458185
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.16312215860850074,
+        "validation_loss": 0.5953896624463397
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2787579537200276,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\lstm\\lstm_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.22353607048471924,
+        "validation_loss": 0.2787579537200276
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.15077259828304423,
+        "validation_loss": 0.32973567927306263
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.13227753854483315,
+        "validation_loss": 0.3224686001321091
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.13493063710106795,
+        "validation_loss": 0.44023062741347796
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.11534502263078268,
+        "validation_loss": 0.5493211476084413
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12956634386042779,
+        "validation_loss": 0.6044357013626512
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.20751821160789852,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\lstm\\lstm_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2408731195665652,
+        "validation_loss": 0.20751821160789852
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1624280162115639,
+        "validation_loss": 0.2142565732080419
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.14117032776098967,
+        "validation_loss": 0.23765693880514066
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.12268446764168726,
+        "validation_loss": 0.415886044116981
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1219693460455784,
+        "validation_loss": 0.5526879768067207
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.09632541795911918,
+        "validation_loss": 0.5449211452751517
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.19863004580703997,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\lstm\\lstm_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.22160741880740956,
+        "validation_loss": 0.19863004580703997
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.15652585718510967,
+        "validation_loss": 0.23524938735486997
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.14554686722847637,
+        "validation_loss": 0.37315519114456336
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.12779248814952346,
+        "validation_loss": 0.23328543574516844
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.11386096254445797,
+        "validation_loss": 0.4376015279777531
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.15181224950796787,
+        "validation_loss": 0.3941257001719655
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "lstm",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.22957953898929262,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\lstm\\lstm_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.22728509874381034,
+        "validation_loss": 0.22957953898929262
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17773357122458897,
+        "validation_loss": 0.26593105366688047
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1473242835949102,
+        "validation_loss": 0.3226232850933706
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.12297670245302064,
+        "validation_loss": 0.47840892834218185
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.11129165580759819,
+        "validation_loss": 0.6541955976552706
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.10001568101813763,
+        "validation_loss": 0.5579101321299635
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "best_epoch": 1,
+    "best_validation_loss": 0.3437499310647256,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\cnn1d\\cnn1d_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26517930844015747,
+        "validation_loss": 0.3437499310647256
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.20320297364723716,
+        "validation_loss": 0.5263049868437742
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1683665107834051,
+        "validation_loss": 0.4599821724030796
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15302749010896202,
+        "validation_loss": 0.9753642126489701
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1263850035277213,
+        "validation_loss": 1.475635310919088
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.111976966848006,
+        "validation_loss": 1.6020515502209252
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.5363116136814505,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\cnn1d\\cnn1d_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.25952499823994113,
+        "validation_loss": 0.5363116136814505
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.19841896822396277,
+        "validation_loss": 0.9183645427185455
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1701559109921298,
+        "validation_loss": 0.7796034382983109
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14689568869901592,
+        "validation_loss": 1.3129738815141023
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13583147924583228,
+        "validation_loss": 0.8593285731471757
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11428217217463113,
+        "validation_loss": 1.3076751268904105
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.4136688755483068,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\cnn1d\\cnn1d_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2648456965016228,
+        "validation_loss": 0.4136688755483068
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1994808093211851,
+        "validation_loss": 0.8438581165880874
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17343688931467602,
+        "validation_loss": 1.7980504018128183
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15641389374925446,
+        "validation_loss": 1.4462223712931837
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.13236519070935857,
+        "validation_loss": 1.2688814435041922
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11724208791539403,
+        "validation_loss": 1.8470172146106822
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.36497708949673974,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\cnn1d\\cnn1d_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26398418332432905,
+        "validation_loss": 0.36497708949673974
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1978863472228944,
+        "validation_loss": 0.7358645622597857
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.17419731375505168,
+        "validation_loss": 0.811816571555769
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14845955118555573,
+        "validation_loss": 1.1716859594902906
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1324645087750692,
+        "validation_loss": 1.2108294186651134
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11735176724569296,
+        "validation_loss": 1.1223570497981075
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_4",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.3864726380931718,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_4\\cnn1d\\cnn1d_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.26030100956444147,
+        "validation_loss": 0.3864726380931718
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.18587363975800605,
+        "validation_loss": 1.3320020478731356
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1566872598888085,
+        "validation_loss": 0.7689196518497317
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1337823144684521,
+        "validation_loss": 1.5973802838640718
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1245279535634773,
+        "validation_loss": 1.066019324158094
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11027213358745865,
+        "validation_loss": 1.2685017531732898
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 42,
+    "best_epoch": 1,
+    "best_validation_loss": 0.310513078037231,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\lstm\\lstm_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2119603976350169,
+        "validation_loss": 0.310513078037231
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.23651588298531642,
+        "validation_loss": 0.36507188915756034
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1797009112041797,
+        "validation_loss": 0.37456085841748216
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1508594815698705,
+        "validation_loss": 0.38596754723401167
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.14749042035832358,
+        "validation_loss": 0.42979176322827484
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.132176038271917,
+        "validation_loss": 0.46089621686746723
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2323849458225579,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\lstm\\lstm_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2185419502673927,
+        "validation_loss": 0.2323849458225579
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17446310991684683,
+        "validation_loss": 0.24214936224899156
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16198912392428502,
+        "validation_loss": 0.2775608939973551
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15710234506493698,
+        "validation_loss": 0.44838714489379766
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1376235062132004,
+        "validation_loss": 0.42016562845189936
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.1228288190600924,
+        "validation_loss": 0.5725579226268124
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.24515399630872528,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\lstm\\lstm_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.22211430309970864,
+        "validation_loss": 0.24515399630872528
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17231727080545486,
+        "validation_loss": 0.3146487279775366
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16829341950040103,
+        "validation_loss": 0.25191303639410983
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1585373438897499,
+        "validation_loss": 0.2926694191589004
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1459751962229263,
+        "validation_loss": 0.3186359807443971
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.1466213492900078,
+        "validation_loss": 0.47414586172881507
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.2179151064387355,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\lstm\\lstm_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.20782318337706676,
+        "validation_loss": 0.2179151064387355
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17304393579353483,
+        "validation_loss": 0.40698992534228473
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16028406905177423,
+        "validation_loss": 0.3773413836522499
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.15261793325377726,
+        "validation_loss": 0.3911471965785332
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1283330191723004,
+        "validation_loss": 0.49469430974727086
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11605256388067715,
+        "validation_loss": 0.6005319697915984
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "lstm",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.3192628459163921,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\lstm\\lstm_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.20893682113055506,
+        "validation_loss": 0.3192628459163921
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.16391665570935712,
+        "validation_loss": 0.326428091003113
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.152947514788851,
+        "validation_loss": 0.4519525474415446
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.13397298789153067,
+        "validation_loss": 0.4728105699023451
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.1172869651412317,
+        "validation_loss": 0.62574578109651
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.12097914534747799,
+        "validation_loss": 0.526932603922615
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "best_epoch": 5,
+    "best_validation_loss": 0.4598993212914329,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\cnn1d\\cnn1d_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.24331452068657883,
+        "validation_loss": 0.5275700474017202
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17866997499666604,
+        "validation_loss": 0.550407435132022
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15580658488155744,
+        "validation_loss": 0.5511968193147938
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.14376027897225838,
+        "validation_loss": 0.6105512255076219
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12612811402449003,
+        "validation_loss": 0.4598993212914329
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.10597416542913254,
+        "validation_loss": 0.7450179413260218
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.09476179484313718,
+        "validation_loss": 0.5843953572617115
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.087016556200483,
+        "validation_loss": 0.7864870982123611
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.07572625219500832,
+        "validation_loss": 0.8362268471789629
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.06854707859415285,
+        "validation_loss": 0.755286960091428
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "best_epoch": 1,
+    "best_validation_loss": 0.5549456723936299,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\cnn1d\\cnn1d_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.23837061507559298,
+        "validation_loss": 0.5549456723936299
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17366811799228565,
+        "validation_loss": 0.8502523724605204
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15028998728342363,
+        "validation_loss": 0.7139201450901532
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.13423025018617032,
+        "validation_loss": 0.7903333090387089
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12029382437550085,
+        "validation_loss": 0.7590683368751032
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.10726082948531203,
+        "validation_loss": 0.7654849668730266
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.4894963639650122,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\cnn1d\\cnn1d_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.24358016928213028,
+        "validation_loss": 0.4894963639650122
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17608464359164502,
+        "validation_loss": 0.6967174618808294
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.16407529343979832,
+        "validation_loss": 0.5710291402063644
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.13700989442205366,
+        "validation_loss": 0.7451679130273371
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12305926788789445,
+        "validation_loss": 0.6176249492277828
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11053867533489452,
+        "validation_loss": 0.7839361137128313
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.4895332760461528,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\cnn1d\\cnn1d_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.23683802128379944,
+        "validation_loss": 0.4895332760461528
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17953901778027861,
+        "validation_loss": 0.5233164559320667
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.15115840098390548,
+        "validation_loss": 0.8606421977817859
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.1374255603466055,
+        "validation_loss": 0.8753310688023036
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.12658462853350733,
+        "validation_loss": 0.9493705005124026
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.11218655837246658,
+        "validation_loss": 0.8949167150930578
+      }
+    ]
+  },
+  {
+    "dataset_name": "skab",
+    "split_name": "split_5",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "best_epoch": 3,
+    "best_validation_loss": 0.46422378733015024,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\skab\\split_5\\cnn1d\\cnn1d_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.2403966613776704,
+        "validation_loss": 0.515127285119935
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.17946642453972375,
+        "validation_loss": 0.5946735001748754
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.1535567726674512,
+        "validation_loss": 0.46422378733015024
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.133977242928767,
+        "validation_loss": 0.6958154888177073
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.11701283995062113,
+        "validation_loss": 0.8258162851693855
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.09926967061767282,
+        "validation_loss": 0.7441627969276978
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.09354340102497437,
+        "validation_loss": 0.6195588864655301
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.0869215867764376,
+        "validation_loss": 0.8877335259582737
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 42,
+    "best_epoch": 2,
+    "best_validation_loss": 0.15971460834664492,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\lstm\\lstm_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.17668873618949543,
+        "validation_loss": 0.16210924303946803
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.02423483838016788,
+        "validation_loss": 0.15971460834664492
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.014553194612057672,
+        "validation_loss": 0.16278965674822604
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.007863123927152518,
+        "validation_loss": 0.173184913782338
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.006859493887832746,
+        "validation_loss": 0.18129049100686068
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.0047290959277877,
+        "validation_loss": 0.2682260369780052
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.008045610296939773,
+        "validation_loss": 0.19470314422057042
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 123,
+    "best_epoch": 2,
+    "best_validation_loss": 0.16206751682272005,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\lstm\\lstm_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.1503308290562997,
+        "validation_loss": 0.16453093349637082
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.0169367467664709,
+        "validation_loss": 0.16206751682272005
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.008634532173634553,
+        "validation_loss": 0.17878260659934275
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.012908111314731414,
+        "validation_loss": 0.28729919711155677
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.004565785908083798,
+        "validation_loss": 0.24543913917161933
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.00208678213933558,
+        "validation_loss": 0.32583351692750084
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.0015476328760122109,
+        "validation_loss": 0.2750969573632995
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 2026,
+    "best_epoch": 1,
+    "best_validation_loss": 0.1446532882861237,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\lstm\\lstm_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.1457963290720275,
+        "validation_loss": 0.1446532882861237
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.022625636452282168,
+        "validation_loss": 0.16906807553115769
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.011299724082152048,
+        "validation_loss": 0.1917648445907517
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.005421392187250383,
+        "validation_loss": 0.21256270989849793
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.008882253295883085,
+        "validation_loss": 0.23199968432905663
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.002773261831160823,
+        "validation_loss": 0.2004842562461967
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 7,
+    "best_epoch": 1,
+    "best_validation_loss": 0.14591309294771793,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\lstm\\lstm_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.1656351659017982,
+        "validation_loss": 0.14591309294771793
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.018924029830730323,
+        "validation_loss": 0.16398667488525162
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.010471192198109372,
+        "validation_loss": 0.1787817676862081
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.01839668724770573,
+        "validation_loss": 0.16543287364997675
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.0050023772137832235,
+        "validation_loss": 0.18151421570659276
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.0023819431979585476,
+        "validation_loss": 0.19486463425764397
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "lstm",
+    "seed": 999,
+    "best_epoch": 1,
+    "best_validation_loss": 0.1370877355930224,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\lstm\\lstm_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.16054264687415626,
+        "validation_loss": 0.1370877355930224
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.018579970808473952,
+        "validation_loss": 0.15929736248889373
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.009775814691069301,
+        "validation_loss": 0.16387987314765132
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.004776201749436858,
+        "validation_loss": 0.17360003848574054
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.0024640758613105676,
+        "validation_loss": 0.1912181033423884
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.0017589361243528512,
+        "validation_loss": 0.19653741518656412
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 42,
+    "best_epoch": 3,
+    "best_validation_loss": 0.14222676807375095,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\cnn1d\\cnn1d_seed_42_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.34046675328052406,
+        "validation_loss": 0.2028745669334089
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1122269225843025,
+        "validation_loss": 0.15647753050078206
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.06317334954786782,
+        "validation_loss": 0.14222676807375095
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.04393492463863257,
+        "validation_loss": 0.14675603547499547
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.028996148377355903,
+        "validation_loss": 0.1546997072091743
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.023170142817226323,
+        "validation_loss": 0.14369451999664307
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.01862135591418153,
+        "validation_loss": 0.14283180236816406
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.016058508940417358,
+        "validation_loss": 0.20505169849490645
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 123,
+    "best_epoch": 4,
+    "best_validation_loss": 0.14203268037506597,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\cnn1d\\cnn1d_seed_123_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.24965289888959943,
+        "validation_loss": 0.1835611661275228
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.08420325124655106,
+        "validation_loss": 0.1513909282375924
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.04870035686878243,
+        "validation_loss": 0.15519022941589355
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.03359030168992702,
+        "validation_loss": 0.14203268037506597
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.025555480236958975,
+        "validation_loss": 0.16615579703553993
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.019204446542819942,
+        "validation_loss": 0.17512216526477492
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.013539143528300102,
+        "validation_loss": 0.17275417028968013
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.011918785672521953,
+        "validation_loss": 0.19172068095918912
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.010928477308139055,
+        "validation_loss": 0.16459773162111122
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 2026,
+    "best_epoch": 7,
+    "best_validation_loss": 0.16211812502116113,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\cnn1d\\cnn1d_seed_2026_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.38227093317894023,
+        "validation_loss": 0.2253313344805988
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1243968429047652,
+        "validation_loss": 0.17445077053943084
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.06771851181983948,
+        "validation_loss": 0.16927468761875855
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.046925622604110026,
+        "validation_loss": 0.17345816905225686
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.03445368472373847,
+        "validation_loss": 0.17606534560521445
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.02695846371992369,
+        "validation_loss": 0.1825954208326577
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.02146957897139017,
+        "validation_loss": 0.16211812502116113
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.017392798508658554,
+        "validation_loss": 0.1649756268482303
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.013571876246820797,
+        "validation_loss": 0.18206862074818778
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.011199879327770135,
+        "validation_loss": 0.1836825079882323
+      },
+      {
+        "epoch": 11,
+        "train_loss": 0.01122154397551309,
+        "validation_loss": 0.18666285068834598
+      },
+      {
+        "epoch": 12,
+        "train_loss": 0.008843489660307614,
+        "validation_loss": 0.21298456399594967
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 7,
+    "best_epoch": 8,
+    "best_validation_loss": 0.15979444580291635,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\cnn1d\\cnn1d_seed_7_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.3414457744299763,
+        "validation_loss": 0.21667986322398208
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.1163790310302166,
+        "validation_loss": 0.17241024763429935
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.06681677076175357,
+        "validation_loss": 0.17101705578429188
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.04313196129871137,
+        "validation_loss": 0.1868271409575619
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.0323100009936877,
+        "validation_loss": 0.1686407615296283
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.023281267582617626,
+        "validation_loss": 0.16765754080530423
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.018840438675022487,
+        "validation_loss": 0.17621423207705295
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.015425454829302099,
+        "validation_loss": 0.15979444580291635
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.012092534749759267,
+        "validation_loss": 0.17691965690299646
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.01055195531967764,
+        "validation_loss": 0.1905003293829771
+      },
+      {
+        "epoch": 11,
+        "train_loss": 0.009341598058853186,
+        "validation_loss": 0.17118406948165513
+      },
+      {
+        "epoch": 12,
+        "train_loss": 0.008358618877828121,
+        "validation_loss": 0.165002379399627
+      },
+      {
+        "epoch": 13,
+        "train_loss": 0.00672124831325779,
+        "validation_loss": 0.19237085717234445
+      }
+    ]
+  },
+  {
+    "dataset_name": "batadal",
+    "split_name": "split_1",
+    "model_name": "cnn1d",
+    "seed": 999,
+    "best_epoch": 3,
+    "best_validation_loss": 0.13740601068112387,
+    "checkpoint_path": "reports\\results\\deep_learning\\checkpoints\\batadal\\split_1\\cnn1d\\cnn1d_seed_999_best.pt",
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.30033947712243203,
+        "validation_loss": 0.1904087716074132
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.10123964006852622,
+        "validation_loss": 0.1527569892987683
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.05930791876909107,
+        "validation_loss": 0.13740601068112387
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.038673888216115004,
+        "validation_loss": 0.15136968822621588
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.028490808596364176,
+        "validation_loss": 0.15376595255747363
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.02039519303864,
+        "validation_loss": 0.15530397672558305
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.016859842307037777,
+        "validation_loss": 0.16867688476149714
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.013023050837030616,
+        "validation_loss": 0.1443686844104558
+      }
+    ]
+  }
+]
