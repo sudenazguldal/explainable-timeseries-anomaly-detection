@@ -1,5 +1,5 @@
 dataset,comparison,test,statistic,p_value,n_pairs,significant_at_0_05
 skab,automata_vs_lstm_f1,wilcoxon_signed_rank,0.0,0.0625,5,False
 skab,automata_vs_cnn1d_f1,wilcoxon_signed_rank,0.0,0.0625,5,False
-skab,lstm_vs_cnn1d_f1,wilcoxon_signed_rank,5.0,5.960464477539062e-07,25,True
-batadal,lstm_vs_cnn1d_f1,wilcoxon_signed_rank,0.0,0.125,5,False
+skab,lstm_vs_cnn1d_f1,wilcoxon_signed_rank,58.0,0.0037809014320373535,25,True
+batadal,lstm_vs_cnn1d_f1,wilcoxon_signed_rank,0.0,0.25,5,False

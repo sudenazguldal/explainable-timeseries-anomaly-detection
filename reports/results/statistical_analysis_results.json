@@ -21,8 +21,8 @@
     "dataset": "skab",
     "comparison": "lstm_vs_cnn1d_f1",
     "test": "wilcoxon_signed_rank",
-    "statistic": 5.0,
-    "p_value": 5.960464477539062e-07,
+    "statistic": 58.0,
+    "p_value": 0.0037809014320373535,
     "n_pairs": 25,
     "significant_at_0_05": true
   },
@@ -31,8 +31,6 @@
     "comparison": "lstm_vs_cnn1d_f1",
     "test": "wilcoxon_signed_rank",
     "statistic": 0.0,
-    "p_value": 0.125,
+    "p_value": 0.25,
     "n_pairs": 5,
-    "significant_at_0_05": false
-  }
-]
+   

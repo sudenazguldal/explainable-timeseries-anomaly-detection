@@ -415,14 +415,14 @@ Model comparisons use the Wilcoxon signed-rank test.
 |---|---|---|---:|---:|---:|---|
 | SKAB | automata vs. LSTM F1 | Wilcoxon signed-rank | 0.000 | 0.0625 | 5 | No |
 | SKAB | automata vs. 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.0625 | 5 | No |
-| SKAB | LSTM vs. 1D-CNN F1 | Wilcoxon signed-rank | 5.000 | 5.960e-07 | 25 | Yes |
-| BATADAL | LSTM vs. 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.1250 | 5 | No |
+| SKAB | LSTM vs. 1D-CNN F1 | Wilcoxon signed-rank | 58.000 | 0.0038 | 25 | Yes |
+| BATADAL | LSTM vs. 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.2500 | 5 | No |
 
-The LSTM vs. 1D-CNN difference on SKAB is statistically significant. The automata-vs-deep-learning comparison has a p-value of `0.0625`, which does not clear the `0.05` threshold, so it is not reported as statistically significant. With only `n=5` matched pairs, the test has limited statistical power, so this result should be read as inconclusive rather than as evidence of no difference.
+The LSTM vs. 1D-CNN difference on SKAB is statistically significant (this table reflects the class-weighted, threshold-tuned retraining). The automata-vs-deep-learning comparison has a p-value of `0.0625`, which does not clear the `0.05` threshold, so it is not reported as statistically significant. With only `n=5` matched pairs, the test has limited statistical power, so this result should be read as inconclusive rather than as evidence of no difference.
+
+On BATADAL, LSTM vs. 1D-CNN is still not statistically significant (`p=0.25`), even though 1D-CNN's F1 is a constant `0.000` across all five seeds and LSTM's is not. This is a direct consequence of LSTM's own seed-to-seed variance (F1 = `0.474 ± 0.434`): with only five matched pairs and a std deviation nearly as large as the mean, the signed-rank test cannot reliably separate the two distributions. The practical difference is still real and visible in the confusion matrices above; the statistical test is simply underpowered at `n=5`.
 
 McNemar's test would be suitable for comparing two models' predictions on identical samples directly. Since automata predictions operate at the PAA/SAX pattern-transition level while deep learning predictions operate at the sequence-window level, the two are not aligned sample-for-sample, so Wilcoxon signed-rank was used instead for the automata-vs-DL comparison.
-
-> **Note:** this table reflects the deep learning results prior to the class-weighting and threshold-tuning update described above. `python -m src.experiments.run_statistical_analysis` should be re-run after that change so the BATADAL comparison reflects the updated LSTM/1D-CNN numbers; this is tracked as follow-up work.
 
 ## Overall Evaluation
 
@@ -572,7 +572,6 @@ Figures curated for this README live in `reports/figures/readme/` and are copies
 5. `unseen_only` results should not be compared directly against full-test-set results.
 6. No cross-dataset transfer experiment (train on one dataset, test on the other) was performed; each dataset was analyzed independently for model behavior and generalization tendency.
 7. More advanced class-imbalance strategies (oversampling, focal loss) or a higher-dimensional symbolic representation for the automata model could improve results further.
-8. The Statistical Analysis table above has not yet been regenerated against the class-weighted/threshold-tuned deep learning results; re-running `run_statistical_analysis` is tracked as follow-up work.
 
 ## Conclusion
 
