@@ -11,9 +11,9 @@ The goal is not simply to maximize accuracy. The point is to compare the raw pre
 
 ## Key Findings
 
-On SKAB, deep learning clearly outperforms the automata model. The best result is an F1-score of `0.850 ± 0.082` from the LSTM model; 1D-CNN is also strong at `0.798 ± 0.120`.
+On SKAB, deep learning clearly outperforms the automata model. The best result is an F1-score of `0.859` from the LSTM model; 1D-CNN is also strong at `0.822 ± 0.064`.
 
-On BATADAL, both deep learning models struggle. LSTM reaches `0.227 ± 0.312` F1, while 1D-CNN collapses to an F1-score of `0.000` despite a high accuracy — it simply never predicts the anomaly class. This is a clean illustration of why accuracy alone is misleading on imbalanced anomaly data.
+On BATADAL, deep learning is a mixed picture. LSTM reaches `0.474 ± 0.434` F1 with class-weighted loss and a validation-tuned threshold (up from `0.227 ± 0.312` with a plain unweighted loss and a fixed 0.5 threshold). 1D-CNN still reports an F1-score of `0.000` on every seed even after the same fix — its training logs show validation loss is already at its lowest right after epoch 1, and its precision-recall curve gives an average precision of roughly `0.057`, below the dataset's own ~10% anomaly rate. In other words, the model's raw scores carry essentially no anomaly signal on this dataset, so no choice of threshold can fix it; this is a distinct, disclosed limitation (see [Interpretation](#interpretation)).
 
 With its fixed parameters, the automata model produces a low F1-score on both datasets; tuning `window_size` and `alphabet_size` improves it substantially:
 
@@ -81,7 +81,7 @@ BATADAL is a water distribution system dataset used for cyber-attack / anomaly d
 | Validation rows | 835 |
 | Test rows | 836 |
 
-BATADAL is highly imbalanced — far more normal samples than anomalies — so a model that always predicts "normal" can still score a high accuracy. This is exactly the failure mode seen in the BATADAL 1D-CNN result: ~0.901 accuracy with an F1-score of 0.000.
+BATADAL is highly imbalanced — far more normal samples than anomalies (~5%) — so a model that always predicts "normal" can still score a high accuracy, and a small training set makes it easy for a model to overfit within a handful of epochs. Both effects show up directly in the deep learning results below.
 
 BATADAL is split chronologically:
 
@@ -116,6 +116,8 @@ The code in this repository is licensed separately (see [LICENSE](LICENSE)); the
 | Precision | Of everything the model calls "anomaly," how much actually is. |
 | Recall | Of all real anomalies, how many were caught. |
 | F1-score | Harmonic mean of precision and recall; central metric for anomaly detection. |
+| Average precision (AP) | Area under the precision-recall curve; summarizes ranking quality across all thresholds. |
+| Class weighting | Upweighting the minority class in the loss function so it isn't ignored under imbalance. |
 | LSTM | A recurrent deep learning model that can learn temporal dependencies. |
 | 1D-CNN | A convolutional model that captures local patterns within a time window. |
 | Sliding window | Splitting a time series into fixed-length consecutive segments. |
@@ -151,8 +153,11 @@ Raw sensor data
 -> fit normalization on train only
 -> transform validation/test with the fitted scaler
 -> build sliding-window sequences
--> train LSTM and 1D-CNN
--> accuracy, precision, recall, F1, confusion matrix, PR/ROC curves
+-> train LSTM and 1D-CNN with a class-weighted loss (pos_weight from the
+   training split's class ratio, so the minority anomaly class is not ignored)
+-> tune the classification threshold on the validation split (maximize F1)
+   instead of using a fixed 0.5 cut
+-> accuracy, precision, recall, F1, confusion matrix, PR/ROC curves on test
 ```
 
 Deep learning settings:
@@ -164,6 +169,8 @@ Deep learning settings:
 | Max epochs | 50 |
 | Early stopping patience | 5 |
 | Random seeds | 42, 123, 2026, 7, 999 |
+| Class weighting | `pos_weight` = negative/positive ratio in the training split |
+| Threshold selection | Best F1-score threshold on the validation split, from a 0.05–0.95 grid |
 
 SKAB uses 5 group folds and 5 seeds, so each model is summarized over 25 runs. BATADAL uses a single chronological split with 5 seeds, so each model is summarized over 5 runs.
 
@@ -235,29 +242,35 @@ A train-on-one-dataset / test-on-the-other cross-dataset transfer experiment was
 
 ## Environment and Runtime
 
-| Pipeline | Environment | Approx. runtime |
+| Pipeline | Environment | Measured runtime |
 |---|---|---:|
-| Deep learning full training | Local workstation, Python 3.13.3 | ~7 minutes |
-| Automata full experiment suite | Local workstation | ~4 minutes |
+| Deep learning full training (`run_dl_experiments`) | CPU-only, Intel Core Ultra 5 125H, Python 3.13.3 | 19 min 42 sec |
+| Automata full experiment suite | Same machine | a few minutes (lightweight symbolic pipeline, no neural network training) |
+
+Both models train on CPU only; the code selects CUDA if available and falls back to CPU otherwise (`torch.cuda.is_available()`), so runtime will vary with hardware.
 
 Smoke-test outputs are kept separate from final training outputs. Smoke tests only confirm that the code runs; the reported results below come from the full experiment runs.
 
-**Reproducibility note:** the automata pipeline's SKAB split uses `StratifiedGroupKFold`, whose fold assignment can differ across `scikit-learn` versions even with the exact same seed. `requirements.txt` pins exact versions; the SKAB automata numbers in this README were generated and verified against those pinned versions. Deep learning results use the same SKAB grouped-split strategy, so exact reproduction of the DL numbers also depends on `scikit-learn` matching the pinned version, in addition to `torch`/`tensorflow`.
+**Reproducibility note:** the automata pipeline's SKAB split uses `StratifiedGroupKFold`, whose fold assignment can differ across `scikit-learn` versions even with the exact same seed. `requirements.txt` pins exact versions; the SKAB automata numbers in this README were generated and verified against those pinned versions. The deep learning numbers above were produced with the pinned `torch==2.6.0` and the same pinned `scikit-learn` version (BATADAL's split does not depend on `scikit-learn`; SKAB's DL split uses the same grouped-fold strategy as the automata pipeline).
 
 ## Deep Learning Results
 
 | Dataset | Model | Runs | Accuracy | Precision | Recall | F1-score |
 |---|---:|---:|---:|---:|---:|---:|
-| BATADAL | 1D-CNN | 5 | 0.901 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 |
-| BATADAL | LSTM | 5 | 0.914 ± 0.022 | 0.611 ± 0.386 | 0.182 ± 0.282 | 0.227 ± 0.312 |
-| SKAB | 1D-CNN | 25 | 0.881 ± 0.060 | 0.941 ± 0.071 | 0.711 ± 0.166 | 0.798 ± 0.120 |
-| SKAB | LSTM | 25 | 0.908 ± 0.043 | 0.964 ± 0.051 | 0.773 ± 0.130 | 0.850 ± 0.082 |
+| BATADAL | 1D-CNN | 5 | 0.890 ± 0.003 | 0.000 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 |
+| BATADAL | LSTM | 5 | 0.932 ± 0.031 | 0.449 ± 0.420 | 0.513 ± 0.471 | 0.474 ± 0.434 |
+| SKAB | 1D-CNN | 25 | 0.882 ± 0.037 | 0.879 ± 0.091 | 0.792 ± 0.125 | 0.822 ± 0.064 |
+| SKAB | LSTM | 25 | 0.908 ± 0.042 | 0.924 ± 0.077 | 0.813 ± 0.110 | 0.859 ± 0.000 |
 
 ### Interpretation
 
-On SKAB, LSTM is the strongest model — both precision and recall are high, which drives its F1-score up. 1D-CNN is also strong but less stable across seeds than LSTM.
+On SKAB, LSTM is the strongest model — both precision and recall are high, which drives its F1-score up. 1D-CNN is also strong and close behind.
 
-On BATADAL, accuracy is misleading. 1D-CNN assigns almost every sample to the normal class, so accuracy looks high while precision, recall, and F1 are all zero. This is why F1-score and the confusion matrix matter more than accuracy for BATADAL.
+On BATADAL, class weighting and threshold tuning (see Methodology) made a real difference for LSTM but not for 1D-CNN, and the two failure modes are different:
+
+- **Before the fix**, both models effectively ignored the anomaly class: with an unweighted loss and a fixed 0.5 threshold, 1D-CNN scored accuracy ≈ 0.90 with F1 = 0.000, and LSTM only reached F1 = 0.227 ± 0.312 (highly inconsistent across seeds).
+- **After the fix**, LSTM improved substantially (F1 = 0.474 ± 0.434). At seed 42 specifically, LSTM's confusion matrix shows 75 of 80 real anomalies correctly caught, with a precision-recall curve giving an average precision of 0.68 — a real, usable detector.
+- **1D-CNN still reports F1 = 0.000 on every seed.** This is no longer explained by class imbalance or a fixed threshold — both are now addressed. The training logs show why: for every seed, validation loss is already at its minimum right after epoch 1 and gets worse every epoch after that, so early stopping keeps an almost-untrained model. Its precision-recall curve confirms this: average precision is about 0.057, actually *below* the dataset's ~10% test-set anomaly rate (i.e. worse than randomly ranking samples). In short, on BATADAL, 1D-CNN's raw scores carry no separable anomaly signal at any threshold; this looks like a genuine data-scarcity / architecture-fit limitation (BATADAL's training split has only ~2,500 rows before windowing) rather than something threshold tuning or class weighting can resolve.
 
 ![SKAB LSTM confusion matrix](reports/figures/readme/skab_lstm_confusion_matrix_seed42.png)
 
@@ -265,21 +278,25 @@ On BATADAL, accuracy is misleading. 1D-CNN assigns almost every sample to the no
 
 ![BATADAL LSTM confusion matrix](reports/figures/readme/batadal_lstm_confusion_matrix_seed42.png)
 
+![BATADAL LSTM precision-recall curve](reports/figures/readme/batadal_lstm_precision_recall_seed42.png)
+
 ![BATADAL 1D-CNN confusion matrix](reports/figures/readme/batadal_cnn1d_confusion_matrix_seed42.png)
 
-The BATADAL 1D-CNN confusion matrix shows the model never predicting the anomaly class at all — the clearest illustration of why accuracy alone is insufficient here.
+![BATADAL 1D-CNN precision-recall curve](reports/figures/readme/batadal_cnn1d_precision_recall_seed42.png)
 
-LSTM's BATADAL result (`0.227 ± 0.312` F1) is better than CNN1D's but has a large standard deviation, meaning it behaves inconsistently across seeds: it captures the anomaly signal under some training conditions and misses it under others.
+The last two figures are the clearest illustration in this project of why a single accuracy number is not enough: 1D-CNN's confusion matrix shows it never predicting the anomaly class, and its precision-recall curve shows this is not a threshold problem — the curve itself carries almost no signal.
 
 Overall message:
 
 ```text
-Deep learning performed strongly on SKAB; on BATADAL, class imbalance and data
-characteristics made it struggle. Accuracy alone is not sufficient — F1-score
-and the confusion matrix must be read together.
+Deep learning performed strongly on SKAB. On BATADAL, class weighting and
+threshold tuning rescued LSTM (F1 0.227 -> 0.474) but did not rescue 1D-CNN,
+whose scores carry no usable anomaly signal on this dataset regardless of
+threshold. Accuracy alone is never sufficient -- F1-score, the confusion
+matrix, and the precision-recall curve should be read together.
 ```
 
-Deep learning is the stronger predictor, particularly on SKAB, but it cannot explain its decisions the way the automata model can through state transitions and probabilities. In this project, deep learning represents "high predictive performance" and the automata model represents "explainable decision-making."
+Deep learning is the stronger predictor, particularly on SKAB, but it cannot explain its decisions the way the automata model can through state transitions and probabilities. In this project, deep learning represents "high predictive performance" (with real, seed-dependent limits on BATADAL) and the automata model represents "explainable decision-making."
 
 ## Automata Results
 
@@ -405,15 +422,17 @@ The LSTM vs. 1D-CNN difference on SKAB is statistically significant. The automat
 
 McNemar's test would be suitable for comparing two models' predictions on identical samples directly. Since automata predictions operate at the PAA/SAX pattern-transition level while deep learning predictions operate at the sequence-window level, the two are not aligned sample-for-sample, so Wilcoxon signed-rank was used instead for the automata-vs-DL comparison.
 
+> **Note:** this table reflects the deep learning results prior to the class-weighting and threshold-tuning update described above. `python -m src.experiments.run_statistical_analysis` should be re-run after that change so the BATADAL comparison reflects the updated LSTM/1D-CNN numbers; this is tracked as follow-up work.
+
 ## Overall Evaluation
 
 ### Deep Learning — Strengths
 
-Deep learning models learn multivariate sensor relationships directly and, on SKAB in particular, both LSTM and 1D-CNN reach a high F1-score. If predictive performance is the priority, LSTM is the best choice for SKAB.
+Deep learning models learn multivariate sensor relationships directly and, on SKAB in particular, both LSTM and 1D-CNN reach a high F1-score. If predictive performance is the priority, LSTM is the best choice for SKAB, and remains the stronger option on BATADAL after class weighting and threshold tuning.
 
 ### Deep Learning — Limitations
 
-Deep learning models do not naturally explain their decisions. When a model flags "anomaly," it is difficult to say directly which sensor behavior or transition pattern caused it. As seen with BATADAL, accuracy can also be misleading on imbalanced data.
+Deep learning models do not naturally explain their decisions. When a model flags "anomaly," it is difficult to say directly which sensor behavior or transition pattern caused it. Deep learning is also sensitive to class imbalance and dataset size: on BATADAL, an unweighted loss and fixed threshold made both models ignore the anomaly class entirely, and even after correcting that, 1D-CNN's scores still carry no usable signal, likely due to the small training set. Model choice and training setup matter as much as the metric being reported.
 
 ### Automata — Strengths
 
@@ -428,24 +447,6 @@ symbolic state transition, and at what probability, produced its decision.
 
 Automata performance depends heavily on the quality of the symbolic representation. Reducing multivariate data to a single PCA component, averaging via PAA, and discretizing via SAX can all discard fine-grained sensor behavior, which is why fixed-parameter performance is low. This is exactly why the parameter sweep matters.
 
-## Requirement Checklist
-
-| Requirement | Status | Note |
-|---|---|---|
-| At least two datasets | Done | SKAB and BATADAL. |
-| Official raw data | Done | Both datasets prepared from their official raw sources. |
-| At least two DL models | Done | LSTM and 1D-CNN. |
-| Multivariate-to-univariate reduction for automata | Done | Scaling + PCA/PC1. |
-| PAA/SAX symbolic representation | Done | Used throughout the automata pipeline. |
-| Sliding-window pattern extraction | Done | Patterns used as automata states. |
-| Probabilistic transition model | Done | Transition probabilities computed. |
-| Unseen-pattern handling | Done | Levenshtein-distance mapping to the nearest known state. |
-| Original / noise / unseen scenarios | Done | Reported for the automata pipeline. |
-| Window/alphabet parameter sweep | Done | Values 3, 4, 5, 6 tested. |
-| Accuracy/precision/recall/F1 | Done | Reported for both DL and automata. |
-| Statistical testing | Done | Wilcoxon signed-rank test. |
-| Explainability output | Done | State, transition, probability, confidence, and unseen mapping reported. |
-
 ## How to Run
 
 ### Virtual Environment
@@ -457,13 +458,13 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-CPU-only PyTorch, if needed:
+CPU-only PyTorch, if the pinned wheel is not available on your platform:
 
 ```bash
-python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
 
-Reference environment used for the results above: Python 3.13.3.
+Reference environment used for the results above: Python 3.13.3, CPU-only (Intel Core Ultra 5 125H).
 
 ### Tests
 
@@ -490,11 +491,11 @@ python -m src.experiments.summarize_dl_results
 python -m src.experiments.run_statistical_analysis
 ```
 
-Training time depends on available CPU/GPU resources. Full DL training took roughly 7 minutes in the reference environment above.
+Training time depends on available CPU/GPU resources. Full DL training took 19 minutes 42 seconds in the reference environment above (CPU-only; the code automatically uses CUDA if available).
 
 ## Deep Learning Training Environment and Artifact Index
 
-The reference deep learning training run used Python 3.13.3 and took approximately 7 minutes, covering LSTM and 1D-CNN across SKAB and BATADAL with the 5-seed protocol.
+The reference deep learning training run used Python 3.13.3 on CPU only (Intel Core Ultra 5 125H) and took 19 minutes 42 seconds, covering LSTM and 1D-CNN across SKAB and BATADAL with the 5-seed protocol, class-weighted loss, and validation-based threshold tuning.
 
 Main commands:
 
@@ -511,8 +512,10 @@ Figures curated for this README live in `reports/figures/readme/` and are copies
 |---|---|
 | `skab_lstm_confusion_matrix_seed42.png` | SKAB LSTM correct/incorrect classification breakdown. |
 | `skab_lstm_precision_recall_seed42.png` | SKAB LSTM precision-recall behavior. |
-| `batadal_lstm_confusion_matrix_seed42.png` | BATADAL LSTM anomaly-detection behavior. |
+| `batadal_lstm_confusion_matrix_seed42.png` | BATADAL LSTM anomaly-detection behavior after class weighting and threshold tuning (75/80 anomalies caught at seed 42). |
+| `batadal_lstm_precision_recall_seed42.png` | BATADAL LSTM precision-recall curve (AP ≈ 0.68) — evidence the model carries a real, usable anomaly signal. |
 | `batadal_cnn1d_confusion_matrix_seed42.png` | BATADAL 1D-CNN's failure to detect any anomaly, despite high accuracy. |
+| `batadal_cnn1d_precision_recall_seed42.png` | BATADAL 1D-CNN precision-recall curve (AP ≈ 0.057) — confirms the failure is not a threshold artifact; the raw scores carry no separable signal. |
 
 ## Key Output Files
 
@@ -564,14 +567,15 @@ Figures curated for this README live in `reports/figures/readme/` and are copies
 
 1. Reducing multivariate sensor data to a single principal component for the automata pipeline can discard useful information.
 2. PAA and SAX give an explainable symbolic structure but can smooth over brief, small anomalies.
-3. BATADAL's class imbalance is severe, so accuracy alone is misleading there.
-4. `unseen_only` results should not be compared directly against full-test-set results.
-5. No cross-dataset transfer experiment (train on one dataset, test on the other) was performed; each dataset was analyzed independently for model behavior and generalization tendency.
-6. More advanced threshold tuning, class-imbalance strategies, or a higher-dimensional symbolic representation could improve the automata model further.
-7. `torch` and `tensorflow` are not pinned against a verified reproduction run in this repository's CI; only the automata-side dependencies (`numpy`, `pandas`, `scikit-learn`, `scipy`) have been confirmed to reproduce the numbers in this README exactly.
+3. BATADAL's class imbalance is severe; class weighting and threshold tuning address this for LSTM, but accuracy alone remains misleading and should never be read without F1-score and the confusion matrix.
+4. 1D-CNN on BATADAL still fails (F1 = 0.000) even after class weighting and threshold tuning. Training logs show validation loss is lowest after epoch 1 for every seed, and the model's precision-recall AP (~0.057) is below the dataset's own anomaly rate — this looks like a data-scarcity / architecture-fit limitation specific to this model and dataset, not something addressable by threshold or loss changes alone. Possible next steps: stronger regularization, a smaller/simpler CNN, or more aggressive data augmentation for BATADAL specifically.
+5. `unseen_only` results should not be compared directly against full-test-set results.
+6. No cross-dataset transfer experiment (train on one dataset, test on the other) was performed; each dataset was analyzed independently for model behavior and generalization tendency.
+7. More advanced class-imbalance strategies (oversampling, focal loss) or a higher-dimensional symbolic representation for the automata model could improve results further.
+8. The Statistical Analysis table above has not yet been regenerated against the class-weighted/threshold-tuned deep learning results; re-running `run_statistical_analysis` is tracked as follow-up work.
 
 ## Conclusion
 
-Deep learning delivered stronger predictive performance in this project, particularly on SKAB, where LSTM was the strongest model. On BATADAL, class imbalance made both models struggle, and 1D-CNN's high accuracy masked its complete failure to detect anomalies.
+Deep learning delivered stronger predictive performance in this project, particularly on SKAB, where LSTM was the strongest model. On BATADAL, class weighting and validation-based threshold tuning turned LSTM into a usable detector (F1 0.227 → 0.474, catching 75 of 80 anomalies at seed 42), while 1D-CNN's complete failure to detect anomalies persisted for reasons unrelated to class imbalance handling — its raw scores simply carry no separable signal on this dataset.
 
-The automata model produced a lower F1-score with fixed parameters but improved substantially under a parameter sweep. Its real contribution is that it can explain its decision process through state transitions, transition probabilities, unseen-pattern mapping, and confidence scores. This project illustrates a genuine trade-off between predictive performance and explainability.
+The automata model produced a lower F1-score with fixed parameters but improved substantially under a parameter sweep. Its real contribution is that it can explain its decision process through state transitions, transition probabilities, unseen-pattern mapping, and confidence scores. This project illustrates a genuine trade-off between predictive performance and explainability, and shows that even within "the deep learning side," predictive performance is not uniform — it depends heavily on training setup, model architecture, and how much data is available.
