@@ -1,24 +1,21 @@
-# From Black-Box to Explainability: Probabilistic Automata for Time Series Analysis
+# Explainable Anomaly Detection in Industrial Time Series
 
-## Grup Bilgileri
+## Proje Bilgileri
 
 | Alan | Bilgi |
 |---|---|
-| Grup No | 29 |
-| Öğrenci 1 | Hüseyin Erekmen - 251307099 |
-| Öğrenci 2 | Sudenaz Güldal - 221307029 |
+| Hüseyin Erekmen |  251307099 |
+| Sudenaz Güldal |  221307029 |
 | Proje konusu | Zaman serisi anomali tespiti için Deep Learning ve Probabilistic Automata karşılaştırması |
 | Kullanılan veri setleri | SKAB, BATADAL |
 | Veri kaynağı | Veri setleri resmi kaynaklardan alınan ham veri dosyaları üzerinden hazırlanmıştır. |
 
-Bu repository, endüstriyel zaman serisi verilerinde anomali tespiti yapmak için iki farklı yaklaşımı karşılaştırır:
+Bu repository, endüstriyel zaman serisi verilerinde anomali tespiti için black-box deep learning modelleri ile açıklanabilir probabilistic automata yaklaşımını karşılaştırır.
 
-1. **Black-box deep learning modelleri:** LSTM ve 1D-CNN.
-2. **Açıklanabilir probabilistic automata modeli:** PCA, PAA, SAX, sliding-window pattern çıkarımı, transition probability ve Levenshtein tabanlı unseen pattern yönetimi.
+Çalışmada SKAB ve BATADAL veri setleri üzerinde LSTM, 1D-CNN ve sembolik automata tabanlı bir model değerlendirilmiştir. Temel amaç yalnızca en yüksek tahmin başarısını elde etmek değil; aynı zamanda anomalilerin state, transition probability, unseen-pattern mapping ve confidence score üzerinden açıklanabilir olup olmadığını incelemektir.
 
-Projenin temel amacı sadece en yüksek accuracy değerini bulmak değildir. Asıl amaç, derin öğrenme modellerinin yüksek tahmin gücü ile otomata modelinin adım adım açıklanabilir karar üretme kapasitesini aynı veri setleri üzerinde karşılaştırmaktır.
 
-## Kısa Sonuç
+## Temel Bulgular
 
 SKAB veri setinde deep learning modelleri açık şekilde daha yüksek F1-score üretmiştir. En iyi sonuç `0.850 ± 0.082` F1 ile LSTM modelinden gelmiştir. 1D-CNN modeli de SKAB üzerinde güçlüdür ve `0.798 ± 0.120` F1 elde etmiştir.
 
@@ -33,7 +30,7 @@ Automata modeli sabit parametrelerle düşük F1 üretmiştir; ancak `window_siz
 
 Bu sonuç şunu gösterir: Automata modeli deep learning kadar yüksek skor üretmese bile, kararlarını state, transition probability, unseen mapping ve confidence score üzerinden açıklayabildiği için yorumlanabilirlik açısından güçlüdür.
 
-## Projenin Ne Yaptığı
+## Genel Bakış
 
 Bu proje bir **zaman serisi anomali tespiti** projesidir. Zaman serisi, ölçümlerin zaman boyunca sırayla kaydedildiği veri tipidir. Örneğin bir makinedeki sıcaklık, basınç, elektrik akımı veya titreşim değerleri her saniye ölçülürse elimizde zaman serisi oluşur.
 
@@ -233,7 +230,7 @@ Model daha sonra bu eşleme üzerinden transition probability ve karar üretir. 
 | İstatistiksel test | Wilcoxon signed-rank |
 | Görseller | Confusion matrix, precision-recall curve, parameter heatmap, transition heatmap, transition graph |
 
-Ek rapor şablonundaki cross-dataset tablo yol gösterici olarak değerlendirilmiştir. `yazlab2_v3.docx` ve proje kuralları içinde zorunlu çekirdek isterler; iki resmi veri seti, iki DL modeli, automata dönüşümü, unseen handling, noise/unseen senaryoları, parametre analizi, metrikler ve istatistiksel testlerdir. Bu repository'de iki veri seti üzerinde ayrı ayrı deney yapılmıştır; train-one-dataset/test-other-dataset şeklinde ek cross-dataset transfer deneyi yapılmamıştır ve sınırlılık olarak not edilmiştir.
+Cross-dataset transfer deneyi bu çalışmanın kapsamına dahil edilmemiştir. Bunun yerine SKAB ve BATADAL üzerinde modellerin ayrı ayrı davranışı ve genelleme eğilimleri analiz edilmiştir.
 
 ## Deney Ortamı ve Süre
 
@@ -277,7 +274,7 @@ BATADAL tarafında sonuçlar daha zordur. Veri setinde normal örnek sayısı an
 
 BATADAL LSTM sonucu `0.227 ± 0.312` F1-score ile CNN1D'den daha iyidir, fakat standart sapması yüksektir. Bu durum modelin farklı seed'lerde çok değişken davrandığını gösterir. Yani BATADAL üzerinde LSTM bazı eğitim koşullarında anomali sinyalini yakalayabilmiş, bazı koşullarda ise zorlanmıştır.
 
-Sunumda deep learning tarafı için çıkarılacak ana mesaj şudur:
+Ana yorum:
 
 ```text
 SKAB üzerinde deep learning modelleri güçlü çalıştı; BATADAL üzerinde ise sınıf dengesizliği ve veri karakteristiği modelleri zorladı. Bu yüzden accuracy tek başına yeterli değildir, F1-score ve confusion matrix birlikte yorumlanmalıdır.
@@ -421,7 +418,8 @@ Deep learning modelleri kararlarını doğal olarak açıklamaz. Model "anomali"
 
 ### Automata Avantajları
 
-Automata modeli state, transition probability, unseen mapping ve confidence score üretebildiği için açıklanabilirlik açısından güçlüdür. Sunumda özellikle şu cümle kullanılabilir:
+Automata modeli state, transition probability, unseen mapping ve confidence score üretebildiği için açıklanabilirlik açısından güçlüdür. 
+Ana çıkarım şudur:
 
 ```text
 Deep learning modeli daha yüksek skor verdi; automata modeli ise kararın hangi sembolik state geçişinden ve hangi olasılıktan kaynaklandığını gösterebildi.
@@ -431,23 +429,7 @@ Deep learning modeli daha yüksek skor verdi; automata modeli ise kararın hangi
 
 Automata performansı sembolik temsil kalitesine çok bağlıdır. PCA ile tek boyuta indirgeme, PAA ile ortalama alma ve SAX ile sembolleştirme bazı ince sensör davranışlarını kaybettirebilir. Bu yüzden sabit parametrelerde performans düşük kalmıştır. Parametre sweep bu nedenle önemlidir.
 
-## İster Kontrol Listesi
 
-| İster | Durum | Açıklama |
-|---|---|---|
-| En az iki veri seti | Tamamlandı | SKAB ve BATADAL kullanıldı. |
-| Resmi ham veri kullanımı | Tamamlandı | Veri setleri resmi kaynaklardan alınan ham dosyalar üzerinden hazırlandı. |
-| En az iki DL modeli | Tamamlandı | LSTM ve 1D-CNN uygulandı. |
-| Automata için çok boyuttan tek boyuta dönüşüm | Tamamlandı | Scaling + PCA/PC1 kullanıldı. |
-| PAA/SAX sembolik temsil | Tamamlandı | Automata pipeline içinde kullanıldı. |
-| Sliding-window pattern çıkarımı | Tamamlandı | Pattern'lar automata state olarak kullanıldı. |
-| Probabilistic transition model | Tamamlandı | Transition probability hesaplandı. |
-| Unseen pattern yönetimi | Tamamlandı | Levenshtein distance ile en yakın state mapping yapıldı. |
-| Original/noise/unseen senaryoları | Tamamlandı | Automata tarafında raporlandı. |
-| Window/alphabet parameter sweep | Tamamlandı | 3,4,5,6 değerleri denendi. |
-| Accuracy/precision/recall/F1 | Tamamlandı | DL ve automata sonuçlarında raporlandı. |
-| İstatistiksel test | Tamamlandı | Wilcoxon signed-rank testi eklendi. |
-| Açıklanabilirlik çıktısı | Tamamlandı | State, transition, probability, confidence ve unseen mapping raporlandı. |
 
 ## Nasıl Çalıştırılır?
 
@@ -579,7 +561,7 @@ yazlab2-timeseries-automata/
 5. Train-on-one-dataset/test-on-other-dataset şeklinde ek cross-dataset transfer deneyi yapılmamıştır. Bu çalışma iki veri seti üzerinde ayrı ayrı model davranışı ve genelleme eğilimi analizi yapmıştır.
 6. Automata modelinde daha gelişmiş threshold tuning, class imbalance stratejileri veya çok boyutlu sembolik temsil denenirse performans artabilir.
 
-## Final Yorum
+## Sonuç
 
 Bu projede deep learning modelleri özellikle SKAB üzerinde daha yüksek tahmin performansı üretmiştir. LSTM modeli SKAB için en güçlü modeldir. BATADAL üzerinde ise sınıf dengesizliği nedeniyle modeller zorlanmıştır ve 1D-CNN accuracy yüksek olmasına rağmen anomalileri yakalayamamıştır.
 
