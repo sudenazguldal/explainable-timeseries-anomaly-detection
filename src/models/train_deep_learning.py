@@ -39,6 +39,7 @@ class DeepLearningTrainingConfig:
     num_workers: int = 0
     pin_memory: bool = False
     output_dir: Path | None = None
+    use_class_weighting: bool = True
 
     def __post_init__(self) -> None:
         if tuple(self.seeds) != REQUIRED_SEEDS:
@@ -129,6 +130,7 @@ def build_training_config(project_config: Mapping[str, object]) -> DeepLearningT
         num_workers=int(deep_learning_section.get("num_workers", 0)),
         pin_memory=bool(deep_learning_section.get("pin_memory", False)),
         output_dir=Path(str(output_dir_value)) if output_dir_value else None,
+        use_class_weighting=bool(deep_learning_section.get("use_class_weighting", True)),
     )
 
 
@@ -159,6 +161,37 @@ def create_deep_learning_model(
         return CNN1DModel.from_config(model_values)
 
     raise ValueError(f"Unsupported deep learning model: {model_name}")
+
+
+def compute_pos_weight(dataset: Dataset) -> torch.Tensor | None:
+    """
+    Computes the positive-class weight for BCEWithLogitsLoss from a training dataset.
+
+    pos_weight = (negative sample count) / (positive sample count). This upweights
+    the minority (anomaly) class so that severe class imbalance -- as seen on
+    BATADAL, where anomalies are roughly 5% of samples -- does not let the model
+    collapse to always predicting the majority class.
+
+    Returns None if the dataset has no targets, or only a single class is present
+    (pos_weight would be undefined/meaningless in that case).
+    """
+    targets = getattr(dataset, "targets", None)
+    if targets is None:
+        return None
+
+    targets_tensor = targets if isinstance(targets, torch.Tensor) else torch.as_tensor(targets)
+    flattened = targets_tensor.reshape(-1)
+
+    if flattened.numel() == 0:
+        return None
+
+    positive_count = float((flattened == 1).sum().item())
+    negative_count = float((flattened == 0).sum().item())
+
+    if positive_count == 0.0 or negative_count == 0.0:
+        return None
+
+    return torch.tensor(negative_count / positive_count, dtype=torch.float32)
 
 
 def train_model_across_seeds(
@@ -222,7 +255,11 @@ def train_single_seed(
     set_reproducible_seed(seed)
     selected_device = torch.device(device) if device is not None else _get_default_device()
     model = model.to(selected_device)
-    loss_function = criterion if criterion is not None else nn.BCEWithLogitsLoss()
+    loss_function = criterion if criterion is not None else _build_default_criterion(
+        train_dataset=train_dataset,
+        use_class_weighting=config.use_class_weighting,
+        device=selected_device,
+    )
     optimizer = optimizer_factory(model) if optimizer_factory else torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     train_loader = _build_data_loader(train_dataset, config, seed=seed, shuffle=True)
     validation_loader = _build_data_loader(validation_dataset, config, seed=seed, shuffle=False)
@@ -307,6 +344,30 @@ def set_reproducible_seed(seed: int) -> None:
 
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
+
+def _build_default_criterion(
+    train_dataset: Dataset,
+    use_class_weighting: bool,
+    device: torch.device,
+) -> nn.Module:
+    """
+    Builds the default training loss, optionally weighting the anomaly class.
+
+    Without class weighting, severe class imbalance (e.g. BATADAL's ~5% anomaly
+    rate) can let the model minimize loss by always predicting the majority
+    class, which produces a deterministic F1-score of 0.0 regardless of seed.
+    """
+    if not use_class_weighting:
+        return nn.BCEWithLogitsLoss()
+
+    pos_weight = compute_pos_weight(train_dataset)
+    if pos_weight is None:
+        LOGGER.warning("Could not compute pos_weight (missing targets or single class); falling back to unweighted loss.")
+        return nn.BCEWithLogitsLoss()
+
+    LOGGER.info("Using class-weighted BCE loss | pos_weight=%.4f", float(pos_weight.item()))
+    return nn.BCEWithLogitsLoss(pos_weight=pos_weight.to(device))
 
 
 def _run_training_epoch(
