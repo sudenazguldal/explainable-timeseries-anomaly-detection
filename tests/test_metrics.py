@@ -78,3 +78,33 @@ def test_probabilities_to_binary_predictions_converts_list():
     )
 
     assert predictions == [1, 0, 1]
+
+
+def test_probability_to_binary_prediction_marks_high_score_as_anomaly_when_flipped():
+    prediction = probability_to_binary_prediction(
+        probability=0.90,
+        anomaly_threshold=0.5,
+        higher_is_anomaly=True,
+    )
+
+    assert prediction == 1
+
+
+def test_probability_to_binary_prediction_marks_low_score_as_normal_when_flipped():
+    prediction = probability_to_binary_prediction(
+        probability=0.10,
+        anomaly_threshold=0.5,
+        higher_is_anomaly=True,
+    )
+
+    assert prediction == 0
+
+
+def test_probabilities_to_binary_predictions_converts_list_when_flipped():
+    predictions = probabilities_to_binary_predictions(
+        probabilities=[0.9, 0.2, 0.51],
+        anomaly_threshold=0.5,
+        higher_is_anomaly=True,
+    )
+
+    assert predictions == [1, 0, 1]

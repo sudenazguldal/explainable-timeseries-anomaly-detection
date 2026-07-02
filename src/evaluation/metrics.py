@@ -87,15 +87,22 @@ def calculate_binary_confusion_matrix(y_true: list[int] | np.ndarray, y_pred: li
 def probability_to_binary_prediction(
     probability: float,
     anomaly_threshold: float,
+    higher_is_anomaly: bool = False,
 ) -> int:
     """
-    Converts automata probability into binary prediction.
+    Converts a probability/score into a binary prediction.
 
-    Low probability path => anomaly
-    High probability path => normal
+    Two scoring conventions are supported:
+    - Automata transition probabilities (default, higher_is_anomaly=False):
+      low probability path => anomaly, high probability path => normal.
+    - Deep learning anomaly scores (higher_is_anomaly=True):
+      high score => anomaly, low score => normal.
     """
     probability = float(probability)
     anomaly_threshold = float(anomaly_threshold)
+
+    if higher_is_anomaly:
+        return 1 if probability >= anomaly_threshold else 0
 
     if probability < anomaly_threshold:
         return 1
@@ -106,14 +113,18 @@ def probability_to_binary_prediction(
 def probabilities_to_binary_predictions(
     probabilities: list[float],
     anomaly_threshold: float,
+    higher_is_anomaly: bool = False,
 ) -> list[int]:
     """
-    Converts a list of automata probabilities into binary predictions.
+    Converts a list of probabilities/scores into binary predictions.
+
+    See probability_to_binary_prediction for the higher_is_anomaly convention.
     """
     return [
         probability_to_binary_prediction(
             probability=probability,
             anomaly_threshold=anomaly_threshold,
+            higher_is_anomaly=higher_is_anomaly,
         )
         for probability in probabilities
     ]
