@@ -24,6 +24,7 @@ from src.data.skab_loader import get_skab_feature_columns, load_skab_dataset
 from src.data.splitter import create_skab_group_folds
 from src.evaluation.metrics import calculate_classification_metrics, calculate_confusion_matrix
 from src.evaluation.plots import save_confusion_matrix_heatmap, save_precision_recall_curve, save_roc_curve
+from src.evaluation.threshold_tuning import select_best_threshold
 from src.models.train_deep_learning import (
     DeepLearningTrainingConfig,
     build_training_config,
@@ -40,6 +41,8 @@ BATADAL_NORMAL_LABEL = -999
 NORMAL_LABEL = 0
 ANOMALY_LABEL = 1
 DL_BINARY_TARGET_COLUMN = "dl_binary_target"
+
+DEFAULT_THRESHOLD_CANDIDATES = [round(value, 2) for value in np.arange(0.05, 1.0, 0.05)]
 
 
 @dataclass(frozen=True)
@@ -68,6 +71,8 @@ class ExperimentRunConfig:
     normalization_method: str
     model_names: list[str]
     classification_threshold: float
+    tune_threshold: bool
+    threshold_candidates: list[float]
     results_dir: Path
     figures_dir: Path
 
@@ -134,6 +139,7 @@ class EvaluationRecord:
     seed: int
     best_epoch: int
     best_validation_loss: float
+    selected_threshold: float
     metrics: dict[str, float]
     confusion_matrix: list[list[int]]
     y_true: list[int]
@@ -173,6 +179,10 @@ def parse_experiment_config(config_path: str | Path = "config.yaml") -> Experime
         normalization_method=str(preprocessing_section["normalization"]),
         model_names=[str(model_name) for model_name in deep_learning_section["models"]],
         classification_threshold=float(deep_learning_section.get("classification_threshold", 0.5)),
+        tune_threshold=bool(deep_learning_section.get("tune_threshold", True)),
+        threshold_candidates=[
+            float(value) for value in deep_learning_section.get("threshold_candidates", DEFAULT_THRESHOLD_CANDIDATES)
+        ],
         results_dir=Path(str(logging_section["results_dir"])) / "deep_learning",
         figures_dir=Path(str(logging_section["figures_dir"])) / "deep_learning",
     )
@@ -289,6 +299,12 @@ def evaluate_trained_models(
 ) -> list[EvaluationRecord]:
     """
     Evaluates every best seed checkpoint on the held-out test sequence windows.
+
+    The classification threshold is tuned per seed on the validation split
+    (maximizing F1-score) when run_config.tune_threshold is True, instead of
+    always using a fixed 0.5 cut on the sigmoid score. This matters most on
+    heavily imbalanced datasets such as BATADAL, where a fixed 0.5 threshold
+    can collapse to predicting the majority class for every sample.
     """
     evaluation_records: list[EvaluationRecord] = []
 
@@ -297,12 +313,29 @@ def evaluate_trained_models(
         for seed_result in training_result.seed_results:
             model = model_run.model_factory(seed_result.seed)
             model.load_state_dict(seed_result.best_model_state)
+
+            selected_threshold = run_config.classification_threshold
+            if run_config.tune_threshold:
+                validation_true, validation_scores = _predict_anomaly_scores(
+                    model=model,
+                    test_dataset=model_run.validation_dataset,
+                    batch_size=run_config.training_config.batch_size,
+                )
+                threshold_result = select_best_threshold(
+                    y_true=validation_true,
+                    probabilities=validation_scores,
+                    threshold_candidates=run_config.threshold_candidates,
+                    primary_metric="f1_score",
+                    higher_is_anomaly=True,
+                )
+                selected_threshold = threshold_result["selected_threshold"]
+
             y_true, y_scores = _predict_anomaly_scores(
                 model=model,
                 test_dataset=model_run.test_dataset,
                 batch_size=run_config.training_config.batch_size,
             )
-            y_pred = (np.asarray(y_scores) >= run_config.classification_threshold).astype(int).tolist()
+            y_pred = (np.asarray(y_scores) >= selected_threshold).astype(int).tolist()
             metrics = calculate_classification_metrics(y_true, y_pred)
             confusion_matrix_values = calculate_confusion_matrix(y_true, y_pred)
             evaluation_records.append(
@@ -313,6 +346,7 @@ def evaluate_trained_models(
                     seed=seed_result.seed,
                     best_epoch=seed_result.best_epoch,
                     best_validation_loss=seed_result.best_validation_loss,
+                    selected_threshold=float(selected_threshold),
                     metrics=metrics,
                     confusion_matrix=confusion_matrix_values,
                     y_true=y_true,

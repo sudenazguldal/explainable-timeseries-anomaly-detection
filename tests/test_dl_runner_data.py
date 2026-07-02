@@ -5,6 +5,7 @@ from src.experiments.run_dl_experiments import (
     DL_BINARY_TARGET_COLUMN,
     _split_skab_fold,
     normalize_deep_learning_labels,
+    parse_experiment_config,
 )
 
 
@@ -89,3 +90,82 @@ def test_skab_deep_learning_split_keeps_source_files_disjoint():
     assert train_groups.isdisjoint(test_groups)
     assert validation_groups.isdisjoint(test_groups)
     assert validation_groups == {"valve1/d.csv"}
+
+
+def test_parse_experiment_config_reads_threshold_tuning_settings(tmp_path):
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text(
+        """
+project:
+  random_seeds: [42, 123, 2026, 7, 999]
+datasets:
+  skab:
+    raw_path: "data/raw/skab"
+  batadal:
+    raw_path: "data/raw/batadal/training_dataset_2"
+    split:
+      train: 0.60
+      validation: 0.20
+      test: 0.20
+preprocessing:
+  normalization: "standard"
+deep_learning:
+  sequence_length: 32
+  batch_size: 32
+  max_epochs: 50
+  early_stopping_patience: 5
+  models: ["lstm", "cnn1d"]
+  use_class_weighting: true
+  tune_threshold: true
+  classification_threshold: 0.5
+  threshold_candidates: [0.1, 0.5, 0.9]
+logging:
+  results_dir: "reports/results"
+  figures_dir: "reports/figures"
+""",
+        encoding="utf-8",
+    )
+
+    run_config = parse_experiment_config(config_path)
+
+    assert run_config.tune_threshold is True
+    assert run_config.threshold_candidates == [0.1, 0.5, 0.9]
+    assert run_config.classification_threshold == 0.5
+    assert run_config.training_config.use_class_weighting is True
+
+
+def test_parse_experiment_config_defaults_tune_threshold_to_true_when_omitted(tmp_path):
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text(
+        """
+project:
+  random_seeds: [42, 123, 2026, 7, 999]
+datasets:
+  skab:
+    raw_path: "data/raw/skab"
+  batadal:
+    raw_path: "data/raw/batadal/training_dataset_2"
+    split:
+      train: 0.60
+      validation: 0.20
+      test: 0.20
+preprocessing:
+  normalization: "standard"
+deep_learning:
+  sequence_length: 32
+  batch_size: 32
+  max_epochs: 50
+  early_stopping_patience: 5
+  models: ["lstm", "cnn1d"]
+logging:
+  results_dir: "reports/results"
+  figures_dir: "reports/figures"
+""",
+        encoding="utf-8",
+    )
+
+    run_config = parse_experiment_config(config_path)
+
+    assert run_config.tune_threshold is True
+    assert len(run_config.threshold_candidates) > 0
+    assert run_config.training_config.use_class_weighting is True
