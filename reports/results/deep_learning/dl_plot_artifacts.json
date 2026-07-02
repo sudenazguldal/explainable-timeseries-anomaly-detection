@@ -530,13 +530,4 @@
     "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_7_precision_recall_curve.png",
     "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_7_roc_curve.png"
   },
-  {
-    "dataset_name": "batadal",
-    "split_name": "split_1",
-    "model_name": "cnn1d",
-    "seed": 999,
-    "confusion_matrix_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_999_confusion_matrix.png",
-    "precision_recall_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_999_precision_recall_curve.png",
-    "roc_curve_path": "reports\\figures\\deep_learning\\batadal\\split_1\\cnn1d\\batadal_split_1_cnn1d_seed_999_roc_curve.png"
-  }
-]
+  {
