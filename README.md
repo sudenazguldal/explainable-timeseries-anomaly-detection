@@ -1,195 +1,198 @@
 # Explainable Anomaly Detection in Industrial Time Series
 
-## Proje Bilgileri
+Deep Learning vs. Probabilistic Automata for anomaly detection in industrial sensor data.
 
-| Alan | Bilgi |
-|---|---|
-| Hüseyin Erekmen |  251307099 |
-| Sudenaz Güldal |  221307029 |
-| Proje konusu | Zaman serisi anomali tespiti için Deep Learning ve Probabilistic Automata karşılaştırması |
-| Kullanılan veri setleri | SKAB, BATADAL |
-| Veri kaynağı | Veri setleri resmi kaynaklardan alınan ham veri dosyaları üzerinden hazırlanmıştır. |
+This repository compares two fundamentally different approaches to anomaly detection in industrial time series:
 
-Bu repository, endüstriyel zaman serisi verilerinde anomali tespiti için black-box deep learning modelleri ile açıklanabilir probabilistic automata yaklaşımını karşılaştırır.
+1. **Black-box deep learning models** — LSTM and 1D-CNN.
+2. **An explainable probabilistic automata model** — PCA, PAA, SAX symbolic encoding, sliding-window pattern extraction, transition probabilities, and Levenshtein-distance-based handling of unseen patterns.
 
-Çalışmada SKAB ve BATADAL veri setleri üzerinde LSTM, 1D-CNN ve sembolik automata tabanlı bir model değerlendirilmiştir. Temel amaç yalnızca en yüksek tahmin başarısını elde etmek değil; aynı zamanda anomalilerin state, transition probability, unseen-pattern mapping ve confidence score üzerinden açıklanabilir olup olmadığını incelemektir.
+The goal is not simply to maximize accuracy. The point is to compare the raw predictive power of deep learning against a model that can explain, step by step, why it labeled a given point as anomalous.
 
+## Key Findings
 
-## Temel Bulgular
+On SKAB, deep learning clearly outperforms the automata model. The best result is an F1-score of `0.850 ± 0.082` from the LSTM model; 1D-CNN is also strong at `0.798 ± 0.120`.
 
-SKAB veri setinde deep learning modelleri açık şekilde daha yüksek F1-score üretmiştir. En iyi sonuç `0.850 ± 0.082` F1 ile LSTM modelinden gelmiştir. 1D-CNN modeli de SKAB üzerinde güçlüdür ve `0.798 ± 0.120` F1 elde etmiştir.
+On BATADAL, both deep learning models struggle. LSTM reaches `0.227 ± 0.312` F1, while 1D-CNN collapses to an F1-score of `0.000` despite a high accuracy — it simply never predicts the anomaly class. This is a clean illustration of why accuracy alone is misleading on imbalanced anomaly data.
 
-BATADAL veri setinde modeller daha fazla zorlanmıştır. LSTM `0.227 ± 0.312` F1 üretirken, 1D-CNN modeli yüksek accuracy değerine rağmen anomalileri yakalayamadığı için F1-score `0.000` kalmıştır. Bu durum, dengesiz anomali verilerinde accuracy metriğinin tek başına yanıltıcı olabileceğini göstermektedir.
+With its fixed parameters, the automata model produces a low F1-score on both datasets; tuning `window_size` and `alphabet_size` improves it substantially:
 
-Automata modeli sabit parametrelerle düşük F1 üretmiştir; ancak `window_size` ve `alphabet_size` ayarları optimize edildiğinde performans belirgin şekilde artmıştır:
-
-| Veri Seti | Sabit Automata F1 | En İyi Automata F1 | En İyi Parametre |
+| Dataset | Fixed-Parameter Automata F1 | Best Automata F1 | Best Parameters |
 |---|---:|---:|---|
 | BATADAL | 0.182 | 0.257 | `window_size=6`, `alphabet_size=5` |
-| SKAB | 0.077 ± 0.030 | 0.438 ± 0.030 | `window_size=6`, `alphabet_size=6` |
+| SKAB | 0.083 ± 0.070 | 0.337 ± 0.144 | `window_size=6`, `alphabet_size=6` |
 
-Bu sonuç şunu gösterir: Automata modeli deep learning kadar yüksek skor üretmese bile, kararlarını state, transition probability, unseen mapping ve confidence score üzerinden açıklayabildiği için yorumlanabilirlik açısından güçlüdür.
+Even where its raw score is lower than deep learning, the automata model can justify its decisions through explicit state transitions, transition probabilities, unseen-pattern mapping, and a confidence score — something the neural models cannot natively provide.
 
-## Genel Bakış
+## What This Project Does
 
-Bu proje bir **zaman serisi anomali tespiti** projesidir. Zaman serisi, ölçümlerin zaman boyunca sırayla kaydedildiği veri tipidir. Örneğin bir makinedeki sıcaklık, basınç, elektrik akımı veya titreşim değerleri her saniye ölçülürse elimizde zaman serisi oluşur.
+This is a **time series anomaly detection** project. A time series is a sequence of measurements recorded in order over time — for example, the temperature, pressure, current, or vibration of a machine sampled every second.
 
-Anomali ise sistemin normal davranışından sapmasıdır. Endüstriyel sistemlerde anomali; arıza, saldırı, sensör bozulması, valf problemi, basınç kaçağı veya beklenmeyen operasyonel davranış anlamına gelebilir.
+An anomaly is a deviation from a system's normal behavior. In industrial systems this can mean a fault, a cyber attack, sensor degradation, a valve problem, a pressure leak, or unexpected operational behavior.
 
-Projede iki ayrı soru cevaplanmaya çalışılmıştır:
+The project answers two separate questions:
 
-1. Deep learning modelleri bu anomalileri ne kadar iyi yakalıyor?
-2. Automata modeli daha düşük skor alsa bile kararını daha anlaşılır şekilde açıklayabiliyor mu?
+1. How well do deep learning models detect these anomalies?
+2. Can the automata model explain its decisions in an understandable way, even if its raw score is lower?
 
-## Kullanılan Veri Setleri
+## Datasets
 
 ### SKAB
 
-SKAB, endüstriyel bir test ortamından alınmış sensör kayıtlarını içerir. Bu projede yalnızca `valve1` ve `valve2` klasörleri kullanılmıştır. Her CSV dosyasının hangi kaynaktan geldiğini takip etmek için `source_group` ve `source_file` metadata sütunları eklenmiştir. Bu metadata sütunları model girdisine verilmemiştir; yalnızca split ve veri takibi için kullanılmıştır.
+SKAB contains sensor readings from an industrial test rig. Only the `valve1` and `valve2` subsets are used here. Each row carries `source_group` and `source_file` metadata columns so that its origin can be traced; these columns are excluded from the model input and used only for splitting and lineage tracking.
 
-| Özellik | Değer |
+| Property | Value |
 |---|---:|
-| Satır sayısı | 22472 |
-| Feature sayısı | 8 |
-| Target sütunu | `anomaly` |
-| Normal örnek sayısı | 14646 |
-| Anomali örnek sayısı | 7826 |
-| Kullanılan source file sayısı | 20 |
+| Rows | 22472 |
+| Features | 8 |
+| Target column | `anomaly` |
+| Normal samples | 14646 |
+| Anomalous samples | 7826 |
+| Source files used | 20 |
 
-SKAB üzerinde kullanılan sensör sütunları:
+Sensor columns used from SKAB:
 
-| Sütun | Anlamı |
+| Column | Meaning |
 |---|---|
-| `Accelerometer1RMS` | Birinci ivme sensörünün RMS titreşim değeri. Makinedeki titreşim şiddetini özetler. |
-| `Accelerometer2RMS` | İkinci ivme sensörünün RMS titreşim değeri. Farklı noktadaki titreşim davranışını gösterir. |
-| `Current` | Elektrik akımı. Motor veya sistemin çektiği akım değişimleri arıza/anomali göstergesi olabilir. |
-| `Pressure` | Basınç değeri. Valf veya akış problemlerinde değişebilir. |
-| `Temperature` | Sıcaklık değeri. Isınma veya soğuma davranışı sistem sağlığını gösterebilir. |
-| `Thermocouple` | Termokupl sıcaklık sensörü ölçümü. Sıcaklığı farklı bir sensör tipiyle takip eder. |
-| `Voltage` | Elektrik gerilimi. Sistem besleme veya çalışma koşullarını temsil eder. |
-| `Volume Flow RateRMS` | Hacimsel akış hızının RMS değeri. Sistemdeki akış davranışını özetler. |
+| `Accelerometer1RMS` | RMS vibration from the first accelerometer. |
+| `Accelerometer2RMS` | RMS vibration from a second accelerometer at a different point. |
+| `Current` | Electrical current draw; can indicate motor or system faults. |
+| `Pressure` | Pressure reading; sensitive to valve or flow problems. |
+| `Temperature` | Temperature reading. |
+| `Thermocouple` | Temperature from a second sensor type. |
+| `Voltage` | Supply/operating voltage. |
+| `Volume Flow RateRMS` | RMS volumetric flow rate. |
 
-SKAB için random satır karıştırma yapılmamıştır. Aynı CSV dosyasından gelen örneklerin hem train hem test içine düşmesini engellemek için `source_file` tabanlı group split kullanılmıştır. Bu seçim veri sızıntısını azaltır.
+SKAB is split by group rather than randomly. Rows from the same source CSV never appear in both the train and test sets, which prevents leakage across the split.
 
 ### BATADAL
 
-BATADAL, su dağıtım sistemi üzerinde saldırı/anomali tespiti için kullanılan bir veri setidir. Bu projede `Training Dataset 2` kullanılmıştır. `DATETIME` sütunu yalnızca zaman sırasını korumak için kullanılmış, model girdisine dahil edilmemiştir. Hedef sütun `ATT_FLAG` olarak alınmıştır.
+BATADAL is a water distribution system dataset used for cyber-attack / anomaly detection. This project uses `Training Dataset 2`. The `DATETIME` column is used only to preserve temporal order and is excluded from the model input. The target column is `ATT_FLAG`.
 
-| Özellik | Değer |
+| Property | Value |
 |---|---:|
-| Satır sayısı | 4177 |
-| Feature sayısı | 43 |
-| Target sütunu | `ATT_FLAG` |
-| Time sütunu | `DATETIME` |
-| Normal örnek sayısı | 3958 |
-| Anomali örnek sayısı | 219 |
-| Train satır sayısı | 2506 |
-| Validation satır sayısı | 835 |
-| Test satır sayısı | 836 |
+| Rows | 4177 |
+| Features | 43 |
+| Target column | `ATT_FLAG` |
+| Time column | `DATETIME` |
+| Normal samples | 3958 |
+| Anomalous samples | 219 |
+| Train rows | 2506 |
+| Validation rows | 835 |
+| Test rows | 836 |
 
-BATADAL çok dengesiz bir veri setidir. Normal örnek sayısı anomali örnek sayısından çok daha fazladır. Bu yüzden model sürekli "normal" dese bile accuracy yüksek çıkabilir. Bu projede BATADAL 1D-CNN sonucunda görülen temel problem de budur: accuracy yaklaşık `0.901` olmasına rağmen model anomalileri yakalayamadığı için F1-score `0.000` olmuştur.
+BATADAL is highly imbalanced — far more normal samples than anomalies — so a model that always predicts "normal" can still score a high accuracy. This is exactly the failure mode seen in the BATADAL 1D-CNN result: ~0.901 accuracy with an F1-score of 0.000.
 
-BATADAL için veri kronolojik sırayla ayrılmıştır:
+BATADAL is split chronologically:
 
 ```text
-%60 train -> %20 validation -> %20 test
+60% train -> 20% validation -> 20% test
 ```
 
-Random split kullanılmamıştır, çünkü zaman serilerinde gelecekteki verinin geçmiş eğitim verisine sızması gerçekçi olmayan sonuçlar doğurur.
+A random split is not used, since future data leaking into training would produce unrealistically optimistic results for a time series problem.
 
-## Terim Sözlüğü
+### Data provenance and licensing
 
-| Terim | Bu projedeki anlamı |
+Both raw datasets are included in `data/raw/` so the project can be cloned and run end to end without external downloads.
+
+- **SKAB** — Skoltech Anomaly Benchmark, [waico/SKAB](https://github.com/waico/SKAB), distributed under **GPL-3.0**. The raw CSV files retain this license.
+- **BATADAL** — from the [BATtle of the Attack Detection Algorithms](https://www.batadal.net/data.html), distributed under **CC BY 4.0**. Attribution: Taormina, R. et al., "The Battle of the Attack Detection Algorithms," *Journal of Water Resources Planning and Management*, 2018.
+
+The code in this repository is licensed separately (see [LICENSE](LICENSE)); the two dataset licenses above apply specifically to the files under `data/raw/`.
+
+## Glossary
+
+| Term | Meaning in this project |
 |---|---|
-| Time series | Zamana göre sıralı sensör ölçümleri. |
-| Feature | Modele verilen giriş değişkeni. Örneğin basınç, sıcaklık, akım. |
-| Target / Label | Modelin tahmin etmeye çalıştığı sınıf. Bu projede `0=normal`, `1=anomaly`. |
-| Anomaly | Normal sistem davranışından sapma. |
-| Train set | Modelin öğrendiği veri bölümü. |
-| Validation set | Parametre/threshold seçmek için kullanılan ara veri bölümü. |
-| Test set | En son performans ölçmek için ayrılan veri bölümü. |
-| Data leakage | Test bilgisinin eğitim aşamasına sızması. Sonuçları olduğundan iyi gösterir. |
-| Accuracy | Toplam doğru tahmin oranı. Dengesiz veri setlerinde tek başına yeterli değildir. |
-| Precision | Model "anomali" dediğinde ne kadar haklı olduğunu gösterir. |
-| Recall | Gerçek anomalilerin ne kadarının yakalandığını gösterir. |
-| F1-score | Precision ve recall dengesini tek değerde özetler. Anomali tespitinde çok önemlidir. |
-| LSTM | Zaman bağımlılıklarını öğrenebilen recurrent deep learning modeli. |
-| 1D-CNN | Zaman pencereleri üzerinde lokal örüntüleri yakalayan convolutional model. |
-| Sliding window | Zaman serisini sabit uzunluklu ardışık parçalara ayırma yöntemi. |
-| PCA | Çok boyutlu veriyi daha az boyuta indirir. Automata tarafında PC1 kullanılmıştır. |
-| PAA | Zaman serisini segmentlere bölüp her segmentin ortalamasını alır. |
-| SAX | Sayısal zaman serisini sembollere çevirir. Örneğin `a`, `b`, `c`. |
-| Alphabet size | SAX sırasında kaç farklı sembol kullanılacağını belirler. |
-| Window size | Kaç sembolün bir state/pattern oluşturacağını belirler. |
-| State | Automata içindeki sembolik durum. Örneğin `abca`. |
-| Transition | Bir state'ten başka bir state'e geçiş. |
-| Transition probability | Bir geçişin eğitim verisinde ne kadar olası olduğunu gösterir. |
-| Transition density | Olası tüm geçişlerin ne kadarının gerçekten gözlendiğini gösteren yoğunluk. |
-| Unseen pattern | Eğitimde hiç görülmeyen ama test sırasında gelen pattern. |
-| Levenshtein distance | İki sembolik dizinin birbirine ne kadar benzediğini ölçen düzenleme mesafesi. |
-| Confidence score | Automata kararının olasılık tabanlı güven değeri. |
+| Time series | Sensor measurements ordered by time. |
+| Feature | An input variable given to the model, e.g. pressure, temperature, current. |
+| Target / Label | The class the model predicts. Here, `0 = normal`, `1 = anomaly`. |
+| Anomaly | A deviation from normal system behavior. |
+| Train set | The portion of data the model learns from. |
+| Validation set | An intermediate split used for parameter/threshold selection. |
+| Test set | The held-out split used for final performance measurement. |
+| Data leakage | Test information leaking into training, producing overly optimistic results. |
+| Accuracy | Fraction of correct predictions; misleading alone on imbalanced data. |
+| Precision | Of everything the model calls "anomaly," how much actually is. |
+| Recall | Of all real anomalies, how many were caught. |
+| F1-score | Harmonic mean of precision and recall; central metric for anomaly detection. |
+| LSTM | A recurrent deep learning model that can learn temporal dependencies. |
+| 1D-CNN | A convolutional model that captures local patterns within a time window. |
+| Sliding window | Splitting a time series into fixed-length consecutive segments. |
+| PCA | Dimensionality reduction; the automata pipeline uses the first principal component (PC1). |
+| PAA | Piecewise Aggregate Approximation — averages a time series over fixed segments. |
+| SAX | Symbolic Aggregate approXimation — converts a numeric series into symbols (e.g. `a`, `b`, `c`). |
+| Alphabet size | Number of distinct symbols used by SAX. |
+| Window size | Number of symbols that form one state/pattern. |
+| State | A symbolic pattern in the automata, e.g. `abca`. |
+| Transition | A move from one state to another. |
+| Transition probability | How likely a given transition was in the training data. |
+| Transition density | Fraction of all possible transitions that were actually observed. |
+| Unseen pattern | A pattern that never appeared during training but occurs at test time. |
+| Levenshtein distance | Edit distance between two symbolic sequences. |
+| Confidence score | The automata model's probability-based confidence in a decision. |
 
-## Metodoloji
+## Methodology
 
 ### Deep Learning Pipeline
 
-Deep learning tarafında iki model kullanılmıştır:
+Two deep learning models are used:
 
-| Model | Neden kullanıldı? |
+| Model | Why it was chosen |
 |---|---|
-| LSTM | Zaman serilerinde geçmiş ölçümlerin gelecekteki davranışa etkisini öğrenebilir. |
-| 1D-CNN | Zaman pencereleri içindeki kısa lokal örüntüleri yakalayabilir. |
+| LSTM | Can learn how past measurements influence future behavior. |
+| 1D-CNN | Captures short, local patterns within a time window. |
 
-Pipeline akışı:
+Pipeline:
 
 ```text
-Ham sensör verisi
--> target/metadata ayrımı
--> train üzerinde normalization fit
--> validation/test üzerinde sadece transform
--> sliding-window sequence üretimi
--> LSTM ve 1D-CNN eğitimi
--> accuracy, precision, recall, F1, confusion matrix, PR/ROC curve çıktıları
+Raw sensor data
+-> separate target/metadata columns
+-> fit normalization on train only
+-> transform validation/test with the fitted scaler
+-> build sliding-window sequences
+-> train LSTM and 1D-CNN
+-> accuracy, precision, recall, F1, confusion matrix, PR/ROC curves
 ```
 
-Deep learning ayarları:
+Deep learning settings:
 
-| Ayar | Değer |
+| Setting | Value |
 |---|---:|
 | Sequence length | 32 |
 | Batch size | 32 |
-| Max epoch | 50 |
+| Max epochs | 50 |
 | Early stopping patience | 5 |
 | Random seeds | 42, 123, 2026, 7, 999 |
 
-SKAB tarafında 5 fold ve 5 seed kullanıldığı için her model 25 run ile özetlenmiştir. BATADAL tarafında zaman sıralı tek split ve 5 seed kullanıldığı için her model 5 run ile özetlenmiştir.
+SKAB uses 5 group folds and 5 seeds, so each model is summarized over 25 runs. BATADAL uses a single chronological split with 5 seeds, so each model is summarized over 5 runs.
 
 ### Automata Pipeline
 
-Automata modeli deep learning gibi doğrudan çok boyutlu sensör matrisini öğrenmez. Önce veri sembolik bir zaman serisine dönüştürülür.
+The automata model does not learn directly from the raw multivariate sensor matrix. The data is first converted into a symbolic time series:
 
 ```text
-Çok değişkenli sensör verisi
+Multivariate sensor data
 -> standard scaling
--> PCA ile PC1 çıkarımı
--> PAA ile segment ortalamaları
--> SAX ile sembolik dizi
--> sliding-window pattern çıkarımı
+-> PCA to extract PC1
+-> PAA segment averaging
+-> SAX symbolic encoding
+-> sliding-window pattern extraction
 -> pattern = state
--> transition probability hesaplama
--> düşük olasılıklı geçiş = anomaly adayı
+-> transition probability estimation
+-> low-probability transition = anomaly candidate
 ```
 
-Automata modelinin temel varsayımı:
+Core assumption:
 
 ```text
-Eğitimde sık görülen transition -> normal davranış
-Eğitimde az görülen veya hiç görülmeyen transition -> anomali adayı
+Frequent transitions in training -> normal behavior
+Rare or unseen transitions in training -> anomaly candidate
 ```
 
-Sabit automata parametreleri:
+Fixed automata parameters:
 
-| Parametre | Değer |
+| Parameter | Value |
 |---|---:|
 | `window_size` | 4 |
 | `alphabet_size` | 3 |
@@ -197,7 +200,7 @@ Sabit automata parametreleri:
 | `fallback_probability` | 0.000001 |
 | `anomaly_threshold` | 0.05 |
 
-Parametre analizi için denenen değerler:
+Parameter sweep range:
 
 ```text
 window_size:   3, 4, 5, 6
@@ -206,55 +209,55 @@ alphabet_size: 3, 4, 5, 6
 
 ### Unseen Pattern Handling
 
-Test sırasında eğitimde hiç görülmeyen bir pattern gelirse model hata vermemelidir. Bu durumda Levenshtein distance kullanılarak en yakın bilinen state bulunur.
-
-Örnek:
+If a pattern never seen during training appears at test time, the model must not fail. Instead, Levenshtein distance is used to find the closest known state:
 
 ```text
-Gelen unseen pattern: ccca
-Bilinen en yakın state: acca
-Edit distance: 1
+Incoming unseen pattern: ccca
+Closest known state:     acca
+Edit distance:           1
 ```
 
-Model daha sonra bu eşleme üzerinden transition probability ve karar üretir. Bu sayede automata modeli yalnızca tahmin üretmez, tahminin nedenini de açıklayabilir.
+The transition probability and decision are then derived from this mapped state, which lets the automata model justify its predictions rather than simply emitting them.
 
-## Deney Tasarımı
+## Experiment Design
 
-| Başlık | Uygulanan karar |
+| Aspect | Decision |
 |---|---|
-| Veri seti sayısı | 2 veri seti: SKAB ve BATADAL |
-| DL model sayısı | 2 model: LSTM ve 1D-CNN |
-| Split | SKAB: group split, BATADAL: temporal 60/20/20 |
-| Senaryolar | Original, Gaussian noise, unseen-only |
-| Automata parametreleri | Fixed ayar + window/alphabet sweep |
-| İstatistiksel test | Wilcoxon signed-rank |
-| Görseller | Confusion matrix, precision-recall curve, parameter heatmap, transition heatmap, transition graph |
+| Datasets | 2: SKAB and BATADAL |
+| DL models | 2: LSTM and 1D-CNN |
+| Split strategy | SKAB: group split · BATADAL: chronological 60/20/20 |
+| Scenarios | Original, Gaussian noise, unseen-only |
+| Automata parameters | Fixed setting + window/alphabet sweep |
+| Statistical test | Wilcoxon signed-rank |
+| Figures | Confusion matrix, precision-recall curve, parameter heatmap, transition heatmap, transition graph |
 
-Cross-dataset transfer deneyi bu çalışmanın kapsamına dahil edilmemiştir. Bunun yerine SKAB ve BATADAL üzerinde modellerin ayrı ayrı davranışı ve genelleme eğilimleri analiz edilmiştir.
+A train-on-one-dataset / test-on-the-other cross-dataset transfer experiment was not performed; SKAB and BATADAL were evaluated independently, and this is noted as a limitation below.
 
-## Deney Ortamı ve Süre
+## Environment and Runtime
 
-| Pipeline | Ortam | Yaklaşık süre |
+| Pipeline | Environment | Approx. runtime |
 |---|---|---:|
-| Deep learning full training | Huawei MateBook 14, Intel Core Ultra 5 125H, Python 3.13.3 | 7 dakika |
-| Automata full experiments | Lokal laptop ortamı | 4 dakika |
+| Deep learning full training | Local workstation, Python 3.13.3 | ~7 minutes |
+| Automata full experiment suite | Local workstation | ~4 minutes |
 
-Smoke çıktıları final eğitim çıktılarından ayrı tutulmuştur. Smoke testler yalnızca kodun temel olarak çalıştığını doğrulayan hızlı kontrollerdir; final rapor sonuçları full experiment çıktılarından alınmıştır.
+Smoke-test outputs are kept separate from final training outputs. Smoke tests only confirm that the code runs; the reported results below come from the full experiment runs.
 
-## Deep Learning Sonuçları
+**Reproducibility note:** the automata pipeline's SKAB split uses `StratifiedGroupKFold`, whose fold assignment can differ across `scikit-learn` versions even with the exact same seed. `requirements.txt` pins exact versions; the SKAB automata numbers in this README were generated and verified against those pinned versions. Deep learning results use the same SKAB grouped-split strategy, so exact reproduction of the DL numbers also depends on `scikit-learn` matching the pinned version, in addition to `torch`/`tensorflow`.
 
-| Veri Seti | Model | Run | Accuracy | Precision | Recall | F1-score |
+## Deep Learning Results
+
+| Dataset | Model | Runs | Accuracy | Precision | Recall | F1-score |
 |---|---:|---:|---:|---:|---:|---:|
 | BATADAL | 1D-CNN | 5 | 0.901 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 | 0.000 ± 0.000 |
 | BATADAL | LSTM | 5 | 0.914 ± 0.022 | 0.611 ± 0.386 | 0.182 ± 0.282 | 0.227 ± 0.312 |
 | SKAB | 1D-CNN | 25 | 0.881 ± 0.060 | 0.941 ± 0.071 | 0.711 ± 0.166 | 0.798 ± 0.120 |
 | SKAB | LSTM | 25 | 0.908 ± 0.043 | 0.964 ± 0.051 | 0.773 ± 0.130 | 0.850 ± 0.082 |
 
-### Deep Learning Yorumları
+### Interpretation
 
-SKAB üzerinde LSTM en güçlü modeldir. Hem precision hem recall yüksek olduğu için F1-score da yüksektir. 1D-CNN de güçlüdür fakat LSTM daha kararlı sonuç üretmiştir.
+On SKAB, LSTM is the strongest model — both precision and recall are high, which drives its F1-score up. 1D-CNN is also strong but less stable across seeds than LSTM.
 
-BATADAL üzerinde accuracy değerleri yanıltıcıdır. 1D-CNN modeli neredeyse tüm örnekleri normal sınıfına attığı için accuracy yüksek görünür, ancak hiç anomali yakalayamadığı için precision, recall ve F1 sıfırdır. Bu yüzden BATADAL için F1-score ve confusion matrix özellikle önemlidir.
+On BATADAL, accuracy is misleading. 1D-CNN assigns almost every sample to the normal class, so accuracy looks high while precision, recall, and F1 are all zero. This is why F1-score and the confusion matrix matter more than accuracy for BATADAL.
 
 ![SKAB LSTM confusion matrix](reports/figures/readme/skab_lstm_confusion_matrix_seed42.png)
 
@@ -264,73 +267,69 @@ BATADAL üzerinde accuracy değerleri yanıltıcıdır. 1D-CNN modeli neredeyse 
 
 ![BATADAL 1D-CNN confusion matrix](reports/figures/readme/batadal_cnn1d_confusion_matrix_seed42.png)
 
-BATADAL 1D-CNN confusion matrix görselinde modelin anomaly sınıfını hiç tahmin etmediği görülür. Bu, accuracy'nin neden tek başına yeterli olmadığını en net gösteren çıktıdır.
+The BATADAL 1D-CNN confusion matrix shows the model never predicting the anomaly class at all — the clearest illustration of why accuracy alone is insufficient here.
 
-## Deep Learning Sonuç Yorumu
+LSTM's BATADAL result (`0.227 ± 0.312` F1) is better than CNN1D's but has a large standard deviation, meaning it behaves inconsistently across seeds: it captures the anomaly signal under some training conditions and misses it under others.
 
-SKAB veri setinde LSTM ve 1D-CNN modelleri güçlü sonuç üretmiştir. LSTM `0.850 ± 0.082` F1-score ile en iyi deep learning sonucunu vermiştir. Bunun nedeni SKAB verisinin sensör zaman pencereleri içinde tekrar eden ve öğrenilebilir örüntüler içermesidir. LSTM geçmiş ölçümleri sıralı biçimde işlediği için zaman bağımlılıklarını yakalayabilmiştir. 1D-CNN de kısa lokal örüntüleri yakaladığı için güçlü kalmıştır, ancak LSTM kadar kararlı değildir.
-
-BATADAL tarafında sonuçlar daha zordur. Veri setinde normal örnek sayısı anomali örnek sayısından çok daha fazladır. Bu dengesizlik yüzünden bir model çoğunlukla "normal" tahmini yaparak yüksek accuracy alabilir. 1D-CNN modelinin BATADAL accuracy değeri `0.901` görünmesine rağmen precision, recall ve F1-score değerleri `0.000` kalmıştır. Bu, modelin anomaly sınıfını hiç yakalayamadığı anlamına gelir. Bu nedenle BATADAL için accuracy değil, özellikle recall ve F1-score esas alınmalıdır.
-
-BATADAL LSTM sonucu `0.227 ± 0.312` F1-score ile CNN1D'den daha iyidir, fakat standart sapması yüksektir. Bu durum modelin farklı seed'lerde çok değişken davrandığını gösterir. Yani BATADAL üzerinde LSTM bazı eğitim koşullarında anomali sinyalini yakalayabilmiş, bazı koşullarda ise zorlanmıştır.
-
-Ana yorum:
+Overall message:
 
 ```text
-SKAB üzerinde deep learning modelleri güçlü çalıştı; BATADAL üzerinde ise sınıf dengesizliği ve veri karakteristiği modelleri zorladı. Bu yüzden accuracy tek başına yeterli değildir, F1-score ve confusion matrix birlikte yorumlanmalıdır.
+Deep learning performed strongly on SKAB; on BATADAL, class imbalance and data
+characteristics made it struggle. Accuracy alone is not sufficient — F1-score
+and the confusion matrix must be read together.
 ```
 
-Deep learning modelleri performans açısından özellikle SKAB'de başarılıdır; ancak kararlarını automata modeli gibi state transition ve probability üzerinden açıklayamaz. Bu nedenle proje sonucunda deep learning tarafı "yüksek tahmin performansı", automata tarafı ise "açıklanabilir karar süreci" temsil etmektedir.
+Deep learning is the stronger predictor, particularly on SKAB, but it cannot explain its decisions the way the automata model can through state transitions and probabilities. In this project, deep learning represents "high predictive performance" and the automata model represents "explainable decision-making."
 
-## Automata Sonuçları
+## Automata Results
 
-### Sabit Parametre ve Senaryo Sonuçları
+### Fixed-Parameter Scenario Results
 
-| Veri Seti | Senaryo | Accuracy | Precision | Recall | F1-score | Unseen ratio |
+| Dataset | Scenario | Accuracy | Precision | Recall | F1-score | Unseen ratio |
 |---|---|---:|---:|---:|---:|---:|
 | BATADAL | original | 0.464 | 0.115 | 0.441 | 0.182 | 0.277 |
 | BATADAL | gaussian_noise | 0.474 ± 0.013 | 0.117 ± 0.003 | 0.441 ± 0.000 | 0.185 ± 0.004 | 0.271 ± 0.005 |
 | BATADAL | unseen_only | 0.290 | 0.135 | 0.636 | 0.222 | 0.274 |
-| SKAB | original | 0.551 ± 0.006 | 0.301 ± 0.059 | 0.049 ± 0.025 | 0.077 ± 0.030 | 0.051 ± 0.013 |
-| SKAB | gaussian_noise | 0.552 ± 0.007 | 0.312 ± 0.050 | 0.049 ± 0.024 | 0.078 ± 0.030 | 0.051 ± 0.013 |
-| SKAB | unseen_only | 0.401 ± 0.070 | 0.196 ± 0.078 | 0.526 ± 0.149 | 0.269 ± 0.099 | 0.051 ± 0.013 |
+| SKAB | original | 0.548 ± 0.010 | 0.230 ± 0.129 | 0.054 ± 0.050 | 0.083 ± 0.070 | 0.050 ± 0.019 |
+| SKAB | gaussian_noise | 0.549 ± 0.009 | 0.235 ± 0.128 | 0.056 ± 0.046 | 0.086 ± 0.066 | 0.049 ± 0.017 |
+| SKAB | unseen_only | 0.366 ± 0.121 | 0.212 ± 0.180 | 0.490 ± 0.224 | 0.276 ± 0.209 | 0.050 ± 0.020 |
 
-`unseen_only` sonuçları tüm test setiyle doğrudan aynı evrende karşılaştırılmamalıdır. Bu senaryo yalnızca eğitimde görülmeyen pattern alt kümesini analiz eder. Bu nedenle original/noise sonuçlarıyla "hangisi daha iyi?" şeklinde değil, "unseen mekanizması nasıl davranıyor?" şeklinde yorumlanmalıdır.
+`unseen_only` should not be compared directly against the full test set results. It isolates only the subset of patterns that were never seen during training, so it should be read as "how does the unseen-handling mechanism behave?" rather than "is this scenario better or worse?"
 
 ![Automata scenario F1 comparison](reports/figures/readme/automata_scenario_f1_comparison.png)
 
 ![Automata unseen ratio comparison](reports/figures/readme/automata_scenario_unseen_ratio_comparison.png)
 
-### Gürültü Yorumu
+### Noise Sensitivity
 
-Gaussian noise senaryosunda F1 değerlerinde büyük düşüş oluşmamıştır:
+Gaussian noise does not cause a large drop in F1-score on either dataset:
 
-| Veri Seti | Original F1 | Gaussian Noise F1 | Yorum |
+| Dataset | Original F1 | Gaussian Noise F1 | Note |
 |---|---:|---:|---|
-| BATADAL | 0.182 | 0.185 ± 0.004 | Düşük seviyeli gürültü performansı bozmadı. |
-| SKAB | 0.077 ± 0.030 | 0.078 ± 0.030 | Gürültü etkisi sınırlı kaldı. |
+| BATADAL | 0.182 | 0.185 ± 0.004 | Low-level noise did not hurt performance. |
+| SKAB | 0.083 ± 0.070 | 0.086 ± 0.066 | Effect of noise stayed limited; run-to-run variance across seeds is itself larger than the noise effect. |
 
-Bunun nedeni PAA ve SAX dönüşümlerinin küçük sayısal değişimleri sembolik seviyede kısmen yumuşatmasıdır. Yani küçük bir sensör gürültüsü her zaman farklı bir sembole dönüşmez.
+This is because the PAA and SAX transformations partially smooth small numeric changes at the symbolic level — a small sensor perturbation does not always flip a value to a different symbol.
 
-### Parametre Analizi
+### Parameter Analysis
 
-Automata performansı `window_size` ve `alphabet_size` seçimlerine çok duyarlıdır.
+Automata performance is highly sensitive to `window_size` and `alphabet_size`.
 
-| Veri Seti | En İyi Window | En İyi Alphabet | Accuracy | Precision | Recall | F1-score | State Count | Transition Density |
+| Dataset | Best Window | Best Alphabet | Accuracy | Precision | Recall | F1-score | State Count | Transition Density |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | BATADAL | 6 | 5 | 0.328 | 0.154 | 0.763 | 0.257 | 229.0 | 0.0045 |
-| SKAB | 6 | 6 | 0.558 ± 0.025 | 0.525 ± 0.036 | 0.382 ± 0.061 | 0.438 ± 0.030 | 125.6 | 0.0095 |
+| SKAB | 6 | 6 | 0.522 ± 0.047 | 0.452 ± 0.065 | 0.292 ± 0.149 | 0.337 ± 0.144 | 125.8 | 0.0096 |
 
-Window size arttıkça state daha uzun bağlam taşır. Örneğin `window_size=3` için state `abc` gibi kısa bir pattern iken, `window_size=6` için state daha uzun ve daha ayırt edici olur. Bu projede iki veri setinde de en iyi sonuçlar `window_size=6` ile alınmıştır.
+Increasing `window_size` gives each state a longer symbolic context. For example, `window_size=3` produces a short pattern like `abc`, while `window_size=6` produces longer, more distinctive states. Both datasets achieve their best results at `window_size=6`.
 
-Alphabet size arttıkça SAX daha ayrıntılı sembolik temsil üretir. Örneğin `alphabet_size=3` yalnızca `a,b,c` sembollerini kullanırken, `alphabet_size=6` daha fazla ayrım yapabilir. SKAB tarafında en iyi sonuç `alphabet_size=6` ile gelmiştir. BATADAL tarafında ise `alphabet_size=5` en iyi sonucu vermiştir; `6` değerinde state uzayı daha fazla seyrekleştiği için F1 biraz düşmüştür.
+Increasing `alphabet_size` gives SAX a finer symbolic resolution. For example, `alphabet_size=3` only uses `a, b, c`, while `alphabet_size=6` allows finer distinctions. SKAB's best result uses `alphabet_size=6`. BATADAL peaks at `alphabet_size=5`; at `6`, the state space becomes too sparse and F1 drops slightly.
 
-Nihai yorum:
+Final parameter choice:
 
-| Veri Seti | Tercih Edilen Window | Tercih Edilen Alphabet | Gerekçe |
+| Dataset | Preferred Window | Preferred Alphabet | Rationale |
 |---|---:|---:|---|
-| SKAB | 6 | 6 | Daha uzun bağlam ve daha ayrıntılı sembolik ayrım F1'i belirgin artırdı. |
-| BATADAL | 6 | 5 | Uzun bağlam yararlı oldu; ancak alphabet 6 fazla seyrek transition yapısı oluşturduğu için alphabet 5 daha dengeli kaldı. |
+| SKAB | 6 | 6 | Longer context and finer symbolic resolution clearly improved F1. |
+| BATADAL | 6 | 5 | Longer context helped, but alphabet size 6 produced an overly sparse transition structure, so 5 was more balanced. |
 
 ![Fixed vs best automata parameter F1](reports/figures/readme/automata_fixed_vs_best_parameter_f1.png)
 
@@ -340,11 +339,11 @@ Nihai yorum:
 
 ![Automata multiseed F1 error bars](reports/figures/readme/automata_multiseed_f1_errorbars.png)
 
-## Açıklanabilirlik
+## Explainability
 
-Automata modelinin en önemli farkı her karar için izlenebilir bilgi üretmesidir. Deep learning modeli genellikle sadece skor veya sınıf tahmini verir. Automata ise kararın hangi state transition üzerinden verildiğini gösterebilir.
+The automata model's main advantage is that it produces traceable information for every decision. A deep learning model typically returns only a score or class label; the automata model can show exactly which state transition drove a given decision.
 
-Örnek unseen explanation çıktısı:
+Example unseen-pattern explanation output:
 
 ```json
 {
@@ -364,171 +363,180 @@ Automata modelinin en önemli farkı her karar için izlenebilir bilgi üretmesi
 }
 ```
 
-Bu çıktının okunması:
+Field reference:
 
-| Alan | Anlam |
+| Field | Meaning |
 |---|---|
-| `previous_state` | Modelin bir önceki sembolik durumu. |
-| `pattern` | Test sırasında gelen yeni pattern. |
-| `status` | Pattern eğitimde görülmüş mü, görülmemiş mi? |
-| `mapped_to` | Unseen pattern için Levenshtein ile bulunan en yakın bilinen state. |
-| `probability` | İlgili transition için kullanılan olasılık. |
-| `edit_distance` | Gelen pattern ile eşlenen state arasındaki fark. |
-| `path_probability_so_far` | O ana kadarki transition olasılıklarının birleşik değeri. |
-| `decision` | Normal/anomaly kararı. |
-| `confidence` | Olasılık tabanlı güven skoru. |
-| `decision_reason` | Kararın ana gerekçesi. |
+| `previous_state` | The model's previous symbolic state. |
+| `pattern` | The new pattern observed at test time. |
+| `status` | Whether the pattern was seen during training. |
+| `mapped_to` | The closest known state, found via Levenshtein distance, for an unseen pattern. |
+| `probability` | The transition probability used for this step. |
+| `edit_distance` | The distance between the incoming pattern and its mapped state. |
+| `path_probability_so_far` | The combined probability of the path up to this point. |
+| `decision` | The normal/anomaly decision. |
+| `confidence` | The probability-based confidence score. |
+| `decision_reason` | The primary justification for the decision. |
 
-Transition heatmap görsellerinde satır mevcut state'i, sütun sonraki state'i gösterir. Parlak hücreler yüksek geçiş olasılığı anlamına gelir. Koyu alanların çok olması transition matrix'in seyrek olduğunu gösterir. Bu, automata modelinde beklenen bir durumdur; çünkü tüm olası sembolik geçişler eğitim verisinde görülmez.
+In the transition heatmaps, rows represent the current state and columns represent the next state. Bright cells indicate high transition probability; large dark regions indicate a sparse transition matrix, which is expected since not every possible symbolic transition appears in the training data.
 
 ![SKAB automata transition heatmap](reports/figures/readme/skab_automata_transition_heatmap.png)
 
 ![BATADAL automata transition heatmap](reports/figures/readme/batadal_automata_transition_heatmap.png)
 
-Transition graph görselleri en güçlü transition ilişkilerini daha okunabilir şekilde gösterir. Bu grafikler sunumda automata modelinin "hangi state'ten hangi state'e hangi olasılıkla geçtiğini gösterebiliyor" kısmını anlatmak için kullanılabilir.
+Transition graphs present the strongest transition relationships in a more readable form, useful for explaining which state transitions the automata model relies on and with what probability.
 
 ![SKAB automata transition graph](reports/figures/readme/skab_automata_transition_graph.png)
 
 ![BATADAL automata transition graph](reports/figures/readme/batadal_automata_transition_graph.png)
 
-## İstatistiksel Analiz
+## Statistical Analysis
 
-Model karşılaştırmaları için Wilcoxon signed-rank testi kullanılmıştır.
+Model comparisons use the Wilcoxon signed-rank test.
 
-| Veri Seti | Karşılaştırma | Test | Statistic | p-value | n | 0.05 seviyesinde anlamlı mı? |
+| Dataset | Comparison | Test | Statistic | p-value | n | Significant at 0.05? |
 |---|---|---|---:|---:|---:|---|
-| SKAB | automata vs LSTM F1 | Wilcoxon signed-rank | 0.000 | 0.0625 | 5 | Hayır |
-| SKAB | automata vs 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.0625 | 5 | Hayır |
-| SKAB | LSTM vs 1D-CNN F1 | Wilcoxon signed-rank | 5.000 | 5.960e-07 | 25 | Evet |
-| BATADAL | LSTM vs 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.1250 | 5 | Hayır |
+| SKAB | automata vs. LSTM F1 | Wilcoxon signed-rank | 0.000 | 0.0625 | 5 | No |
+| SKAB | automata vs. 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.0625 | 5 | No |
+| SKAB | LSTM vs. 1D-CNN F1 | Wilcoxon signed-rank | 5.000 | 5.960e-07 | 25 | Yes |
+| BATADAL | LSTM vs. 1D-CNN F1 | Wilcoxon signed-rank | 0.000 | 0.1250 | 5 | No |
 
-SKAB üzerinde LSTM ve 1D-CNN farkı istatistiksel olarak anlamlıdır. Automata ile deep learning modelleri arasındaki p-value `0.0625` çıkmıştır. Bu değer `0.05` eşiğini geçmediği için "istatistiksel olarak anlamlı" raporlanmamıştır. Burada eşleşme sayısının `n=5` olması test gücünü sınırlar; bu yüzden pratik performans farkı görünse bile istatistiksel karar dikkatli yorumlanmalıdır.
+The LSTM vs. 1D-CNN difference on SKAB is statistically significant. The automata-vs-deep-learning comparison has a p-value of `0.0625`, which does not clear the `0.05` threshold, so it is not reported as statistically significant. With only `n=5` matched pairs, the test has limited statistical power, so this result should be read as inconclusive rather than as evidence of no difference.
 
-McNemar testi doğrudan aynı örnekler üzerindeki iki model tahminini karşılaştırmak için uygundur. Automata tahminleri PAA/SAX sonrası pattern-transition seviyesinde, deep learning tahminleri ise sequence-window seviyesinde üretildiği için Automata vs DL karşılaştırmasında Wilcoxon signed-rank testi tercih edilmiştir.
+McNemar's test would be suitable for comparing two models' predictions on identical samples directly. Since automata predictions operate at the PAA/SAX pattern-transition level while deep learning predictions operate at the sequence-window level, the two are not aligned sample-for-sample, so Wilcoxon signed-rank was used instead for the automata-vs-DL comparison.
 
-## Genel Değerlendirme
+## Overall Evaluation
 
-### Deep Learning Avantajları
+### Deep Learning — Strengths
 
-Deep learning modelleri çok değişkenli sensör ilişkilerini doğrudan öğrenebilir. Özellikle SKAB üzerinde LSTM ve 1D-CNN yüksek F1-score üretmiştir. Predictive performance öncelikliyse SKAB için LSTM en iyi seçimdir.
+Deep learning models learn multivariate sensor relationships directly and, on SKAB in particular, both LSTM and 1D-CNN reach a high F1-score. If predictive performance is the priority, LSTM is the best choice for SKAB.
 
-### Deep Learning Sınırlılıkları
+### Deep Learning — Limitations
 
-Deep learning modelleri kararlarını doğal olarak açıklamaz. Model "anomali" dediğinde bunun hangi sensör davranışı veya hangi geçiş örüntüsü nedeniyle olduğunu doğrudan söylemek zordur. Ayrıca BATADAL örneğinde görüldüğü gibi dengesiz veri setlerinde accuracy yanıltıcı olabilir.
+Deep learning models do not naturally explain their decisions. When a model flags "anomaly," it is difficult to say directly which sensor behavior or transition pattern caused it. As seen with BATADAL, accuracy can also be misleading on imbalanced data.
 
-### Automata Avantajları
+### Automata — Strengths
 
-Automata modeli state, transition probability, unseen mapping ve confidence score üretebildiği için açıklanabilirlik açısından güçlüdür. 
-Ana çıkarım şudur:
+The automata model can produce state, transition probability, unseen-pattern mapping, and a confidence score for every decision, which makes it strong on explainability:
 
 ```text
-Deep learning modeli daha yüksek skor verdi; automata modeli ise kararın hangi sembolik state geçişinden ve hangi olasılıktan kaynaklandığını gösterebildi.
+Deep learning produced a higher score; the automata model could show which
+symbolic state transition, and at what probability, produced its decision.
 ```
 
-### Automata Sınırlılıkları
+### Automata — Limitations
 
-Automata performansı sembolik temsil kalitesine çok bağlıdır. PCA ile tek boyuta indirgeme, PAA ile ortalama alma ve SAX ile sembolleştirme bazı ince sensör davranışlarını kaybettirebilir. Bu yüzden sabit parametrelerde performans düşük kalmıştır. Parametre sweep bu nedenle önemlidir.
+Automata performance depends heavily on the quality of the symbolic representation. Reducing multivariate data to a single PCA component, averaging via PAA, and discretizing via SAX can all discard fine-grained sensor behavior, which is why fixed-parameter performance is low. This is exactly why the parameter sweep matters.
 
+## Requirement Checklist
 
+| Requirement | Status | Note |
+|---|---|---|
+| At least two datasets | Done | SKAB and BATADAL. |
+| Official raw data | Done | Both datasets prepared from their official raw sources. |
+| At least two DL models | Done | LSTM and 1D-CNN. |
+| Multivariate-to-univariate reduction for automata | Done | Scaling + PCA/PC1. |
+| PAA/SAX symbolic representation | Done | Used throughout the automata pipeline. |
+| Sliding-window pattern extraction | Done | Patterns used as automata states. |
+| Probabilistic transition model | Done | Transition probabilities computed. |
+| Unseen-pattern handling | Done | Levenshtein-distance mapping to the nearest known state. |
+| Original / noise / unseen scenarios | Done | Reported for the automata pipeline. |
+| Window/alphabet parameter sweep | Done | Values 3, 4, 5, 6 tested. |
+| Accuracy/precision/recall/F1 | Done | Reported for both DL and automata. |
+| Statistical testing | Done | Wilcoxon signed-rank test. |
+| Explainability output | Done | State, transition, probability, confidence, and unseen mapping reported. |
 
-## Nasıl Çalıştırılır?
+## How to Run
 
-### Sanal Ortam
+### Virtual Environment
 
-Bu proje yerel sanal ortam ile çalıştırılmıştır. Docker zorunlu değildir.
-
-```powershell
-py -3.13 -m venv .venv
-.\.venv\Scripts\activate
+```bash
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-PyTorch CPU kurulumu gerekirse:
+CPU-only PyTorch, if needed:
 
-```powershell
+```bash
 python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
-Bu çalışmadaki yerel Python sürümü:
+Reference environment used for the results above: Python 3.13.3.
 
-```text
-Python 3.13.3
-```
+### Tests
 
-### Testler
-
-```powershell
+```bash
 python -m pytest
 ```
 
-### Automata Deneyleri
+### Automata Experiments
 
-```powershell
+```bash
 python -m src.experiments.run_full_automata_pipeline
 ```
 
-### Deep Learning Deneyleri
+### Deep Learning Experiments
 
-```powershell
+```bash
 python -m src.experiments.run_dl_experiments
 python -m src.experiments.summarize_dl_results
 ```
 
-### İstatistiksel Analiz
+### Statistical Analysis
 
-```powershell
+```bash
 python -m src.experiments.run_statistical_analysis
 ```
 
-Başka bir bilgisayarda çalıştırmak için repository klonlanıp aynı sanal ortam kurulabilir. Eğitim süresi CPU/GPU gücüne göre değişir. Bu çalışmada full DL training yaklaşık 7 dakika sürmüştür.
+Training time depends on available CPU/GPU resources. Full DL training took roughly 7 minutes in the reference environment above.
 
 ## Deep Learning Training Environment and Artifact Index
 
-Deep learning full training deneyleri Huawei MateBook 14 laptop üzerinde, Intel Core Ultra 5 125H işlemci ve Python 3.13.3 sanal ortamı ile çalıştırılmıştır. Eğitim yaklaşık 7 dakika sürmüştür. Bu süre LSTM ve 1D-CNN modellerinin SKAB ve BATADAL üzerinde 5 seed protokolüyle çalıştırılmasını kapsamaktadır.
+The reference deep learning training run used Python 3.13.3 and took approximately 7 minutes, covering LSTM and 1D-CNN across SKAB and BATADAL with the 5-seed protocol.
 
-Deep learning deneyleri için ana komutlar şunlardır:
+Main commands:
 
-```powershell
+```bash
 python -m src.experiments.run_dl_experiments
 python -m src.experiments.summarize_dl_results
 ```
 
-Full training çıktıları `reports/results/deep_learning/`, `reports/tables/deep_learning/` ve `reports/figures/deep_learning/` klasörlerinde tutulur. Smoke çıktıları final deneylerle karışmaması için `reports/results/smoke/` altında ayrı tutulmuştur. Smoke testlerin amacı model kalitesini ölçmek değil, kodun hızlı biçimde çalışabildiğini doğrulamaktır.
+Full training outputs live under `reports/results/deep_learning/`, `reports/tables/deep_learning/`, and `reports/figures/deep_learning/`. Smoke-test outputs are kept separately under `reports/results/smoke/` so they are never mistaken for final results; their purpose is only to confirm the code runs, not to measure model quality.
 
-Rapor için seçilen deep learning görselleri `reports/figures/readme/` klasörüne kopyalanmıştır. Bu klasördeki dosyalar, ham deney çıktılarının düzenlenmiş ve README içinde kullanılan kopyalarıdır:
+Figures curated for this README live in `reports/figures/readme/` and are copies of the raw experiment outputs:
 
-| Dosya | Ne gösteriyor? |
+| File | What it shows |
 |---|---|
-| `skab_lstm_confusion_matrix_seed42.png` | SKAB üzerinde LSTM modelinin doğru/yanlış sınıflandırma dağılımı. |
-| `skab_lstm_precision_recall_seed42.png` | SKAB üzerinde LSTM modelinin precision-recall davranışı. |
-| `batadal_lstm_confusion_matrix_seed42.png` | BATADAL üzerinde LSTM modelinin anomaly yakalama davranışı. |
-| `batadal_cnn1d_confusion_matrix_seed42.png` | BATADAL üzerinde CNN1D modelinin anomaly sınıfını yakalayamadığını gösteren confusion matrix. |
+| `skab_lstm_confusion_matrix_seed42.png` | SKAB LSTM correct/incorrect classification breakdown. |
+| `skab_lstm_precision_recall_seed42.png` | SKAB LSTM precision-recall behavior. |
+| `batadal_lstm_confusion_matrix_seed42.png` | BATADAL LSTM anomaly-detection behavior. |
+| `batadal_cnn1d_confusion_matrix_seed42.png` | BATADAL 1D-CNN's failure to detect any anomaly, despite high accuracy. |
 
-Bu artefact seçimi özellikle BATADAL'daki accuracy/F1 çelişkisini ve SKAB'deki LSTM başarısını sunumda hızlı anlatmak için yapılmıştır.
+## Key Output Files
 
-## Önemli Çıktı Dosyaları
-
-| Tür | Dosya |
+| Type | File |
 |---|---|
-| DL özet tablo | `reports/tables/deep_learning/dl_summary.csv` |
-| DL metrikleri | `reports/results/deep_learning/dl_evaluation_metrics.json` |
-| DL training özeti | `reports/results/deep_learning/dl_training_summary.json` |
-| Automata ana özet | `reports/results/automata_summary_results.csv` |
-| Automata multiseed özet | `reports/results/automata_multiseed_summary.csv` |
-| Automata en iyi parametre | `reports/results/automata_best_parameter_summary.csv` |
+| DL summary table | `reports/tables/deep_learning/dl_summary.csv` |
+| DL metrics | `reports/results/deep_learning/dl_evaluation_metrics.json` |
+| DL training summary | `reports/results/deep_learning/dl_training_summary.json` |
+| Automata main summary | `reports/results/automata_summary_results.csv` |
+| Automata multi-seed summary | `reports/results/automata_multiseed_summary.csv` |
+| Automata best parameters | `reports/results/automata_best_parameter_summary.csv` |
 | Automata parameter sweep | `reports/results/automata_parameter_sweep_skab.csv`, `reports/results/automata_parameter_sweep_batadal.csv` |
-| İstatistiksel analiz | `reports/tables/statistical_analysis_summary.csv` |
-| README görselleri | `reports/figures/readme/` |
-| Smoke çıktıları | `reports/results/smoke/` |
+| Statistical analysis | `reports/tables/statistical_analysis_summary.csv` |
+| README figures | `reports/figures/readme/` |
+| Smoke test outputs | `reports/results/smoke/` |
 
-## Proje Yapısı
+## Repository Structure
 
 ```text
-yazlab2-timeseries-automata/
+.
 ├── config.yaml
 ├── requirements.txt
 ├── README.md
+├── LICENSE
 ├── data/
 │   └── raw/
 │       ├── batadal/
@@ -552,17 +560,18 @@ yazlab2-timeseries-automata/
     └── tables/
 ```
 
-## Sınırlılıklar ve Gelecek Çalışma
+## Limitations and Future Work
 
-1. Automata tarafında PCA ile tek boyutlu temsil kullanıldığı için bazı sensör bilgileri kaybolabilir.
-2. PAA ve SAX açıklanabilir sembolik yapı sağlasa da küçük ve kısa süreli anomalileri yumuşatabilir.
-3. BATADAL veri setinde sınıf dengesizliği çok güçlüdür; bu nedenle accuracy tek başına yanıltıcıdır.
-4. Unseen-only sonuçları tüm test seti sonuçlarıyla doğrudan karşılaştırılmamalıdır.
-5. Train-on-one-dataset/test-on-other-dataset şeklinde ek cross-dataset transfer deneyi yapılmamıştır. Bu çalışma iki veri seti üzerinde ayrı ayrı model davranışı ve genelleme eğilimi analizi yapmıştır.
-6. Automata modelinde daha gelişmiş threshold tuning, class imbalance stratejileri veya çok boyutlu sembolik temsil denenirse performans artabilir.
+1. Reducing multivariate sensor data to a single principal component for the automata pipeline can discard useful information.
+2. PAA and SAX give an explainable symbolic structure but can smooth over brief, small anomalies.
+3. BATADAL's class imbalance is severe, so accuracy alone is misleading there.
+4. `unseen_only` results should not be compared directly against full-test-set results.
+5. No cross-dataset transfer experiment (train on one dataset, test on the other) was performed; each dataset was analyzed independently for model behavior and generalization tendency.
+6. More advanced threshold tuning, class-imbalance strategies, or a higher-dimensional symbolic representation could improve the automata model further.
+7. `torch` and `tensorflow` are not pinned against a verified reproduction run in this repository's CI; only the automata-side dependencies (`numpy`, `pandas`, `scikit-learn`, `scipy`) have been confirmed to reproduce the numbers in this README exactly.
 
-## Sonuç
+## Conclusion
 
-Bu projede deep learning modelleri özellikle SKAB üzerinde daha yüksek tahmin performansı üretmiştir. LSTM modeli SKAB için en güçlü modeldir. BATADAL üzerinde ise sınıf dengesizliği nedeniyle modeller zorlanmıştır ve 1D-CNN accuracy yüksek olmasına rağmen anomalileri yakalayamamıştır.
+Deep learning delivered stronger predictive performance in this project, particularly on SKAB, where LSTM was the strongest model. On BATADAL, class imbalance made both models struggle, and 1D-CNN's high accuracy masked its complete failure to detect anomalies.
 
-Automata modeli sabit parametrelerde düşük F1 üretmiştir; fakat parameter sweep ile belirgin iyileşme göstermiştir. Automata yaklaşımının asıl katkısı, karar sürecini state transition, transition probability, unseen mapping ve confidence score üzerinden açıklayabilmesidir. Bu nedenle proje, yüksek performans ile açıklanabilirlik arasında gerçek bir trade-off olduğunu göstermektedir.
+The automata model produced a lower F1-score with fixed parameters but improved substantially under a parameter sweep. Its real contribution is that it can explain its decision process through state transitions, transition probabilities, unseen-pattern mapping, and confidence scores. This project illustrates a genuine trade-off between predictive performance and explainability.
