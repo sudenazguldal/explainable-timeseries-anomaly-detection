@@ -10,19 +10,23 @@ def select_best_threshold(
     probabilities: list[float],
     threshold_candidates: list[float],
     primary_metric: str = "f1_score",
+    higher_is_anomaly: bool = False,
 ) -> dict:
     """
-    Selects anomaly threshold on validation data.
+    Selects the anomaly threshold that maximizes primary_metric on validation data.
 
-    Low transition probability means higher anomaly likelihood.
-    Therefore:  probability < threshold => anomaly
+    Two scoring conventions are supported via higher_is_anomaly:
+    - False (default): automata transition probabilities, where a low
+      probability means higher anomaly likelihood (probability < threshold => anomaly).
+    - True: deep learning anomaly scores, where a high score means higher
+      anomaly likelihood (score >= threshold => anomaly).
     """
     if len(y_true) != len(probabilities):
         raise ValueError("y_true and probabilities must have the same length.")
 
     if not threshold_candidates:
         raise ValueError("threshold_candidates cannot be empty.")
-    
+
 
     supported_metrics = {"accuracy", "precision", "recall", "f1_score"}
 
@@ -35,6 +39,7 @@ def select_best_threshold(
         y_pred = probabilities_to_binary_predictions(
             probabilities=probabilities,
             anomaly_threshold=float(threshold),
+            higher_is_anomaly=higher_is_anomaly,
         )
 
         metrics = calculate_classification_metrics(

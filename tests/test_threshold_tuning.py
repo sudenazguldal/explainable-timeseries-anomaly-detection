@@ -88,3 +88,19 @@ def test_select_best_threshold_rejects_empty_validation_data():
             probabilities=[],
             threshold_candidates=[0.05],
         )
+
+
+def test_select_best_threshold_supports_higher_is_anomaly_scores():
+    # Deep-learning-style scores: higher score means more likely anomaly.
+    y_true = [0, 0, 1, 1]
+    probabilities = [0.10, 0.20, 0.85, 0.95]
+
+    result = select_best_threshold(
+        y_true=y_true,
+        probabilities=probabilities,
+        threshold_candidates=[0.3, 0.5, 0.7],
+        higher_is_anomaly=True,
+    )
+
+    assert result["selected_metrics"]["f1_score"] == 1.0
+    assert result["selected_confusion_matrix"] == [[2, 0], [0, 2]]
